@@ -13,5 +13,7 @@ A music streaming app written in a stack a potential employer is needing support
 - Storybook
 - Nx
 - nrhwl
+- Docker
+- Azure Devops
+- Cypress
 
-Angular, PrimeNG, .Net C#, Google Cloud Platform (gcp), Docker, Azure Devops, Azure DevOps pipeline development, Storybook, nx, nrhwl, monorepo development,  Cypress, and Mongo
