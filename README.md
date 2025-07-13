@@ -6,7 +6,7 @@ A music streaming app written in a stack a potential employer is needing support
     - MongoDb database
 - Angular frontend
     - SCSS styling
-    - PrimeNG componenets
+    - PrimeNG components?
 
 ### To Do
 - Integrate GCP (Google Cloud Platform)
