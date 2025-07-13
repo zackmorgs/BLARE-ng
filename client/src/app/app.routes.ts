@@ -20,7 +20,7 @@ export const routes: Routes = [
   },
     {
     path: 'support',
-    loadComponent: () => import('./pages/account/account.component').then(m => m.AccountComponent)
+    loadComponent: () => import('./pages/support/support.component').then(m => m.SupportComponent)
   },
     {
     path: 'download',
