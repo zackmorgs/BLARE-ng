@@ -1,0 +1,20 @@
+using MongoDB.Driver;
+
+using Models;
+
+namespace Data
+{
+    public class DataContext
+    {
+        private readonly IMongoDatabase _database;
+
+        public DataContext(IConfiguration configuration)
+        {
+            var client = new MongoClient(configuration.GetConnectionString("connectionString"));
+            _database = client.GetDatabase("blare-cluster");
+        }
+
+        public IMongoCollection<Artist> Artists => _database.GetCollection<Artist>("Artists");
+        public IMongoCollection<Track> Tracks => _database.GetCollection<Track>("Tracks");
+    }
+}

@@ -1,0 +1,41 @@
+### JWT Authentication Test
+
+### Register a new user
+POST https://localhost:7244/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+###
+
+### Login
+POST https://localhost:7244/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "password123"
+}
+
+###
+
+### Get tracks (requires JWT token)
+GET https://localhost:7244/api/track
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+###
+
+### Create a track (requires JWT token)
+POST https://localhost:7244/api/track
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{
+  "title": "My Test Track",
+  "artist": "Test Artist",
+  "duration": 180
+}

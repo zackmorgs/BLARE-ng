@@ -1,0 +1,34 @@
+<nav id="nav_main" class="{{navOpen ? 'open' : ''}}">
+    <div id="nav_bar">
+        <a id="nav_logo" routerLink="/">
+            <h1>BLARE</h1>
+        </a>
+        <button id="nav_toggle" (click)="toggleNav()">
+            <img [src]="navIconSrc" [alt]="navIconAlt">
+        </button>
+    </div>
+    <div id="nav_items">
+        <ul class="nav-list">
+            <li>
+                <a class="nav-link" routerLink="/account/" (click)="toggleNav()">
+                    <img alt="Account Icon" class="icon" src="/svg/icon-account-square.svg">
+                    <span>Account</span>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" routerLink="/logout" (click)="toggleNav()">
+                    <img alt="Profile Icon" class="icon" src="/svg/icon-logout.svg">
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+        <hr class="rule" />
+        <ul class="nav-list">
+            <li><a class="nav-link" routerLink="/support/" (click)="toggleNav()">Support</a></li>
+            <li><a class="nav-link" routerLink="/download/" (click)="toggleNav()">Download</a></li>
+            <li><a class="nav-link" routerLink="/privacy/" (click)="toggleNav()">Privacy</a></li>
+            <li><a class="nav-link" routerLink="/terms/" (click)="toggleNav()">Terms</a></li>
+        </ul>
+
+    </div>
+</nav>

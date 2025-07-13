@@ -1,0 +1,18 @@
+:root {
+    font-size:16px;
+    font-family: 'Rubik', sans-serif;
+}
+*, *::after, *::before {
+    box-sizing: border-box;
+}
+
+body {
+    background: #222222;
+    color:#f1f1f1;
+    margin:0;
+    padding:0;
+}
+
+.container {
+    padding:1rem;
+}
