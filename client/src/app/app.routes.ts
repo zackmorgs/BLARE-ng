@@ -3,12 +3,12 @@ import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { 
-    path: 'home', 
+  {
+    path: 'home',
     loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent)
   },
-  { 
-    path: 'login', 
+  {
+    path: 'login',
     loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent)
   },
   {
@@ -21,7 +21,7 @@ export const routes: Routes = [
   },
   {
     path: 'account',
-    loadComponent: () => import('./pages/account/account.component').then(m => m.AccountComponent),
+    loadComponent: () => import('./pages/user/account/account.component').then(m => m.AccountComponent),
     canActivate: [authGuard]
   },
   {
@@ -39,6 +39,14 @@ export const routes: Routes = [
   {
     path: 'terms',
     loadComponent: () => import('./pages/terms/terms.component').then(m => m.TermsComponent)
+  },
+  {
+    path: 'user/:slug/',
+    loadComponent: () => import('./pages/user/user.component').then(m => m.UserComponent)
+  },
+  {
+    path: 'user/:slug/playlist/:playlistId',
+    loadComponent: () => import('./pages/user/playlist/playlist.component').then(m => m.PlaylistComponent)
   },
   { path: '**', redirectTo: '/' }
 ];

@@ -1,8 +1,32 @@
 <div class="container">
-  <h1 class="logo">{{title}}</h1>
-  <h2>Welcome</h2>
-  <p>Please enter your credentials or create an account.</p>
-  <a routerLink="/login" class="btn">Login</a>
-  <br />
-  <a routerLink="/register" class="btn btn-secondary">Register</a>
+  <!-- Content for authenticated users -->
+  <div *ngIf="authService.isAuthenticated$ | async">
+    <div>
+      <h3>Welcome, Zack</h3>
+      <ul id="home_list">
+        <li class="home-item">
+          <a class="home-item-link" routerLink="/user/zackmorgenthaler/playlist/favorites"><img alt="Favorites cover"
+              class="cover" src="/img/covers/starred-cover.svg">
+            <h2 class="home-item-title">Favorites</h2>
+          </a>
+        </li>
+        <li class="home-item">
+          <a class="home-item-link" routerLink="/user/zackmorgenthaler/playlist/recently-played"><img
+              alt="Recently Played cover" class="cover" src="/img/covers/recently-played-cover.svg">
+            <h2 class="home-item-title">Recently Played</h2>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Content for unauthenticated users -->
+  <div *ngIf="!(authService.isAuthenticated$ | async)">
+    <h1 class="logo">{{title}}</h1>
+    <h2>Welcome</h2>
+    <p>Please enter your credentials or create an account.</p>
+    <a routerLink="/login" class="btn">Login</a>
+    <br />
+    <a routerLink="/register" class="btn btn-secondary">Register</a>
+  </div>
 </div>
