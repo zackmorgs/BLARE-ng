@@ -10,6 +10,7 @@ A music streaming app written in a stack a potential employer is needing support
     - SCSS styling
     - ``PrimeNG components?`` 
         - I decided to roll my own CSS/SCSS.
+- I created a console application `./src/tagScraper` that populates the databas with tags, it will do more soon.
 
 ### To Do
 - Integrate GCP (Google Cloud Platform)

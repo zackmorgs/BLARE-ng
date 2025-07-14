@@ -1,0 +1,1 @@
+import{$a as m,Ca as n,Ra as o,Sa as s}from"./chunk-VEP5YUMW.js";var r=class t{static \u0275fac=function(e){return new(e||t)};static \u0275cmp=n({type:t,selectors:[["app-terms"]],decls:3,vars:0,consts:[[1,"container"]],template:function(e,a){e&1&&(o(0,"div",0)(1,"p"),m(2,"terms works!"),s()())},encapsulation:2})};export{r as TermsComponent};

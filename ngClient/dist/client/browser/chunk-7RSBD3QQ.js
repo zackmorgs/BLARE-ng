@@ -1,0 +1,1 @@
+import{$a as p,Ca as n,Ra as t,Sa as a}from"./chunk-VEP5YUMW.js";var s=class e{static \u0275fac=function(o){return new(o||e)};static \u0275cmp=n({type:e,selectors:[["app-download"]],decls:3,vars:0,consts:[[1,"container"]],template:function(o,d){o&1&&(t(0,"div",0)(1,"p"),p(2,"download works!"),a()())},encapsulation:2})};export{s as DownloadComponent};

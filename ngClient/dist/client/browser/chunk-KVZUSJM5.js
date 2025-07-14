@@ -1,0 +1,1 @@
+import{$a as s,Ca as o,Ra as p,Sa as n}from"./chunk-VEP5YUMW.js";var r=class e{static \u0275fac=function(t){return new(t||e)};static \u0275cmp=o({type:e,selectors:[["app-support"]],decls:3,vars:0,consts:[[1,"container"]],template:function(t,i){t&1&&(p(0,"div",0)(1,"p"),s(2,"support works!"),n()())},encapsulation:2})};export{r as SupportComponent};

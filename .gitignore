@@ -1,6 +1,8 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 /node_modules
 
+/ngClient/node_modules
+
 # Compiled output
 /client/dist
 /client/tmp
@@ -42,11 +44,34 @@
 .client/.DS_Store
 .client/Thumbs.db
 
-/Api/bin
-/Api/obj
-/Api/.vs
-/Api/.vscode
-/Api/.idea
-/Api/.history
-/Api/.vscode-test
+/src/Api/bin
+/src/Api/obj
+/src/Api/.vs
+/src/Api/.vscode
+/src/Api/.idea
+/src/Api/.history
+/src/Api/.vscode-test
 
+/src/tagScraper/bin
+/src/tagScraper/obj
+/src/tagScraper/.vs
+/src/tagScraper/.vscode
+/src/tagScraper/.idea
+/src/tagScraper/.history
+/src/tagScraper/.vscode-tes
+
+/src/Models/bin
+/src/Models/obj
+/src/Models/.vs
+/src/Models/.vscode
+/src/Models/.idea
+/src/Models/.history
+/src/Models/.vscode-tes
+
+/src/Data/bin
+/src/Data/obj
+/src/Data/.vs
+/src/Data/.vscode
+/src/Data/.idea
+/src/Data/.history
+/src/Data/.vscode-tes
