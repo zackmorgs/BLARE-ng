@@ -10,7 +10,7 @@ namespace Data
 
         public DataContext(IConfiguration configuration)
         {
-            var client = new MongoClient(configuration.GetConnectionString("connectionString"));
+            var client = new MongoClient(configuration.GetConnectionString("MongoConnection"));
             _database = client.GetDatabase("blare-cluster");
         }
 

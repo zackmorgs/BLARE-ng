@@ -7,9 +7,9 @@ public class TrackService
 {
     private readonly IMongoCollection<Track> _tracks;
 
-    public TrackService(IConfiguration config)
+    public TrackService(IConfiguration configuration)
     {
-        var client = new MongoClient(config.GetConnectionString("connectionString"));
+        var client = new MongoClient(configuration.GetConnectionString("MongoConnection"));
         var database = client.GetDatabase("blare");
         _tracks = database.GetCollection<Track>("tracks");
     }

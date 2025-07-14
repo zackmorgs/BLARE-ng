@@ -8,9 +8,9 @@ namespace Services
     {
         private readonly IMongoCollection<User> _users;
 
-        public UserService(IConfiguration config)
+        public UserService(IConfiguration configuration)
         {
-            var client = new MongoClient(config.GetConnectionString("connectionString"));
+            var client = new MongoClient(configuration.GetConnectionString("MongoConnection"));
             var database = client.GetDatabase("blare");
             _users = database.GetCollection<User>("users");
         }

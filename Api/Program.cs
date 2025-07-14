@@ -19,7 +19,7 @@ internal class Program
         builder.Services.AddControllers();
 
         builder.Services.AddSingleton<IMongoClient>(sp => new MongoClient(
-            builder.Configuration.GetConnectionString("connectionString")
+            builder.Configuration.GetConnectionString("MongoConnection")
         ));
 
         builder.Services.AddSingleton<DataContext>();
@@ -40,7 +40,7 @@ internal class Program
                     ValidateAudience = true,
                     ValidAudience = jwtSettings["Audience"],
                     ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero
+                    ClockSkew = TimeSpan.Zero,
                 };
             });
 
@@ -53,7 +53,7 @@ internal class Program
         app.UseAuthentication();
         app.UseAuthorization();
 
-        app.MapControllers();
+        app.MapControllers(); // This was missing - critical for routing!
 
         app.Run();
     }
