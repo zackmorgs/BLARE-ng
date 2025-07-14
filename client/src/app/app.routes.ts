@@ -41,11 +41,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/terms/terms.component').then(m => m.TermsComponent)
   },
   {
-    path: 'user/:slug/',
+    path: 'user/:usernameSlug',
     loadComponent: () => import('./pages/user/user.component').then(m => m.UserComponent)
   },
   {
-    path: 'user/:slug/playlist/:playlistId',
+    path: 'user/:usernameSlug/playlist/:playlistSlug',
     loadComponent: () => import('./pages/user/playlist/playlist.component').then(m => m.PlaylistComponent)
   },
   { path: '**', redirectTo: '/' }
