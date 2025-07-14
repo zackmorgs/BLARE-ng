@@ -1,48 +1,51 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 /node_modules
 
-/ngClient/node_modules
+/ngCLient/node_modules
 
 # Compiled output
-/client/dist
-/client/tmp
-/client/out-tsc
-/client/bazel-out
+/ngCLient/dist
+/ngCLient/tmp
+/ngCLient/out-tsc
+/ngCLient/bazel-out
+/ngClient/cache
+/ngClient/.angular
+/ngCLient/.angular/cache
 
 # Node
-/client/node_modules
-/client/npm-debug.log
-/client/yarn-error.log
+/ngCLient/node_modules
+/ngCLient/npm-debug.log
+/ngCLient/yarn-error.log
 
 # IDEs and editors
-/client/.idea/
-.client/.project
-.client/.classpath
-.client/.c9/
+/ngCLient/.idea/
+.ngCLient/.project
+.ngCLient/.classpath
+.ngCLient/.c9/
 *.launch
 .settings/
 *.sublime-workspace
 
 # Visual Studio Code
-.client/.vscode/*
-!.client/.vscode/settings.json
-!.client/.vscode/tasks.json
-!.client/.vscode/launch.json
-!.client/.vscode/extensions.json
-.client/.history/*
+.ngCLient/.vscode/*
+!.ngCLient/.vscode/settings.json
+!.ngCLient/.vscode/tasks.json
+!.ngCLient/.vscode/launch.json
+!.ngCLient/.vscode/extensions.json
+.ngCLient/.history/*
 
 # Miscellaneous
-/client/.angular/cache
-/client/.sass-cache/
-/client/connect.lock
-/client/coverage
-/client/libpeerconnection.log
-/client/testem.log
-/client/typings
+/ngCLient/.angular/cache
+/ngCLient/.sass-cache/
+/ngCLient/connect.lock
+/ngCLient/coverage
+/ngCLient/libpeerconnection.log
+/ngCLient/testem.log
+/ngCLient/typings
 
 # System files
-.client/.DS_Store
-.client/Thumbs.db
+.ngCLient/.DS_Store
+.ngCLient/Thumbs.db
 
 /src/Api/bin
 /src/Api/obj
@@ -75,3 +78,4 @@
 /src/Data/.idea
 /src/Data/.history
 /src/Data/.vscode-tes
+ngngCLient/.angular/cache/19.2.15/ngCLient/vite/deps/_metadata.json

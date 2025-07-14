@@ -21,3 +21,17 @@ A music streaming app written in a stack a potential employer is needing support
 - Azure Devops
 - Cypress
 
+## Try it out
+- Sign-ins
+    - "listener" role
+        - **username**: user
+        - **password**: password1234
+    - "artist" role
+        - **username**: indie-band
+        - **password**: password1234
+    - "admin" role not available yet.
+<!-- 
+    - "admin" role
+        - **username**: admin
+        - **password**: password1234
+-->
