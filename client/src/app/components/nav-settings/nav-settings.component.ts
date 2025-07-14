@@ -6,10 +6,10 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-nav',
   imports: [RouterLink, CommonModule],
-  templateUrl: './nav.component.html',
-  styleUrl: './nav.component.scss'
+  templateUrl: './nav-settings.component.html',
+  styleUrl: './nav-settings.component.scss'
 })
-export class NavComponent {
+export class NavSettings {
   navOpen = false;
   authService = inject(AuthService);
 

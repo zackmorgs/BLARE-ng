@@ -1,4 +1,7 @@
-:root, button, input, textarea {
+:root,
+button,
+input,
+textarea {
     font-family: "Rubik", sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
@@ -6,15 +9,32 @@
     font-weight: 400;
 }
 
-*, *::after, *::before {
+*,
+*::after,
+*::before {
     box-sizing: border-box;
 }
 
 body {
     background: #222222;
-    color:#f1f1f1;
-    margin:0;
-    padding:0;
+    color: #f1f1f1;
+    margin: 0;
+    padding: 0;
+}
+
+.app-container {
+    border-top: #ffd700 2px solid;
+    display: block;
+}
+
+h1 {
+    font-size: 3rem;
+    margin: 1rem 0;
+}
+
+h2 {
+    font-weight: 400;
+    margin: 0;
 }
 
 .logo {
@@ -24,8 +44,9 @@ body {
     font-weight: 100;
     text-transform: uppercase;
 }
+
 .container {
-    padding:1rem;
+    padding: 1rem;
 }
 
 
