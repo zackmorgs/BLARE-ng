@@ -3,26 +3,29 @@
     <h2>Log In</h2>
     <p>Please enter your credentials to access your account.</p>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+
       <div class="form-group">
-        <input class="text-input" type="text" id="username" formControlName="username"
-          [class.error]="username?.invalid && username?.touched" autocomplete="true" placeholder="Username">
         <div *ngIf="username?.invalid && username?.touched" class="error-message">
           <span *ngIf="username?.errors?.['required']">Username is required</span>
           <span *ngIf="username?.errors?.['minlength']">Username must be at least 3 characters</span>
         </div>
+        <input class="text-input" type="text" id="username" formControlName="username"
+          [class.error]="username?.invalid && username?.touched" autocomplete="true" placeholder="Username">
+
       </div>
 
       <div class="form-group">
-        <input class="text-input" type="password" id="password" formControlName="password"
-          [class.error]="password?.invalid && password?.touched" autocomplete="true" placeholder="Password">
         <div *ngIf="password?.invalid && password?.touched" class="error-message">
           <span *ngIf="password?.errors?.['required']">Password is required</span>
           <span *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</span>
         </div>
-      </div>
+        <input class="text-input" type="password" id="password" formControlName="password"
+          [class.error]="password?.invalid && password?.touched" autocomplete="true" placeholder="Password">
 
-      <div *ngIf="errorMessage" class="error-message">
-        {{ errorMessage }}
       </div>
 
       <button type="submit" [disabled]="loginForm.invalid || isLoading" class="btn">
