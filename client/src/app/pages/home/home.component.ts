@@ -11,5 +11,5 @@ import { RouterLink } from '@angular/router';
 })
 
 export class HomeComponent {
-  title = 'Welcome to BLARE';
+  title = 'BLARE';
 }
