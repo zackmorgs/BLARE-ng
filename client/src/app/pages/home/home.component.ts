@@ -25,12 +25,30 @@ export class HomeComponent implements OnInit {
   hasReleases$: Observable<boolean> | null = null;
 
   ngOnInit() {
+    console.log('ngOnInit called');
+    
     // Load recent releases for all users
     if (this.authService.isAuthenticated()) {
-      if (this.authService.getCurrentUser()?.role === 'artist') {
-        this.artistReleases$ = this.releaseService.getReleasesByArtist(this.authService.getCurrentUser()?.id || '');
-      } else if (this.authService.getCurrentUser()?.role === 'listener') {
+      const currentUser = this.authService.getCurrentUser();
+      console.log('Current user:', currentUser);
+      
+      if (currentUser?.role === 'artist') {
+        console.log('Loading releases for artist:', currentUser.id);
+        this.artistReleases$ = this.releaseService.getReleasesByArtist(currentUser.id);
+        
+        // Add error handling and debugging
+        this.artistReleases$.subscribe({
+          next: (releases) => console.log('Artist releases loaded:', releases),
+          error: (error) => console.error('Error loading artist releases:', error)
+        });
+      } else if (currentUser?.role === 'listener') {
+        console.log('Loading recent releases for listener');
         this.recentReleases$ = this.releaseService.getRecentReleases();
+        
+        this.recentReleases$.subscribe({
+          next: (releases) => console.log('Recent releases loaded:', releases),
+          error: (error) => console.error('Error loading recent releases:', error)
+        });
       }
     }
   }

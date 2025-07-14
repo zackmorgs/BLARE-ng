@@ -5,7 +5,7 @@
       <h3>Welcome, {{ authService.getCurrentUser()?.username }}</h3>
 
       <!-- Recent Releases Section -->
-      <div *ngIf="recentReleases$ && (authService.getCurrentUser()?.role == 'listener')">
+      <div id="home_listener_container" *ngIf="recentReleases$ && (authService.getCurrentUser()?.role == 'listener')">
         <ul id="home_list" *ngIf="(authService.getCurrentUser()?.role == 'listener')">
           <li class="home-item">
             <a class="home-item-link" routerLink="/user/zackmorgenthaler/playlist/favorites"><img alt="Favorites cover"
@@ -41,34 +41,49 @@
 
 
 
-      <!-- Artist's Own Releases (for artists) -->
-      <div *ngIf="artistReleases$ && (authService.getCurrentUser()?.role === 'artist')">
-        <div id="home_artist_releases" *ngIf="artistReleases$">
-          <h3 *ngIf="artistReleases$">My Releases</h3>
-          <ul class="releases-list">
-            <li *ngFor="let release of artistReleases$ | async" class="release-item">
-              <div class="release-info">
-                <img [src]="release.coverImageUrl" [alt]="release.title + ' cover'" class="release-cover">
-                <div class="release-details">
-                  <h4 class="release-title">{{ release.title }}</h4>
-                  <p class="release-type">{{ release.type | titlecase }}</p>
-                  <p class="release-version">Version: {{ release.version }}</p>
-                  <p class="release-date">{{ release.releaseDate | date:'shortDate' }}</p>
-                  <p class="release-description">{{ release.description }}</p>
-                  <div class="release-tags" *ngIf="release.musicTags && release.musicTags.length > 0">
-                    <span *ngFor="let tag of release.musicTags" class="tag">{{ tag }}</span>
+      <!-- Artist's Own Releases and Dashboard (for artists) -->
+      <div id="home_artist_container" *ngIf="authService.getCurrentUser()?.role === 'artist'">
+        <h2>Artist Dashboard</h2>
+        <br />
+        <nav id="artist_home_nav">
+          <a routerLink="/artist/releases/new" class="btn">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
+              <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+            </svg>
+            <span>New Release</span>
+          </a>
+        </nav>
+        
+        <div id="home_artist_releases">
+          <h3>My Releases</h3>
+          <div *ngIf="artistReleases$ | async as releases; else noReleases">
+            <ul class="releases-list" *ngIf="releases.length > 0; else noReleases">
+              <li *ngFor="let release of releases" class="release-item">
+                <div class="release-info">
+                  <img [src]="release.coverImageUrl" [alt]="release.title + ' cover'" class="release-cover">
+                  <div class="release-details">
+                    <h4 class="release-title">{{ release.title }}</h4>
+                    <p class="release-type">{{ release.type | titlecase }}</p>
+                    <p class="release-version">Version: {{ release.version }}</p>
+                    <p class="release-date">{{ release.releaseDate | date:'shortDate' }}</p>
+                    <p class="release-description">{{ release.description }}</p>
+                    <div class="release-tags" *ngIf="release.musicTags && release.musicTags.length > 0">
+                      <span *ngFor="let tag of release.musicTags" class="tag">{{ tag }}</span>
+                    </div>
+                    <p class="track-count">{{ release.trackIds.length || 0 }} tracks</p>
                   </div>
-                  <p class="track-count">{{ release.trackIds.length || 0 }} tracks</p>
+                  <div class="release-actions">
+                    <a [routerLink]="['/release', release.id]" class="btn">View</a>
+                    <a [routerLink]="['/release', release.id, 'edit']" class="btn btn-secondary">Edit</a>
+                  </div>
                 </div>
-                <div class="release-actions">
-                  <a [routerLink]="['/release', release.id]" class="btn">View</a>
-                  <a [routerLink]="['/release', release.id, 'edit']" class="btn btn-secondary">Edit</a>
-                </div>
-              </div>
-            </li>
-          </ul>
+              </li>
+            </ul>
+          </div>
+          <ng-template #noReleases>
+            <p>No releases found. </p>
+          </ng-template>
         </div>
-
       </div>
     </div>
   </div>
@@ -77,20 +92,6 @@
   <div *ngIf="authService.getCurrentUser()?.role == 'admin'">
     <h2>Admin Dashboard</h2>
     <p>Manage users and content.</p>
-  </div>
-
-  <!-- Content for users with 'Artist' role -->
-  <div *ngIf="authService.getCurrentUser()?.role == 'artist'">
-    <h2>Artist Dashboard</h2>
-    <br />
-    <nav id="home_nav">
-      <a routerLink="/artist/releases/new" class="btn">
-        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
-          <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
-        </svg>
-        <span>New Release</span>
-      </a>
-    </nav>
   </div>
 
   <!-- Content for unauthenticated users -->
