@@ -124,7 +124,7 @@ BLARE-ng/
 - [ ] Dockerization
 - [ ] Azure DevOps CI/CD
 - [ ] Cypress end-to-end testing
-- [ ] Admin dashboard
+- [ ] Admin dashboard development, among other required UI needed
 - [ ] Streaming audio player
 
 ---
