@@ -1,15 +1,11 @@
 <div class="register-container">
-  <div class="register-form">
-    <h1>Register for BLARE</h1>
-    
+  <div class="register-form container">
+    <h2>Register</h2>
+
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <label for="username">Username</label>
-        <input 
-          type="text" 
-          id="username" 
-          formControlName="username"
-          [class.error]="username?.invalid && username?.touched">
+        <input class="text-input" type="text" id="username" formControlName="username"
+          [class.error]="username?.invalid && username?.touched"  autocomplete="true" placeholder="Username">
         <div *ngIf="username?.invalid && username?.touched" class="error-message">
           <span *ngIf="username?.errors?.['required']">Username is required</span>
           <span *ngIf="username?.errors?.['minlength']">Username must be at least 3 characters</span>
@@ -17,12 +13,8 @@
       </div>
 
       <div class="form-group">
-        <label for="email">Email</label>
-        <input 
-          type="email" 
-          id="email" 
-          formControlName="email"
-          [class.error]="email?.invalid && email?.touched">
+        <input class="text-input" type="email" id="email" formControlName="email"
+          [class.error]="email?.invalid && email?.touched"  autocomplete="true" placeholder="Email">
         <div *ngIf="email?.invalid && email?.touched" class="error-message">
           <span *ngIf="email?.errors?.['required']">Email is required</span>
           <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
@@ -30,12 +22,8 @@
       </div>
 
       <div class="form-group">
-        <label for="password">Password</label>
-        <input 
-          type="password" 
-          id="password" 
-          formControlName="password"
-          [class.error]="password?.invalid && password?.touched">
+        <input class="text-input" type="password" id="password" formControlName="password"
+          [class.error]="password?.invalid && password?.touched" autocomplete="true" placeholder="Password">
         <div *ngIf="password?.invalid && password?.touched" class="error-message">
           <span *ngIf="password?.errors?.['required']">Password is required</span>
           <span *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</span>
@@ -46,15 +34,12 @@
         {{ errorMessage }}
       </div>
 
-      <button type="submit" [disabled]="registerForm.invalid || isLoading">
+      <button class="btn" type="submit" [disabled]="registerForm.invalid || isLoading">
         <span *ngIf="isLoading">Creating account...</span>
         <span *ngIf="!isLoading">Register</span>
       </button>
     </form>
-
-    <p>
-      Already have an account? 
-      <a routerLink="/login">Login here</a>
-    </p>
+    <br/>
+    <a routerLink="/login" class="btn">Login</a>
   </div>
 </div>
