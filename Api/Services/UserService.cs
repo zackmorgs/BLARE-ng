@@ -149,5 +149,25 @@ namespace Services
             var result = await _users.UpdateOneAsync(filter, combinedUpdate);
             return result.ModifiedCount > 0;
         }
+
+        // Set a specific user as admin (call this once to create your admin)
+        public async Task<bool> SetUserAsAdmin(string username)
+        {
+            var user = await GetUserByUsernameAsync(username);
+            if (user == null) return false;
+
+            var filter = Builders<User>.Filter.Eq(u => u.Id, user.Id);
+            var update = Builders<User>.Update.Set(u => u.Role, "admin");
+            var result = await _users.UpdateOneAsync(filter, update);
+            return result.ModifiedCount > 0;
+        }
+
+        public async Task<bool> UpdateUserRoleAsync(string userId, string role)
+        {
+            var filter = Builders<User>.Filter.Eq(u => u.Id, userId);
+            var update = Builders<User>.Update.Set(u => u.Role, role);
+            var result = await _users.UpdateOneAsync(filter, update);
+            return result.ModifiedCount > 0;
+        }
     }
 }

@@ -77,6 +77,7 @@ namespace Controllers
                         user.Id,
                         user.Username,
                         user.Email,
+                        user.Role
                     },
                 }
             );

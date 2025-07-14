@@ -3,7 +3,7 @@
   <div *ngIf="authService.isAuthenticated$ | async">
     <div>
       <h3>Welcome, {{ authService.getCurrentUser()?.username }}</h3>
-      <ul id="home_list" *ngIf="(authService.getCurrentUser()?.role == 'Listener')">
+      <ul id="home_list" *ngIf="(authService.getCurrentUser()?.role == 'listener')">
         <li class="home-item">
           <a class="home-item-link" routerLink="/user/zackmorgenthaler/playlist/favorites"><img alt="Favorites cover"
               class="cover" src="/img/covers/starred-cover.svg">
@@ -18,6 +18,21 @@
         </li>
       </ul>
     </div>
+  </div>
+
+  <!-- Content for users with 'Admin' role -->
+  <div *ngIf="authService.getCurrentUser()?.role == 'admin'">
+    <h2>Admin Dashboard</h2>
+    <p>Manage users and content.</p>
+  </div>
+
+  <!-- Content for users with 'Artist' role -->
+  <div *ngIf="authService.getCurrentUser()?.role == 'artist'">
+    <h2>Artist Dashboard</h2>
+    <ul>
+      <li><a routerLink="/artist/profile">View Profile</a></li>
+      <li><a routerLink="/artist/music">Manage Music</a></li>
+    </ul>
   </div>
 
   <!-- Content for unauthenticated users -->

@@ -15,4 +15,9 @@ import { AuthService } from './../../services/auth.service';
 export class HomeComponent {
   title = 'BLARE';
   authService = inject(AuthService);
+  constructor() {
+  
+    // You can inject services or perform any initialization here
+    console.log(this.authService.getCurrentUser()?.role);
+  }
 }
