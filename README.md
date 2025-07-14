@@ -1,8 +1,7 @@
 # Blare-Ng
 A full-stack music streaming app built with Angular, .NET, and MongoDB.
 
-[A youtube demo](https://youtu.be/pwUMDN9jguI)
-
+[Authenication Demo](https://youtu.be/pwUMDN9jguI) ..more to come
 ---
 
 ## Overview
