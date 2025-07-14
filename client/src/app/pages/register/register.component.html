@@ -1,11 +1,11 @@
 <div class="register-container">
   <div class="register-form container">
     <h2>Register</h2>
-    <br/>
+    <br />
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <input class="text-input" type="text" id="username" formControlName="username"
-          [class.error]="username?.invalid && username?.touched"  autocomplete="true" placeholder="Username">
+          [class.error]="username?.invalid && username?.touched" autocomplete="true" placeholder="Username">
         <div *ngIf="username?.invalid && username?.touched" class="error-message">
           <span *ngIf="username?.errors?.['required']">Username is required</span>
           <span *ngIf="username?.errors?.['minlength']">Username must be at least 3 characters</span>
@@ -14,10 +14,21 @@
 
       <div class="form-group">
         <input class="text-input" type="email" id="email" formControlName="email"
-          [class.error]="email?.invalid && email?.touched"  autocomplete="true" placeholder="Email">
+          [class.error]="email?.invalid && email?.touched" autocomplete="true" placeholder="Email">
         <div *ngIf="email?.invalid && email?.touched" class="error-message">
           <span *ngIf="email?.errors?.['required']">Email is required</span>
           <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
+        </div>
+      </div>
+
+      <div id="role_input" class="form-group">
+        <select class="text-input" id="role" formControlName="role">
+          <option value="" disabled selected>Select Role</option>
+          <option value="listener">Listener</option>
+          <option value="artist">Artist</option>
+        </select>
+        <div *ngIf="role?.invalid && role?.touched" class="error-message">
+          <span *ngIf="role?.errors?.['required']">Role is required</span>
         </div>
       </div>
 
@@ -39,7 +50,7 @@
         <span *ngIf="!isLoading">Register</span>
       </button>
     </form>
-    <br/>
+    <br />
     <a routerLink="/login" class="btn">Login</a>
   </div>
 </div>

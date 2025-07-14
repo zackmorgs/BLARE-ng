@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Services;
 using Models;
+using Services;
 
 namespace Controllers
 {
@@ -34,14 +34,27 @@ namespace Controllers
             }
 
             // Create new user
-            var user = await _userService.CreateUserAsync(request.Username, request.Email, request.Password);
+            var user = await _userService.CreateUserAsync(
+                request.Username,
+                request.Email,
+                request.Password,
+                request.Role
+            );
             var token = _jwtService.GenerateToken(user);
 
-            return Ok(new 
-            { 
-                token, 
-                user = new { user.Id, user.Username, user.Email } 
-            });
+            return Ok(
+                new
+                {
+                    token,
+                    user = new
+                    {
+                        user.Id,
+                        user.Username,
+                        user.Email,
+                        user.Role,
+                    },
+                }
+            );
         }
 
         [HttpPost("login")]
@@ -54,11 +67,18 @@ namespace Controllers
             }
 
             var token = _jwtService.GenerateToken(user);
-            return Ok(new 
-            { 
-                token, 
-                user = new { user.Id, user.Username, user.Email } 
-            });
+            return Ok(
+                new
+                {
+                    token,
+                    user = new
+                    {
+                        user.Id,
+                        user.Username,
+                        user.Email,
+                    },
+                }
+            );
         }
     }
 
@@ -67,6 +87,7 @@ namespace Controllers
         public string Username { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
+        public string Role { get; set; } = string.Empty;
     }
 
     public class LoginRequest
