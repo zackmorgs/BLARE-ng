@@ -1,6 +1,6 @@
 <nav id="nav_main" class="{{navOpen ? 'open' : ''}}">
     <div id="nav_bar">
-        <a id="nav_logo" routerLink="/">
+        <a id="nav_logo" routerLink="/" (click)="toggleNav()">
             <h1>BLARE</h1>
         </a>
         <button id="nav_toggle" (click)="toggleNav()">
@@ -11,7 +11,7 @@
         <ul class="nav-list">
             <!-- Authenticated users -->
             <li *ngIf="authService.isAuthenticated$ | async">
-                <a class="nav-link" routerLink="/account/" (click)="toggleNav()">
+                <a class="nav-link" routerLink="/account/" (click)="closeNav()">
                     <img alt="Account Icon" class="icon" src="/svg/icon-account-square.svg">
                     <span>Account</span>
                 </a>

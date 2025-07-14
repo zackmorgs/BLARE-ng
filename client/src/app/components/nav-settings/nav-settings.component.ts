@@ -24,4 +24,8 @@ export class NavSettings {
   toggleNav(): void {
     this.navOpen = !this.navOpen;
   }
+
+  closeNav(): void {
+    this.navOpen = false;
+  }
 }
