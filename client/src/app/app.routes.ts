@@ -9,15 +9,15 @@ export const routes: Routes = [
   },
   { 
     path: 'login', 
-    loadComponent: () => import('../pages/login/login.component').then(m => m.LoginComponent)
+    loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent)
   },
   {
     path: 'register',
-    loadComponent: () => import('../pages/register/register.component').then(m => m.RegisterComponent)
+    loadComponent: () => import('./pages/register/register.component').then(m => m.RegisterComponent)
   },
   {
     path: 'logout',
-    loadComponent: () => import('../pages/logout/logout.component').then(m => m.LogoutComponent)
+    loadComponent: () => import('./pages/logout/logout.component').then(m => m.LogoutComponent)
   },
   {
     path: 'account',
