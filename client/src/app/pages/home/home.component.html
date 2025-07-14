@@ -30,6 +30,15 @@
   <div *ngIf="authService.getCurrentUser()?.role == 'artist'">
     <h2>Artist Dashboard</h2>
     <br/>
+    <h3>Releases</h3>
+    <ul id="artist_home_releases">
+      <li>
+        <a class="home-item-link" routerLink="/artist/releases">
+          <img alt="Releases cover" class="cover" src="/img/covers/releases-cover.svg">
+          <h2 class="home-item-title">View Releases</h2>
+        </a>
+      </li>
+    </ul>
     <nav id="home_nav">
       <a routerLink="/artist/releases/new" class="btn">
         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
