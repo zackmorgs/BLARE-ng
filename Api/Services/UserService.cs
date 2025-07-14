@@ -86,7 +86,6 @@ namespace Services
             {
                 // returns null if user is not found, is inactive, or password does not match
                 return null;
-
             }
             return user;
         }
@@ -100,19 +99,55 @@ namespace Services
             return result.ModifiedCount > 0;
         }
 
-        // updates the user's role
-
-        public async Task<bool> UpdateUserRoleAsync(string userId, string role)
+        public async Task<bool> UpdateUserInfoAsync(User user)
         {
-            var filter = Builders<User>.Filter.Eq(u => u.Id, userId);
-            var update = Builders<User>.Update.Set(u => u.Role, role);
-            var result = await _users.UpdateOneAsync(filter, update);
-            return result.ModifiedCount > 0;
+            if (user == null || string.IsNullOrEmpty(user.Id))
+            {
+                throw new ArgumentException("User cannot be null and must have a valid Id.");
+            }
+            else
+            {
+                var filter = Builders<User>.Filter.Eq(u => u.Id, user.Id);
+                var update = Builders<User>
+                    .Update
+                    .Set(u => u.FirstName, user.FirstName)
+                    .Set(u => u.LastName, user.LastName)
+                    .Set(u => u.Bio, user.Bio);
+
+                var result = await _users.UpdateOneAsync(filter, update);
+                return result.ModifiedCount == 1;
+            }
         }
 
         public async Task<User?> GetUserByIdAsync(string userId)
         {
             return await _users.Find(u => u.Id == userId).FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> UpdateUserProfileAsync(string userId, Controllers.UpdateProfileRequest request)
+        {
+            var filter = Builders<User>.Filter.Eq(u => u.Id, userId);
+            var updateBuilder = Builders<User>.Update;
+            var updates = new List<UpdateDefinition<User>>();
+
+            if (!string.IsNullOrEmpty(request.FirstName))
+                updates.Add(updateBuilder.Set(u => u.FirstName, request.FirstName));
+
+            if (!string.IsNullOrEmpty(request.LastName))
+                updates.Add(updateBuilder.Set(u => u.LastName, request.LastName));
+
+            if (!string.IsNullOrEmpty(request.Bio))
+                updates.Add(updateBuilder.Set(u => u.Bio, request.Bio));
+
+            if (!string.IsNullOrEmpty(request.Avatar))
+                updates.Add(updateBuilder.Set(u => u.Avatar, request.Avatar));
+
+            if (updates.Count == 0)
+                return false;
+
+            var combinedUpdate = updateBuilder.Combine(updates);
+            var result = await _users.UpdateOneAsync(filter, combinedUpdate);
+            return result.ModifiedCount > 0;
         }
     }
 }

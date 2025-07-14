@@ -5,7 +5,8 @@ export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {
     path: 'home',
-    loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent)
+    loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent),
+    canActivate: [authGuard]
   },
   {
     path: 'login',
@@ -17,11 +18,7 @@ export const routes: Routes = [
   },
   {
     path: 'logout',
-    loadComponent: () => import('./pages/logout/logout.component').then(m => m.LogoutComponent)
-  },
-  {
-    path: 'account',
-    loadComponent: () => import('./pages/user/account/account.component').then(m => m.AccountComponent),
+    loadComponent: () => import('./pages/logout/logout.component').then(m => m.LogoutComponent),
     canActivate: [authGuard]
   },
   {
@@ -41,12 +38,19 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/terms/terms.component').then(m => m.TermsComponent)
   },
   {
+    path: 'user/:usernameSlug/account',
+    loadComponent: () => import('./pages/user/account/account.component').then(m => m.AccountComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: 'user/:usernameSlug',
-    loadComponent: () => import('./pages/user/user.component').then(m => m.UserComponent)
+    loadComponent: () => import('./pages/user/user.component').then(m => m.UserComponent),
+    canActivate: [authGuard]
   },
   {
     path: 'user/:usernameSlug/playlist/:playlistSlug',
-    loadComponent: () => import('./pages/user/playlist/playlist.component').then(m => m.PlaylistComponent)
+    loadComponent: () => import('./pages/user/playlist/playlist.component').then(m => m.PlaylistComponent),
+    canActivate: [authGuard]
   },
   { path: '**', redirectTo: '/' }
 ];

@@ -28,4 +28,9 @@ export class NavSettings {
   closeNav(): void {
     this.navOpen = false;
   }
+
+  getUsername(): string {
+    const currentUser = this.authService.getCurrentUser();
+    return currentUser ? currentUser.username : '';
+  }
 }

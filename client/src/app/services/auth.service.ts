@@ -6,6 +6,11 @@ export interface User {
   id: string;
   username: string;
   email: string;
+  avatar?: string;
+  role?: string;
+  firstName?: string;
+  lastName?: string;
+  bio?: string;
 }
 
 export interface AuthResponse {
@@ -22,6 +27,13 @@ export interface RegisterRequest {
   username: string;
   email: string;
   password: string;
+}
+
+export interface UpdateProfileRequest {
+  firstName?: string;
+  lastName?: string;
+  bio?: string;
+  avatar?: string;
 }
 
 @Injectable({
@@ -94,5 +106,26 @@ export class AuthService {
         this.logout();
       }
     }
+  }
+
+  public updateAccount(username: string): Observable<any> {
+    // Placeholder for account update logic
+    // This could involve making an API call to update user details
+    return this.http.put(`${this.apiUrl}/update/${username}`, { username }); 
+  }
+
+  public updateProfile(profileData: UpdateProfileRequest): Observable<User> {
+    return this.http.put<User>(`http://localhost:5051/api/profile`, profileData)
+      .pipe(
+        tap(updatedUser => {
+          // Update the current user in storage and subjects
+          localStorage.setItem('current_user', JSON.stringify(updatedUser));
+          this.currentUserSubject.next(updatedUser);
+        })
+      );
+  }
+
+  public getUserProfile(username: string): Observable<User> {
+    return this.http.get<User>(`http://localhost:5051/api/profile/${username}`);
   }
 }

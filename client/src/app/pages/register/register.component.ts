@@ -51,4 +51,6 @@ export class RegisterComponent {
   get email() { return this.registerForm.get('email'); }
   get password() { return this.registerForm.get('password'); }
   get role() { return this.registerForm.get('role'); }
+
+  
 }

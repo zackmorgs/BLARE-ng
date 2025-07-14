@@ -29,5 +29,14 @@ namespace Models
 
         [BsonElement("role")]
         public string Role { get; set; } = String.Empty;
+
+        [BsonElement("firstName")]
+        public string FirstName { get; set; } = String.Empty;
+
+        [BsonElement("lastName")]
+        public string LastName { get; set; } = String.Empty;
+
+        [BsonElement("bio")]
+        public string Bio { get; set; } = String.Empty;
     }
 }

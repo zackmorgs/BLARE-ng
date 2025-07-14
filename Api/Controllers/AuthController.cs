@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
@@ -79,6 +80,24 @@ namespace Controllers
                     },
                 }
             );
+        }
+
+        [Authorize]
+        [HttpPut("update/{username}")]
+        public async Task<IActionResult> UpdateAccount(string username, [FromBody] User user)
+        {
+            if (user == null || string.IsNullOrEmpty(username))
+            {
+                return BadRequest(new { message = "Invalid user data" });
+            }
+
+            var updated = await _userService.UpdateUserInfoAsync(user);
+            if (!updated)
+            {
+                return NotFound(new { message = "User not found" });
+            }
+
+            return Ok(new { message = "User updated successfully" });
         }
     }
 

@@ -1,7 +1,91 @@
 <div class="container">
-    <h2>Account</h2>
-    <div class="account-container">
-        <p>Account details will be displayed here.</p>
-        <p>More features will be added soon.</p>
+    <!-- User viewing their own account (authenticated and owns this account) -->
+    <div *ngIf="(authService.isAuthenticated$ | async) && isOwnAccount">
+        <h2>My Account</h2>
+        <br/>
+        
+        <!-- Success/Error Messages -->
+        <div *ngIf="successMessage" class="success-message">
+            {{ successMessage }}
+        </div>
+        <div *ngIf="errorMessage" class="error-message">
+            {{ errorMessage }}
+        </div>
+
+        <!-- Profile Form -->
+        <form [formGroup]="profileForm" (ngSubmit)="updateAccount()">
+            <div class="form-group">
+                <input 
+                    id="firstName" 
+                    formControlName="firstName"
+                    placeholder="First Name" 
+                    autocomplete="given-name" 
+                    class="text-input" 
+                    type="text"
+                    [class.error]="firstName?.invalid && firstName?.touched">
+                <div *ngIf="firstName?.invalid && firstName?.touched" class="error-message">
+                    <span *ngIf="firstName?.errors?.['maxlength']">First name cannot exceed 50 characters</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input 
+                    id="lastName" 
+                    formControlName="lastName"
+                    placeholder="Last Name" 
+                    autocomplete="family-name" 
+                    class="text-input" 
+                    type="text"
+                    [class.error]="lastName?.invalid && lastName?.touched">
+                <div *ngIf="lastName?.invalid && lastName?.touched" class="error-message">
+                    <span *ngIf="lastName?.errors?.['maxlength']">Last name cannot exceed 50 characters</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <textarea 
+                    id="bio" 
+                    formControlName="bio"
+                    placeholder="Tell us about yourself..." 
+                    class="text-input"
+                    rows="4"
+                    [class.error]="bio?.invalid && bio?.touched"></textarea>
+                <div *ngIf="bio?.invalid && bio?.touched" class="error-message">
+                    <span *ngIf="bio?.errors?.['maxlength']">Bio cannot exceed 500 characters</span>
+                </div>
+                <small class="char-count">{{ bio?.value?.length || 0 }}/500 characters</small>
+            </div>
+
+            <button 
+                type="submit" 
+                class="btn" 
+                [disabled]="profileForm.invalid || isLoading">
+                <span *ngIf="isLoading">Updating...</span>
+                <span *ngIf="!isLoading">Update Profile</span>
+            </button>
+        </form>
+    </div>
+
+    <!-- User viewing someone else's account (public view) -->
+    <div *ngIf="!isOwnAccount">
+        <div *ngIf="isLoading">Loading profile...</div>
+        
+        <div *ngIf="!isLoading && userProfile">
+            <h2>{{ userProfile.username }}'s Profile</h2>
+            <div class="profile-info">
+                <p><strong>Username:</strong> {{ userProfile.username }}</p>
+                <p *ngIf="userProfile.firstName || userProfile.lastName">
+                    <strong>Name:</strong> {{ userProfile.firstName }} {{ userProfile.lastName }}
+                </p>
+                <p *ngIf="userProfile.bio">
+                    <strong>Bio:</strong> {{ userProfile.bio }}
+                </p>
+            </div>
+        </div>
+
+        <div *ngIf="!isLoading && !userProfile && errorMessage">
+            <h2>Profile Not Found</h2>
+            <p>{{ errorMessage }}</p>
+        </div>
     </div>
 </div>

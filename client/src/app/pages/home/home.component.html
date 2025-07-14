@@ -2,7 +2,7 @@
   <!-- Content for authenticated users -->
   <div *ngIf="authService.isAuthenticated$ | async">
     <div>
-      <h3>Welcome, Zack</h3>
+      <h3>Welcome, {{ authService.getCurrentUser()?.username }}</h3>
       <ul id="home_list">
         <li class="home-item">
           <a class="home-item-link" routerLink="/user/zackmorgenthaler/playlist/favorites"><img alt="Favorites cover"
