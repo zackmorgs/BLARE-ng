@@ -15,7 +15,8 @@ internal class Program
         builder.Services.AddSingleton<TrackService>();
         builder.Services.AddSingleton<UserService>();
         builder.Services.AddSingleton<JwtService>();
-
+        builder.Services.AddSingleton<ReleaseService>();
+        
         builder.Services.AddControllers();
 
         builder.Services.AddSingleton<IMongoClient>(sp => new MongoClient(

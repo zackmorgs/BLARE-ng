@@ -28,5 +28,8 @@ namespace Models
         [BsonElement("uploadedAt")]
         [BsonRequired]
         public DateTime UploadedAt { get; set; } = DateTime.UtcNow;
+
+        [BsonElement("musicTagIds")]
+        public List<ObjectId> MusicTagIds { get; set; } = new List<ObjectId>();
     }
 }
