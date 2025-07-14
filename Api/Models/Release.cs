@@ -7,7 +7,7 @@ namespace Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
+        public string? Id { get; set; }
 
         [BsonElement("type")]
         [BsonRequired]
@@ -19,7 +19,8 @@ namespace Models
 
         [BsonElement("artistId")]
         [BsonRequired]
-        public ObjectId ArtistId { get; set; }
+        public string ArtistId { get; set; } = string.Empty;
+
 
         [BsonElement("releaseDate")]
         public DateTime ReleaseDate { get; set; } = DateTime.UtcNow;
@@ -32,7 +33,7 @@ namespace Models
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         [BsonElement("tracks")]
-        public List<ObjectId> TrackIds { get; set; } = new List<ObjectId>();
+        public List<string> TrackIds { get; set; } = new List<string>();
 
         [BsonElement("coverImageUrl")]
         public string CoverImageUrl { get; set; } = string.Empty;
@@ -40,7 +41,7 @@ namespace Models
         [BsonElement("description")]
         public string Description { get; set; } = string.Empty;
 
-        [BsonElement("musicTagIds")]
-        public List<ObjectId> MusicTagIds { get; set; } = new List<ObjectId>();
+        [BsonElement("musicTags")]
+        public List<string> MusicTags { get; set; } = new List<string>();
     }
 }

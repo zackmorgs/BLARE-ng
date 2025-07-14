@@ -1,0 +1,71 @@
+<div class="container">
+    <h2>New Release</h2>
+    <br/>
+    <form [formGroup]="releaseForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" formControlName="title" class="text-input" required placeholder="Release Title">
+            <div *ngIf="title?.invalid && title?.touched" class="error-message">
+                <span *ngIf="title?.errors?.['required']">Title is required</span>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="type">Release Type</label>
+            <select name="type" id="type" formControlName="type" class="text-input" required>
+                <option value="">Select type...</option>
+                <option value="single">Single</option>
+                <option value="album">Album</option>
+                <option value="ep">EP</option>
+            </select>
+            <div *ngIf="type?.invalid && type?.touched" class="error-message">
+                <span *ngIf="type?.errors?.['required']">Release type is required</span>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea placeholder="Description" id="description" formControlName="description" class="text-input" rows="3"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="releaseDate">Release Date</label>
+            <input placeholder="Release Date" type="date" id="releaseDate" formControlName="releaseDate" class="text-input" required />
+            <div *ngIf="releaseDate?.invalid && releaseDate?.touched" class="error-message">
+                <span *ngIf="releaseDate?.errors?.['required']">Release date is required</span>
+            </div>
+        </div>
+
+        
+        <div class="form-group">
+            <label for="coverImage">Cover Image</label>
+            <input type="file" id="coverImage" (change)="onFileChange($event)" class="file-input" accept="image/*" required>
+            <div *ngIf="!selectedCoverImage" class="error-message">
+                Cover image is required
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="audioFiles">Audio Files</label>
+            <input type="file" id="audioFiles" (change)="onAudioFileChange($event)" accept="audio/*" multiple class="file-input">
+            <small class="form-text">Select multiple audio files for your release</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="musicTags">Music Tags</label>
+            <input type="text" id="musicTags" formControlName="musicTags" class="text-input" placeholder="Music Tags (comma separated)">
+            <small class="form-text">e.g., rock, pop, electronic</small>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary" [disabled]="releaseForm.invalid || isSubmitting">
+                <span *ngIf="isSubmitting">Creating...</span>
+                <span *ngIf="!isSubmitting">Create Release</span>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+        </div>
+    </form>
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+        {{ errorMessage }}
+    </div>
+</div>

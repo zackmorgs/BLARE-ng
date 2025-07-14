@@ -34,8 +34,30 @@ namespace Controllers
         [HttpPost]
         public async Task<IActionResult> CreateRelease(Release release)
         {
+            // Set timestamps
+            release.CreatedAt = DateTime.UtcNow;
+            release.UpdatedAt = DateTime.UtcNow;
+            
             await _releaseService.CreateAsync(release);
             return CreatedAtAction(nameof(GetReleases), new { id = release.Id }, release);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetRelease(string id)
+        {
+            var release = await _releaseService.GetByIdAsync(id);
+            if (release == null)
+            {
+                return NotFound();
+            }
+            return Ok(release);
+        }
+
+        [HttpGet("recent")]
+        public async Task<IActionResult> GetRecentReleases([FromQuery] int limit = 10)
+        {
+            var releases = await _releaseService.GetRecentAsync(limit);
+            return Ok(releases);
         }
     }
 }

@@ -75,6 +75,7 @@ h3 {
 }
 
 .text-input {
+    font-family: 'Rubik', sans-serif;
     font-size: 1rem;
     width: 100%;
     padding: 0.5rem;
@@ -91,27 +92,38 @@ h3 {
     }
 }
 
+.file-input {
+    padding: 0.54rem;
+    background: #e3e3e3;
+    border: none;
+    color: #242424;
+    border-radius: 0.5rem;
+    margin: 1rem 0 1rem;
+    font-family: "Rubik", sans-serif;
+    width: 100%;
+    appearance:none;
+    &::file-selector-button {
+        appearance: none;
+        border: none;
+        background: none;
+        font-family: 'Rubik', sans-serif;
+    }
+}
+
+
 .error-message {
-  display:block;
-  margin: 1rem 0;
-  color: #e63737;
+    display: block;
+    margin: 1rem 0;
+    color: #e63737;
 }
 
 /* mobile first */
 
 
-@media (min-width: 414px) {
- 
-}
+@media (min-width: 414px) {}
 
-@media (min-width: 768px) {
+@media (min-width: 768px) {}
 
-}
+@media (min-width: 1024px) {}
 
-@media (min-width: 1024px) {
-
-}
-
-@media (min-width: 1536px) {
-
-}
+@media (min-width: 1536px) {}

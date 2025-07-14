@@ -64,7 +64,6 @@
                   <div class="release-details">
                     <h4 class="release-title">{{ release.title }}</h4>
                     <p class="release-type">{{ release.type | titlecase }}</p>
-                    <p class="release-version">Version: {{ release.version }}</p>
                     <p class="release-date">{{ release.releaseDate | date:'shortDate' }}</p>
                     <p class="release-description">{{ release.description }}</p>
                     <div class="release-tags" *ngIf="release.musicTags && release.musicTags.length > 0">

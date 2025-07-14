@@ -52,5 +52,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/user/playlist/playlist.component').then(m => m.PlaylistComponent),
     canActivate: [authGuard]
   },
+    {
+    path: 'artist/releases/new',
+    loadComponent: () => import('./pages/artist/releases/new/new.component').then(m => m.NewComponent),
+    canActivate: [authGuard]
+  },
   { path: '**', redirectTo: '/' }
 ];

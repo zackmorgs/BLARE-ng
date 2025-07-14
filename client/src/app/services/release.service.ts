@@ -8,9 +8,8 @@ export interface Release {
     type: string; // e.g., 'album', 'single', 'ep'
     title: string;
     coverImageUrl: string;
-    artistID: string;
+    artistId: string;
     description: string;
-    version: string;
     releaseDate: Date;
     musicTags: string[];
     trackIds: string[];
@@ -20,12 +19,12 @@ export interface CreateReleaseRequest {
     type: string;
     title: string;
     coverImageUrl?: string;
-    artistID: string;
+    artistId: string;
     description?: string;
-    version: string;
     releaseDate: Date;
     musicTags?: string[];
     trackIds?: string[];
+    audioFiles?: File[];
 }
 
 export interface UpdateReleaseRequest {
@@ -42,6 +41,7 @@ export interface UpdateReleaseRequest {
 @Injectable({
     providedIn: 'root'
 })
+
 export class ReleaseService {
     private http = inject(HttpClient);
     private apiUrl = 'http://localhost:5051/api/release';
