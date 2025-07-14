@@ -46,7 +46,23 @@ internal class Program
 
         builder.Services.AddAuthorization();
 
+        // Add CORS
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAngularApp", 
+                policy =>
+                {
+                    policy.WithOrigins("http://localhost:4200", "https://localhost:4200")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
+                });
+        });
+
         var app = builder.Build();
+
+        // Use CORS
+        app.UseCors("AllowAngularApp");
 
         app.UseHttpsRedirection();
 

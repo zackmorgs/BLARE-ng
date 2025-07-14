@@ -9,16 +9,30 @@
     </div>
     <div id="nav_items">
         <ul class="nav-list">
-            <li>
+            <!-- Authenticated users -->
+            <li *ngIf="authService.isAuthenticated$ | async">
                 <a class="nav-link" routerLink="/account/" (click)="toggleNav()">
                     <img alt="Account Icon" class="icon" src="/svg/icon-account-square.svg">
                     <span>Account</span>
                 </a>
             </li>
-            <li>
+            <li *ngIf="authService.isAuthenticated$ | async">
                 <a class="nav-link" routerLink="/logout" (click)="toggleNav()">
                     <img alt="Profile Icon" class="icon" src="/svg/icon-logout.svg">
                     <span>Logout</span>
+                </a>
+            </li>
+            <!-- Unauthenticated users -->
+            <li *ngIf="!(authService.isAuthenticated$ | async)">
+                <a class="nav-link" routerLink="/login" (click)="toggleNav()">
+                    <img alt="Login Icon" class="icon" src="/svg/icon-account-square.svg">
+                    <span>Login</span>
+                </a>
+            </li>
+            <li *ngIf="!(authService.isAuthenticated$ | async)">
+                <a class="nav-link" routerLink="/register" (click)="toggleNav()">
+                    <img alt="Register Icon" class="icon" src="/svg/icon-account-square.svg">
+                    <span>Register</span>
                 </a>
             </li>
         </ul>
