@@ -23,5 +23,11 @@ namespace Models
 
         [BsonElement("isActive")]
         public bool IsActive { get; set; } = true;
+
+        [BsonElement("avatar")]
+        public string Avatar { get; set; } = String.Empty;
+
+        [BsonElement("role")]
+        public string Role { get; set; } = String.Empty;
     }
 }
