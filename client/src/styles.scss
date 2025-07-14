@@ -65,6 +65,9 @@ h3 {
     transition: transform 0.1s ease-in-out, background-color 0.1s ease-in-out;
     display: block;
     text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn.btn-secondary {

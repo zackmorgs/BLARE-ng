@@ -29,10 +29,13 @@
   <!-- Content for users with 'Artist' role -->
   <div *ngIf="authService.getCurrentUser()?.role == 'artist'">
     <h2>Artist Dashboard</h2>
-    <ul>
-      <li><a routerLink="/artist/profile">View Profile</a></li>
-      <li><a routerLink="/artist/music">Manage Music</a></li>
-    </ul>
+    <br/>
+    <nav id="home_nav">
+      <a routerLink="/artist/releases/new" class="btn">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
+        <span>New Release</span>
+      </a>
+    </nav>
   </div>
 
   <!-- Content for unauthenticated users -->
