@@ -3,7 +3,7 @@
   <div *ngIf="authService.isAuthenticated$ | async">
     <div>
       <h3>Welcome, {{ authService.getCurrentUser()?.username }}</h3>
-      <ul id="home_list">
+      <ul id="home_list" *ngIf="(authService.getCurrentUser()?.role == 'Listener')">
         <li class="home-item">
           <a class="home-item-link" routerLink="/user/zackmorgenthaler/playlist/favorites"><img alt="Favorites cover"
               class="cover" src="/img/covers/starred-cover.svg">
