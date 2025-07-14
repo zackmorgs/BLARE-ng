@@ -1,4 +1,4 @@
-<div class="app-container">
+<div class="app-container" [class.authenticated]="authService.isAuthenticated$ | async">
   <app-nav *ngIf="authService.isAuthenticated$ | async"></app-nav>
   <main class="content">
     <router-outlet></router-outlet>
