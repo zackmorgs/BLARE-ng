@@ -51,7 +51,8 @@ h3 {
     padding: 1rem;
 }
 
-button.btn, .btn {
+button.btn,
+.btn {
     padding: 0.75rem 1rem;
     font-size: 1rem;
     background-color: #ffde59;
@@ -97,7 +98,8 @@ button.btn, .btn {
     margin: 1rem 0 1rem;
     font-family: "Rubik", sans-serif;
     width: 100%;
-    appearance:none;
+    appearance: none;
+
     &::file-selector-button {
         appearance: none;
         border: none;
@@ -114,7 +116,9 @@ button.btn, .btn {
 }
 
 /* mobile first */
-
+hr.rule {
+    border-bottom: #ffd700 1px solid;   
+}
 
 @media (min-width: 414px) {}
 
