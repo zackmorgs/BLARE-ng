@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AuthService } from './../../services/auth.service';
 import { ReleaseService, Release } from '../../services/release.service';
-import { Observable } from 'rxjs';
+import { TagService, Tag } from '../../services/tag.service';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -18,20 +19,24 @@ export class HomeComponent implements OnInit {
   title = 'BLARE';
   authService = inject(AuthService);
   releaseService = inject(ReleaseService);
+  tagService = inject(TagService);
 
   artistReleases$: Observable<Release[]> | null = null;
   recentReleases$: Observable<Release[]> | null = null;
+  tags$: Observable<Tag[]> | null = null;
 
   hasReleases$: Observable<boolean> | null = null;
+
+  // tags: string[] = [];
 
   ngOnInit() {
     console.log('ngOnInit called');
     
-    // Load recent releases for all users
+    // Check if Authenticated
     if (this.authService.isAuthenticated()) {
       const currentUser = this.authService.getCurrentUser();
-      console.log('Current user:', currentUser);
       
+      // if user is artist
       if (currentUser?.role === 'artist') {
         console.log('Loading releases for artist:', currentUser.id);
         this.artistReleases$ = this.releaseService.getReleasesByArtist(currentUser.id);
@@ -42,13 +47,23 @@ export class HomeComponent implements OnInit {
           error: (error) => console.error('Error loading artist releases:', error)
         });
       } else if (currentUser?.role === 'listener') {
-        console.log('Loading recent releases for listener');
+        // user is listener
+
         this.recentReleases$ = this.releaseService.getRecentReleases();
         
         this.recentReleases$.subscribe({
           next: (releases) => console.log('Recent releases loaded:', releases),
           error: (error) => console.error('Error loading recent releases:', error)
         });
+
+        this.tagService.getAllTags().subscribe({
+          next: (tags) => {
+            console.log('Tags loaded:', tags);
+            this.tags$ = of(tags);
+          },
+          error: (error) => console.error('Error loading tags:', error)
+        });
+
       }
     }
   }
