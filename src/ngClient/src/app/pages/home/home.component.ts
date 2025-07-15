@@ -76,4 +76,25 @@ export class HomeComponent implements OnInit {
     // You can inject services or perform any initialization here
     console.log(this.authService.getCurrentUser()?.role);
   }
+
+  handleTagSearch(event: any): void {
+    const query = event.target.value;
+    if (query) {
+      this.tagService.searchTags(query).subscribe({
+        next: (tags) => {
+          console.log('Search results:', tags);
+          this.tags$ = of(tags);
+        },
+        error: (error) => console.error('Error searching tags:', error)
+      });
+    } else {
+      this.tagService.getAllTags().subscribe({
+        next: (tags) => {
+          console.log('All tags loaded:', tags);
+          this.tags$ = of(tags);
+        },
+        error: (error) => console.error('Error loading all tags:', error)
+      });
+    }
+  }
 }

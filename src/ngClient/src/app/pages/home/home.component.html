@@ -45,6 +45,7 @@
             Tags
           </h3>
           <hr class="rule" />
+          <input type="search" placeholder="Search tags... " class="tag-search text-input" (keydown)="handleTagSearch($event)">
           <ul class="tags-list">
             <li *ngFor="let tag of tags$ | async" class="tag-item">
               <a>{{ tag.name }}</a>
