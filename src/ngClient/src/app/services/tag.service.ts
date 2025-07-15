@@ -32,4 +32,7 @@ export class TagService
     searchTags(query: string): Observable<Tag[]> {
         return this.http.get<Tag[]>(`${this.apiUrl}/search?name=${encodeURIComponent(query)}`);
     }
+    GetSome(): Observable<Tag[]> {
+        return this.http.get<Tag[]>(`${this.apiUrl}/some`);
+    }
 }

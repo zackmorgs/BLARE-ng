@@ -24,6 +24,14 @@ namespace Controllers
             return Ok(tags);
         }
 
+        // Get a subset of tags - default for tag display on home page
+        [HttpGet("/some")]
+        public async Task<IActionResult> GetSomeTags()
+        {
+            var tags = await _tagService.GetSome();
+            return Ok(tags);
+        }
+
         [HttpGet("search")]
         public async Task<IActionResult> SearchTags([FromQuery] string name)
         {

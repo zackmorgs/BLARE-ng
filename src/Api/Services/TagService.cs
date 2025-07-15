@@ -52,5 +52,11 @@ namespace Services
 
             return await _musicTags.Find(filter).ToListAsync();
         }
+
+        public async Task<List<MusicTag>> GetSome()
+        {
+            // Logic to retrieve a subset of tags from the database
+            return await _musicTags.Find(_ => true).Limit(25).ToListAsync();
+        }
     }
 }
