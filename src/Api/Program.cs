@@ -1,10 +1,10 @@
-using MongoDB.Driver;
+using System.Text;
 using Data;
-using Models;
-using Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using Models;
+using MongoDB.Driver;
+using Services;
 
 internal class Program
 {
@@ -22,17 +22,21 @@ internal class Program
         builder.Services.AddSingleton<TrackService>();
         builder.Services.AddSingleton<UserService>();
         builder.Services.AddSingleton<ReleaseService>();
-        
+        builder.Services.AddSingleton<TagService>();
+
         // JWT service only needs IConfiguration
         builder.Services.AddSingleton<JwtService>();
-        
+
         builder.Services.AddControllers();
 
         // JWT Configuration
         var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-        var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey not configured");
+        var secretKey =
+            jwtSettings["SecretKey"]
+            ?? throw new InvalidOperationException("JWT SecretKey not configured");
 
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        builder
+            .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -53,14 +57,17 @@ internal class Program
         // Add CORS
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy("AllowAngularApp", 
+            options.AddPolicy(
+                "AllowAngularApp",
                 policy =>
                 {
-                    policy.WithOrigins("http://localhost:4200", "https://localhost:4200")
-                          .AllowAnyHeader()
-                          .AllowAnyMethod()
-                          .AllowCredentials();
-                });
+                    policy
+                        .WithOrigins("http://localhost:4200", "https://localhost:4200")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                }
+            );
         });
 
         var app = builder.Build();
