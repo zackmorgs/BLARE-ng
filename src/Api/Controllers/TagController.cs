@@ -24,15 +24,38 @@ namespace Controllers
             return Ok(tags);
         }
 
-        // [HttpPost]
-        // public async Task<IActionResult> CreateTag(Tag tag)
-        // {
-        //     // Set timestamps
-        //     tag.CreatedAt = DateTime.UtcNow;
-        //     tag.UpdatedAt = DateTime.UtcNow;
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchTags([FromQuery] string name)
+        {
+            List<MusicTag> tags = await _tagService.SearchTagsAsync(name);
 
-        //     await _tagService.CreateAsync(tag);
-        //     return CreatedAtAction(nameof(GetTags), new { id = tag.Id }, tag);
-        // }
+            if (tags.Count == 0)
+            {
+                return NotFound($"No tags found with name: {name}");
+            }
+            else
+            {
+                return Ok(tags);
+            }
+        }
+
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateTag(string name)
+        {
+            // Return the created tag with a 201 Created response
+            if (name == null || name == String.Empty)
+            {
+                return BadRequest("Tag cannot be null");
+            }
+            else
+            {
+                var formattedName = name.Trim().ToLower().Replace(" ", "-");
+                var tag = new MusicTag { Name = formattedName };
+
+                await _tagService.CreateAsync(tag);
+
+                return Ok(tag);
+            }
+        }
     }
 }

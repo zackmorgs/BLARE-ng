@@ -1,4 +1,3 @@
-
 using Data;
 using Microsoft.AspNetCore.Mvc;
 using Models;
@@ -9,6 +8,7 @@ namespace Services
     public class TagService
     {
         private readonly IMongoCollection<MusicTag> _musicTags;
+
         // This service handles operations related to tags, such as creating, retrieving, and managing tags.
 
         public TagService(DataContext dataContext)
@@ -40,9 +40,17 @@ namespace Services
         // look for tags by name
         public async Task<List<MusicTag>> SearchTagsAsync(string tagName)
         {
-            // Logic to search for a tag by its name
-            var tags = await _musicTags.Find(t => t.Name == tagName).ToListAsync();
-            return tags;
+            if (string.IsNullOrWhiteSpace(tagName))
+                return new List<MusicTag>();
+
+            var formattedName = tagName.Replace(" ", "-").ToLower();
+
+            // Use a case-insensitive regex filter for partial matches
+            var filter = Builders<MusicTag>.Filter.Regex(
+                t => t.Name, new MongoDB.Bson.BsonRegularExpression(formattedName, "i")
+            );
+
+            return await _musicTags.Find(filter).ToListAsync();
         }
     }
 }
