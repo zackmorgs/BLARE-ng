@@ -4,18 +4,18 @@
 /ngCLient/node_modules
 
 # Compiled output
-/ngCLient/dist
-/ngCLient/tmp
-/ngCLient/out-tsc
-/ngCLient/bazel-out
-/ngClient/cache
-/ngClient/.angular
-/ngCLient/.angular/cache
+/src/ngClient/dist
+/src/ngClient/tmp
+/src/ngClient/out-tsc
+/src/ngClient/bazel-out
+/src/ngClient/cache
+/src/ngClient/.angular
+/src/ngClient/.angular/cache
 
 # Node
-/ngCLient/node_modules
-/ngCLient/npm-debug.log
-/ngCLient/yarn-error.log
+/src/ngCLient/node_modules
+/src/ngCLient/npm-debug.log
+/src/ngCLient/yarn-error.log
 
 # IDEs and editors
 /ngCLient/.idea/
@@ -27,21 +27,21 @@
 *.sublime-workspace
 
 # Visual Studio Code
-.ngCLient/.vscode/*
-!.ngCLient/.vscode/settings.json
-!.ngCLient/.vscode/tasks.json
-!.ngCLient/.vscode/launch.json
-!.ngCLient/.vscode/extensions.json
-.ngCLient/.history/*
+/src/.ngCLient/.vscode/*
+/src/!.ngCLient/.vscode/settings.json
+/src/!.ngCLient/.vscode/tasks.json
+/src/!.ngCLient/.vscode/launch.json
+/src/!.ngCLient/.vscode/extensions.json
+/src/.ngCLient/.history/*
 
 # Miscellaneous
-/ngCLient/.angular/cache
-/ngCLient/.sass-cache/
-/ngCLient/connect.lock
-/ngCLient/coverage
-/ngCLient/libpeerconnection.log
-/ngCLient/testem.log
-/ngCLient/typings
+/src/ngCLient/.angular/cache
+/src/ngCLient/.sass-cache/
+/src/ngCLient/connect.lock
+/src/ngCLient/coverage
+/src/ngCLient/libpeerconnection.log
+/src/ngCLient/testem.log
+/src/ngCLient/typings
 
 # System files
 .ngCLient/.DS_Store
