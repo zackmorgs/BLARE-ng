@@ -122,11 +122,12 @@
 }
 
 .show {
-#prev_button,
-#next_button {
-    display: initial;
-}
-    
+
+    #prev_button,
+    #next_button {
+        display: initial;
+    }
+
 }
 
 #player_controls {
@@ -212,8 +213,7 @@
 
 #player.show {
     .album-art {
-        width: 20rem;
-        height: 20rem;
+        width: auto;
+        height: 21rem;
     }
-
 }
