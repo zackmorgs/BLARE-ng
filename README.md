@@ -4,7 +4,8 @@ A full-stack music streaming app built with Angular, .NET, and MongoDB.
 ### Showcase Videos
 - [Authenication Demo](https://youtu.be/pwUMDN9jguI)
 - [Tag Demo](https://youtu.be/OypkXLiIM4w)
-- [Tag Search Demo](https://youtu.be/3xKZGKWNLLA)
+- [Tag Search Demo](https:/youtu.be/3xKZGKWNLLA)
+- [Player Demo with State](https://youtu.be/HCnFgaB2jvw) 
 
 ---
 

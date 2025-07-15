@@ -9,20 +9,27 @@ namespace Services
     {
         private readonly IMongoCollection<Release> _releases;
 
+        // contructor to inject the DataContext
         public ReleaseService(DataContext dataContext)
         {
             _releases = dataContext.Releases;
         }
 
-        public async Task<List<Release>> GetByArtistIdAsync(string artistId)
+        // gets an artist via its Id
+        public async Task<List<Release>> GetReleasesByArtistIdAsync(string artistId)
         {
             return await _releases.Find(release => release.ArtistId == artistId).ToListAsync();
         }
 
+        // gets all releases that exist
         public async Task<List<Release>> GetAsync() => await _releases.Find(_ => true).ToListAsync();
 
-        public async Task<Release?> GetByIdAsync(string id) => 
-            await _releases.Find(release => release.Id == id).FirstOrDefaultAsync();
+    
+        //
+        public async Task<Release> GetByIdAsync(string id)
+        {
+            return await _releases.Find(release => release.Id == id).FirstOrDefaultAsync();
+        }
 
         public async Task<List<Release>> GetRecentAsync(int limit = 10) =>
             await _releases.Find(_ => true)

@@ -1,7 +1,7 @@
 <div class="container">
     <h2>New Release</h2>
     <br />
-    <form [formGroup]="releaseForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="releaseForm" (ngSubmit)="onAlbumCreateSubmit()">
         <div class="form-group">
             <div *ngIf="title?.invalid && title?.touched" class="error-message">
                 <span *ngIf="title?.errors?.['required']">Title is required</span>
@@ -42,7 +42,7 @@
             <div *ngIf="!selectedCoverImage" class="error-message">
                 Cover image is required
             </div>
-            <input type="file" id="coverImage" (change)="onFileChange($event)" class="file-input" accept="image/*"
+            <input type="file" id="coverImage" (change)="onCoverFileChange($event)" class="file-input" accept="image/*"
                 required>
 
         </div>
@@ -60,6 +60,9 @@
             <small class="form-text">e.g., rock, pop, electronic</small>
         </div>
         <br>
+        <div *ngIf="errorMessage" class="error-message">
+            {{ errorMessage }}
+        </div>
         <div class="form-actions">
             <button type="submit" class="btn btn-primary" [disabled]="releaseForm.invalid || isSubmitting">
                 <span *ngIf="isSubmitting">Creating...</span>
@@ -70,7 +73,5 @@
             <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
         </div>
     </form>
-    <div *ngIf="errorMessage" class="alert alert-danger mt-3">
-        {{ errorMessage }}
-    </div>
+
 </div>

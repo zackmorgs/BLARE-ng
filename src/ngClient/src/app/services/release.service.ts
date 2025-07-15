@@ -18,7 +18,7 @@ export interface Release {
 export interface CreateReleaseRequest {
     type: string;
     title: string;
-    coverImageUrl?: string;
+    coverImage?: File;
     artistId: string;
     description?: string;
     releaseDate: Date;
@@ -44,26 +44,27 @@ export interface UpdateReleaseRequest {
 
 export class ReleaseService {
     private http = inject(HttpClient);
-    private apiUrl = 'http://localhost:5051/api/release';
-    
+    private releaseApiUrl = 'http://localhost:5051/api/release';
+    private uploadApiUrl = 'http://localhost:5051/api/upload/track';
+
     // Cache for releases
     private releasesSubject = new BehaviorSubject<Release[]>([]);
     public releases$ = this.releasesSubject.asObservable();
 
     // Get all releases
     getAllReleases(): Observable<Release[]> {
-        return this.http.get<Release[]>(this.apiUrl).pipe(
+        return this.http.get<Release[]>(this.releaseApiUrl).pipe(
             tap(releases => this.releasesSubject.next(releases))
         );
     }
 
     // Get release by ID
     getReleaseById(id: string): Observable<Release> {
-        return this.http.get<Release>(`${this.apiUrl}/artist/${id}`);
+        return this.http.get<Release>(`${this.releaseApiUrl}/artist/${id}`);
     }
 
     getReleasesByArtist(artistId: string): Observable<Release[]> {
-        return this.http.get<Release[]>(`${this.apiUrl}/artist/${artistId}`);
+        return this.http.get<Release[]>(`${this.releaseApiUrl}/artist/${artistId}`);
     }
 
     // Get releases by artist
@@ -73,17 +74,34 @@ export class ReleaseService {
 
     // Get releases by type (album, single, ep)
     getReleasesByType(type: string): Observable<Release[]> {
-        return this.http.get<Release[]>(`${this.apiUrl}/type/${type}`);
+        return this.http.get<Release[]>(`${this.releaseApiUrl}/type/${type}`);
     }
 
     // Search releases
     searchReleases(query: string): Observable<Release[]> {
-        return this.http.get<Release[]>(`${this.apiUrl}/search?q=${encodeURIComponent(query)}`);
+        return this.http.get<Release[]>(`${this.releaseApiUrl}/search?q=${encodeURIComponent(query)}`);
     }
 
     // Create new release
     createRelease(release: CreateReleaseRequest): Observable<Release> {
-        return this.http.post<Release>(this.apiUrl, release).pipe(
+        const formData = new FormData();
+        formData.append('title', release.title);
+        formData.append('type', release.type);
+        formData.append('artistId', release.artistId);
+        formData.append('description', release.description || '');
+        formData.append('releaseDate', release.releaseDate.toISOString());
+        release.musicTags?.forEach(tag => formData.append('musicTags[]', tag));
+        release.trackIds?.forEach(id => formData.append('trackIds[]', id));
+
+        if (release.coverImage) {
+            formData.append('coverImage', release.coverImage);
+        }
+        
+        release.audioFiles?.forEach(file => {
+            formData.append('audioFiles[]', file);
+        });
+
+        return this.http.post<Release>(this.uploadApiUrl, formData).pipe(
             tap(newRelease => {
                 const currentReleases = this.releasesSubject.value;
                 this.releasesSubject.next([...currentReleases, newRelease]);
@@ -93,10 +111,10 @@ export class ReleaseService {
 
     // Update release
     updateRelease(id: string, updates: UpdateReleaseRequest): Observable<Release> {
-        return this.http.put<Release>(`${this.apiUrl}/${id}`, updates).pipe(
+        return this.http.put<Release>(`${this.releaseApiUrl}/${id}`, updates).pipe(
             tap(updatedRelease => {
                 const currentReleases = this.releasesSubject.value;
-                const index = currentReleases.findIndex(r => r.id === id);
+                const index = currentReleases.findIndex(r => r.id === id);``
                 if (index !== -1) {
                     currentReleases[index] = updatedRelease;
                     this.releasesSubject.next([...currentReleases]);
@@ -107,7 +125,7 @@ export class ReleaseService {
 
     // Delete release
     deleteRelease(id: string): Observable<void> {
-        return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+        return this.http.delete<void>(`${this.releaseApiUrl}/${id}`).pipe(
             tap(() => {
                 const currentReleases = this.releasesSubject.value;
                 const filteredReleases = currentReleases.filter(r => r.id !== id);
@@ -118,7 +136,7 @@ export class ReleaseService {
 
     // Add track to release
     addTrackToRelease(releaseId: string, trackId: string): Observable<Release> {
-        return this.http.post<Release>(`${this.apiUrl}/${releaseId}/tracks`, { trackId }).pipe(
+        return this.http.post<Release>(`${this.releaseApiUrl}/${releaseId}/tracks`, { trackId }).pipe(
             tap(updatedRelease => {
                 const currentReleases = this.releasesSubject.value;
                 const index = currentReleases.findIndex(r => r.id === releaseId);
@@ -132,7 +150,7 @@ export class ReleaseService {
 
     // Remove track from release
     removeTrackFromRelease(releaseId: string, trackId: string): Observable<Release> {
-        return this.http.delete<Release>(`${this.apiUrl}/${releaseId}/tracks/${trackId}`).pipe(
+        return this.http.delete<Release>(`${this.releaseApiUrl}/${releaseId}/tracks/${trackId}`).pipe(
             tap(updatedRelease => {
                 const currentReleases = this.releasesSubject.value;
                 const index = currentReleases.findIndex(r => r.id === releaseId);
@@ -146,19 +164,19 @@ export class ReleaseService {
 
     // Get recent releases
     getRecentReleases(): Observable<Release[]> {
-        return this.http.get<Release[]>(`${this.apiUrl}/`);
+        return this.http.get<Release[]>(`${this.releaseApiUrl}/`);
     }
 
     // Get featured releases
     getFeaturedReleases(): Observable<Release[]> {
-        return this.http.get<Release[]>(`${this.apiUrl}/featured`);
+        return this.http.get<Release[]>(`${this.releaseApiUrl}/featured`);
     }
 
     // Upload cover image (if you have file upload)
     uploadCoverImage(releaseId: string, file: File): Observable<{coverImageUrl: string}> {
         const formData = new FormData();
         formData.append('coverImage', file);
-        return this.http.post<{coverImageUrl: string}>(`${this.apiUrl}/${releaseId}/cover`, formData);
+        return this.http.post<{coverImageUrl: string}>(`${this.releaseApiUrl}/${releaseId}/cover`, formData);
     }
 
     // Helper method to refresh releases cache
@@ -173,7 +191,7 @@ export class ReleaseService {
 
     // Get releases count by artist
     getReleasesCountByArtist(artistId: string): Observable<{count: number}> {
-        return this.http.get<{count: number}>(`${this.apiUrl}/artist/${artistId}/count`);
+        return this.http.get<{count: number}>(`${this.releaseApiUrl}/artist/${artistId}/count`);
     }
 
     // Validate release data

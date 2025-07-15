@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
 
@@ -17,19 +17,59 @@ namespace Controllers
             _trackService = trackService;
         }
 
-        // Define your actions here
-        [HttpGet]
-        public async Task<IActionResult> GetTracks()
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadTrack([FromForm] IFormFile file, [FromForm] string title, [FromForm] string artist)
         {
-            var tracks = await _trackService.GetAsync();
-            return Ok(tracks);
+            try
+            {
+                if (file == null || file.Length == 0)
+                    return BadRequest("No file provided");
+
+                if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(artist))
+                    return BadRequest("Title and artist are required");
+
+                // Create track metadata
+                var trackMetadata = new Track
+                {
+                    Title = title,
+                    Artist = artist,
+                    Duration = TimeSpan.Zero
+                };
+
+                // Upload the track
+                var uploadedTrack = await _trackService.UploadTrackAsync(file, trackMetadata);
+
+                return Ok(new
+                {
+                    id = uploadedTrack.Id.ToString(),
+                    title = uploadedTrack.Title,
+                    artist = uploadedTrack.Artist,
+                    fileUrl = uploadedTrack.FileUrl,
+                    uploadedAt = uploadedTrack.UploadedAt
+                });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateTrack([FromBody] Track track)
+        [HttpGet]
+        public async Task<IActionResult> GetAllTracks()
         {
-            await _trackService.CreateAsync(track);
-            return CreatedAtAction(nameof(GetTracks), new { id = track.Id }, track);
+            try
+            {
+                var tracks = await _trackService.GetAsync();
+                return Ok(tracks);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
     }
 }

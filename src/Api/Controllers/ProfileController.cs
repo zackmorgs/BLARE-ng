@@ -1,8 +1,8 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
-using System.Security.Claims;
 
 namespace Controllers
 {
@@ -36,7 +36,7 @@ namespace Controllers
                 firstName = user.FirstName,
                 lastName = user.LastName,
                 bio = user.Bio,
-                createdAt = user.CreatedAt
+                createdAt = user.CreatedAt,
             };
 
             return Ok(publicProfile);
@@ -67,19 +67,26 @@ namespace Controllers
 
             // Get updated user and return
             var updatedUser = await _userService.GetUserByIdAsync(userId);
-            var response = new
-            {
-                id = updatedUser.Id,
-                username = updatedUser.Username,
-                email = updatedUser.Email,
-                avatar = updatedUser.Avatar,
-                role = updatedUser.Role,
-                firstName = updatedUser.FirstName,
-                lastName = updatedUser.LastName,
-                bio = updatedUser.Bio
-            };
 
-            return Ok(response);
+            if (updatedUser != null)
+            {
+                var response = new
+                {
+                    id = updatedUser.Id,
+                    username = updatedUser.Username,
+                    email = updatedUser.Email,
+                    avatar = updatedUser.Avatar,
+                    role = updatedUser.Role,
+                    firstName = updatedUser.FirstName,
+                    lastName = updatedUser.LastName,
+                    bio = updatedUser.Bio,
+                };
+                return Ok(response);
+            }
+            else
+            {
+                return NotFound(new { message = "User not found after update" });
+            }
         }
     }
 

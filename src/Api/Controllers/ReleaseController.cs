@@ -27,7 +27,7 @@ namespace Controllers
         [HttpGet("artist/{id}")]
         public async Task<IActionResult> GetArtistReleases(string id)
         {
-            var releases = await _releaseService.GetByArtistIdAsync(id);
+            var releases = await _releaseService.GetReleasesByArtistIdAsync(id);
             return Ok(releases);
         }
 

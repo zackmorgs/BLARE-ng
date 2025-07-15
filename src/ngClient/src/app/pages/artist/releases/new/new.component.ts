@@ -44,11 +44,11 @@ export class NewComponent implements OnInit {
   get releaseDate() { return this.releaseForm.get('releaseDate'); }
   get musicTags() { return this.releaseForm.get('musicTags'); }
 
-  onFileChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedCoverImage = file;
-      console.log('Cover image selected:', file.name);
+  onCoverFileChange(event: any) {
+    const files = event.target.files;
+    if (files) {
+      this.selectedCoverImage = files[0];
+      console.log('Cover image selected:', files[0].name);
     } else {
       this.selectedCoverImage = null;
       console.log('No cover image selected');
@@ -70,8 +70,8 @@ export class NewComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 
-  onSubmit() {
-    if (this.releaseForm.invalid || !this.selectedCoverImage) {
+  onAlbumCreateSubmit() {
+    if (this.releaseForm.invalid || !this.selectedCoverImage || this.selectedAudioFiles.length == 0) {
       this.markFormGroupTouched();
       return;
     }
@@ -98,7 +98,9 @@ export class NewComponent implements OnInit {
       releaseDate: new Date(this.releaseDate?.value),
       artistId: currentUser.id,
       musicTags: musicTags,
-      trackIds: [] // Will be populated when tracks are uploaded
+      trackIds: [], // Will be populated when tracks are uploaded
+      coverImage: this.selectedCoverImage,
+      audioFiles: this.selectedAudioFiles
     };
 
     console.log('Creating release with data:', releaseData);
