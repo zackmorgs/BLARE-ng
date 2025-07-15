@@ -1,7 +1,7 @@
 # Blare-Ng
 A full-stack music streaming app built with Angular, .NET, and MongoDB.
 
-[screenshot]: https://raw.githubusercontent.com/zackmorgs/BLARE-ng/refs/heads/master/screenshot.png "Screenshot of Logged-in user UI"
+[Screenshot](https://raw.githubusercontent.com/zackmorgs/BLARE-ng/refs/heads/master/screenshot.png)
 
 ### Showcase Videos
 - [Authenication Demo](https://youtu.be/pwUMDN9jguI)
