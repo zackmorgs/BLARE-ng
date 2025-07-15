@@ -3,5 +3,5 @@
   <main class="content">
     <router-outlet></router-outlet>
   </main>
-  <app-player></app-player>
+  <app-player *ngIf="authService.isAuthenticated$ | async"></app-player>
 </div>
