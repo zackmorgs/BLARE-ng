@@ -20,25 +20,27 @@ export class PlayerComponent implements OnDestroy {
   @Input() track: Track | null = null;
   
   isShowing = false;
-  isPlaying = false;
+  isPlaying = true;
   currentTime = 0;
   duration = 0;
   volume = 0.5;
-  
+  trackIsStarred = false;
+
   private audio: HTMLAudioElement | null = null;
-  
+
   togglePlayer() {
     this.isShowing = !this.isShowing;
   }
 
   togglePlayPause() {
-    if (!this.audio || !this.track) return;
+    // if (!this.audio || !this.track) return;
+    this.isPlaying = !this.isPlaying;
     
-    if (this.isPlaying) {
-      this.pause();
-    } else {
-      this.play();
-    }
+    // if (this.isPlaying) {
+    //   this.pause();
+    // } else {
+    //   this.play();
+    // }
   }
 
   play() {
@@ -148,5 +150,9 @@ export class PlayerComponent implements OnDestroy {
       this.audio.removeEventListener('error', this.onError.bind(this));
       this.audio = null;
     }
+  }
+
+  toggleStar(){
+    this.trackIsStarred = !this.trackIsStarred;
   }
 }
