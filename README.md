@@ -137,3 +137,6 @@ BLARE-ng/
 - [ ] Admin dashboard development, among other required UI needed
 - [ ] Streaming audio player
 
+## URL Structure Goals?
+- /play/{artist-slug}/{release-slug}
+- /play/playlist/{slug}

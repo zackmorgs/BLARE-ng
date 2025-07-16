@@ -1,5 +1,6 @@
 // Services/TrackService.cs
 using Data;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -13,11 +14,13 @@ namespace Services
         private readonly IWebHostEnvironment _env;
 
         private readonly string _uploadsPath;
+        private readonly SlugService _slugService;
 
         // contructor to inject the DataContext
-        public TrackService(DataContext dataContext, IWebHostEnvironment env)
+        public TrackService(DataContext dataContext, IWebHostEnvironment env, SlugService slugService)
         {
             _env = env;
+            _slugService = slugService;
 
             _tracks = dataContext.Tracks;
             _uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
@@ -81,6 +84,9 @@ namespace Services
 
         public async Task<Track> CreateAsync(Track track)
         {
+            var slug = await _slugService.GenerateSlug(track.Title);
+            track.SlugId = slug.Id;
+
             await _tracks.InsertOneAsync(track);
             return track;
         }

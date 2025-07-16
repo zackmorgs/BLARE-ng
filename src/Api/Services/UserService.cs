@@ -2,16 +2,19 @@ using BCrypt.Net;
 using Models;
 using MongoDB.Driver;
 using Data;
+using MongoDB.Bson;
 
 namespace Services
 {
     public class UserService
     {
         private readonly IMongoCollection<User> _users;
+        private readonly SlugService _slugService;
 
-        public UserService(DataContext dataContext)
+        public UserService(DataContext dataContext, SlugService slugService)
         {
             _users = dataContext.Users;
+            _slugService = slugService;
         }
 
         // interates through _users collection to find a the first user with that username
@@ -38,6 +41,8 @@ namespace Services
             {
                 if (await GetUserByUsernameAsync(username) == null)
                 {
+                    var slug = await _slugService.GenerateSlug(username);
+
                     var user = new User
                     {
                         Username = username,
@@ -47,6 +52,7 @@ namespace Services
                         IsActive = true,
                         Avatar = String.Empty,
                         Role = role,
+                        SlugId = slug.Id,
                     };
 
                     await _users.InsertOneAsync(user);

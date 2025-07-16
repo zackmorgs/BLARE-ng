@@ -8,11 +8,13 @@ namespace Services
     public class TagService
     {
         private readonly IMongoCollection<MusicTag> _musicTags;
+        private readonly SlugService _slugService;
 
         // This service handles operations related to tags, such as creating, retrieving, and managing tags.
 
-        public TagService(DataContext dataContext)
+        public TagService(DataContext dataContext, SlugService slugService)
         {
+            _slugService = slugService;
             _musicTags = dataContext.MusicTags;
         }
 
@@ -33,6 +35,10 @@ namespace Services
             }
             else
             {
+                // Generate a slug for the tag
+                var slug = await _slugService.GenerateSlug(tag.Name);
+                tag.SlugId = slug.Id;
+
                 await _musicTags.InsertOneAsync(tag);
             }
         }

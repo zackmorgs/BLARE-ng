@@ -31,5 +31,8 @@ namespace Models
 
         [BsonElement("musicTagIds")]
         public List<ObjectId> MusicTagIds { get; set; } = new List<ObjectId>();
+
+        [BsonElement("slug")]
+        public ObjectId SlugId { get; set; } = ObjectId.Empty;
     }
 }

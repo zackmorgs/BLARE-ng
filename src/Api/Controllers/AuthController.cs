@@ -12,7 +12,7 @@ namespace Controllers
         private readonly UserService _userService;
         private readonly JwtService _jwtService;
 
-        public AuthController(UserService userService, JwtService jwtService)
+        public AuthController(UserService userService, JwtService jwtService, SlugService slugService)
         {
             _userService = userService;
             _jwtService = jwtService;

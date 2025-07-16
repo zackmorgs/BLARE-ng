@@ -3,17 +3,16 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Models
 {
-    public class MusicTag
-    {
+    public class Slug
+    {   
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
 
-        [BsonElement("name")]
-        [BsonRequired]
-        public string Name { get; set; } = string.Empty;
-
         [BsonElement("slug")]
-        public ObjectId SlugId { get; set; } = ObjectId.Empty;
+        [BsonRequired]
+        public string SlugValue { get; set; } = string.Empty;
+
+        // Additional properties can be added as needed
     }
 }

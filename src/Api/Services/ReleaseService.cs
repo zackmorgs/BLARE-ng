@@ -14,12 +14,13 @@ namespace Services
         private readonly string _uploadsPath;
         private readonly TrackService _trackService;
 
-
+        private readonly SlugService _slugService;
         // contructor to inject the DataContext
         public ReleaseService(
             DataContext dataContext,
             IWebHostEnvironment env,
-            TrackService trackService
+            TrackService trackService,
+            SlugService slugService
         )
         {
             _releases = dataContext.Releases;
@@ -27,6 +28,7 @@ namespace Services
             _uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
 
             _trackService = trackService;
+            _slugService = slugService;
 
             // Ensure upload directories exist
             Directory.CreateDirectory(Path.Combine(_uploadsPath, "albumart"));
@@ -76,12 +78,17 @@ namespace Services
             var coverImageUrl = $"/uploads/albumart/{coverImageName}";
             release.CoverImageUrl = coverImageUrl;
 
+            // Initialize slug
+            var slug = await _slugService.GenerateSlug(release.Title);
+            release.SlugId = slug.Id;
+
             List<string> trackUrls = new List<string>();
 
             foreach (var file in releaseFiles)
             {
 
                 var id = ObjectId.GenerateNewId();
+                var trackSlug = await _slugService.GenerateSlug(file.FileName);
 
                 // Generate unique filename
                 var fileName = id.ToString() + Path.GetExtension(file.FileName);
@@ -93,7 +100,6 @@ namespace Services
                     await file.CopyToAsync(stream);
                 }
 
-
                 var track = new Track
                 {
                     Id = id,
@@ -102,7 +108,8 @@ namespace Services
                     FileUrl = $"/uploads/tracks/{file.FileName}",
                     Duration = TimeSpan.Zero, // Placeholder
                     UploadedAt = DateTime.UtcNow,
-                    MusicTagIds = null
+                    MusicTagIds = null,
+                    SlugId = trackSlug.Id,
                 };
 
                 await _trackService.CreateAsync(track);

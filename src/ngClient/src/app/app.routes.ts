@@ -52,10 +52,20 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/user/playlist/playlist.component').then(m => m.PlaylistComponent),
     canActivate: [authGuard]
   },
-    {
+  {
     path: 'artist/releases/new',
     loadComponent: () => import('./pages/artist/releases/new/new.component').then(m => m.NewComponent),
     canActivate: [authGuard]
   },
+  // {
+  //   path: 'play/:artistSlug/:releaseSlug',
+  //   loadComponent: () => import('./pages/play/release/play-release.component').then(m => m.PlayReleaseComponent),
+  //   canActivate: [authGuard]
+  // },
+  // {
+  //   path: 'play/playlist/:slug',
+  //   loadComponent: () => import('./pages/play/playlist/play-playlist.component').then(m => m.PlayPlaylistComponent),
+  //   canActivate: [authGuard]
+  // },
   { path: '**', redirectTo: '/' }
 ];

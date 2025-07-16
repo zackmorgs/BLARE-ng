@@ -72,45 +72,17 @@ namespace Controllers
             [FromForm] IFormFile[] releaseFiles
         )
         {
-            // Console.WriteLine("=== UPLOAD REQUEST RECEIVED ===");
-            // Console.WriteLine($"Title: {title}");
-            // Console.WriteLine($"Type: {type}");
-            // Console.WriteLine($"ArtistId: {artistId}");
-            // Console.WriteLine($"Cover image: {coverImage?.FileName} ({coverImage?.Length} bytes)");
-            // Console.WriteLine($"Release files count: {releaseFiles?.Length}");
-            
             var uploadedRelease = new Release();
             try
             {
-                // Validate required fields
-                if (string.IsNullOrEmpty(title))
-                {
-                    Console.WriteLine("ERROR: Title is missing");
-                    return BadRequest("Title is required.");
-                }
-                if (string.IsNullOrEmpty(type))
-                {
-                    Console.WriteLine("ERROR: Type is missing");
-                    return BadRequest("Type is required.");
-                }
-                if (string.IsNullOrEmpty(artistId))
-                {
-                    Console.WriteLine("ERROR: ArtistId is missing");
-                    return BadRequest("Artist ID is required.");
-                }
                 if (coverImage == null || coverImage.Length == 0)
                 {
-                    Console.WriteLine("ERROR: Cover image is missing");
                     return BadRequest("Cover image is required.");
                 }
                 if (releaseFiles == null || releaseFiles.Length == 0)
                 {
-                    Console.WriteLine("ERROR: Release files are missing");
                     return BadRequest("At least one release file is required.");
                 }
-
-                Console.WriteLine("All validations passed, creating release...");
-                
                 uploadedRelease.Title = title;
                 uploadedRelease.Type = type;
                 uploadedRelease.ArtistId = artistId;
@@ -122,22 +94,16 @@ namespace Controllers
                 uploadedRelease.ReleaseDate = releaseDate;
                 uploadedRelease.CreatedAt = DateTime.UtcNow;
                 uploadedRelease.UpdatedAt = DateTime.UtcNow;
-                
-                Console.WriteLine("Calling CreateReleaseAsync...");
                 // Create the release with files
                 uploadedRelease = await _releaseService.CreateReleaseAsync(
                     uploadedRelease,
                     coverImage,
                     releaseFiles
                 );
-                
-                Console.WriteLine("Release created successfully!");
                 return Ok(uploadedRelease);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"ERROR in UploadRelease: {ex.Message}");
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return BadRequest($"Error uploading release: {ex.Message}");
             }
         }

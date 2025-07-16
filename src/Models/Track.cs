@@ -16,7 +16,7 @@ namespace Models
         [BsonElement("artistId")]
         [BsonRequired]
         public ObjectId ArtistId { get; set; }
-        
+
         [BsonElement("fileUrl")]
         [BsonRequired]
         public string FileUrl { get; set; } = string.Empty;
@@ -31,5 +31,8 @@ namespace Models
 
         [BsonElement("musicTagIds")]
         public List<ObjectId> MusicTagIds { get; set; } = new List<ObjectId>();
+
+        [BsonElement("slug")]
+        public ObjectId SlugId { get; set; } = ObjectId.Empty;
     }
 }

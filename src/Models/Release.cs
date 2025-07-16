@@ -21,7 +21,6 @@ namespace Models
         [BsonRequired]
         public string ArtistId { get; set; } = string.Empty;
 
-
         [BsonElement("releaseDate")]
         public DateTime ReleaseDate { get; set; } = DateTime.UtcNow;
 
@@ -46,5 +45,8 @@ namespace Models
 
         [BsonElement("trackUrls")]
         public List<string> TrackUrls { get; set; } = new List<string>();
+
+        [BsonElement("slug")]
+        public ObjectId SlugId { get; set; } = ObjectId.Empty;
     }
 }

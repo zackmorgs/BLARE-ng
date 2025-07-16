@@ -18,13 +18,14 @@ internal class Program
         builder.Services.AddSingleton<JwtService>();
         builder.Services.AddSingleton<ReleaseService>();
         builder.Services.AddSingleton<TagService>();
+        builder.Services.AddSingleton<SlugService>();
 
         builder.Services.AddControllers();
 
         // Configure Kestrel server limits for file uploads
         builder.Services.Configure<FormOptions>(options =>
         {
-            options.MultipartBodyLengthLimit = 2000 * 1024 * 1024; // 2000MB
+            options.MultipartBodyLengthLimit = 3000L * 1024 * 1024; // 3000MB
             options.ValueLengthLimit = int.MaxValue;
             options.ValueCountLimit = int.MaxValue;
             options.KeyLengthLimit = int.MaxValue;
@@ -32,7 +33,7 @@ internal class Program
 
         builder.WebHost.ConfigureKestrel(options =>
         {
-            options.Limits.MaxRequestBodySize = 2000 * 1024 * 1024; // 2000MB
+            options.Limits.MaxRequestBodySize = 3000L * 1024 * 1024; // 3000MB
         });
 
         builder.Services.AddSingleton<IMongoClient>(sp => new MongoClient(
