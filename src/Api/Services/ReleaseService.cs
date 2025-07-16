@@ -1,6 +1,8 @@
 // Services/ReleaseService.cs
+using Controllers;
 using Data;
 using Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Services
@@ -10,13 +12,21 @@ namespace Services
         private readonly IMongoCollection<Release> _releases;
         private readonly IWebHostEnvironment _env;
         private readonly string _uploadsPath;
+        private readonly TrackService _trackService;
+
 
         // contructor to inject the DataContext
-        public ReleaseService(DataContext dataContext, IWebHostEnvironment env)
+        public ReleaseService(
+            DataContext dataContext,
+            IWebHostEnvironment env,
+            TrackService trackService
+        )
         {
             _releases = dataContext.Releases;
             _env = env;
             _uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+
+            _trackService = trackService;
 
             // Ensure upload directories exist
             Directory.CreateDirectory(Path.Combine(_uploadsPath, "albumart"));
@@ -54,9 +64,10 @@ namespace Services
             IFormFile[] releaseFiles
         )
         {
-            // Validate, process, and upload cover image
-            // Save cover image and set URL
-            var coverImageName = $"{Guid.NewGuid()}{Path.GetExtension(coverImage.FileName)}";
+            // if my understanding is correct, this should be a unique ID for the release
+            var releaseId = ObjectId.GenerateNewId();
+
+            var coverImageName = $"{releaseId.ToString()}{Path.GetExtension(coverImage.FileName)}";
             var coverImagePath = Path.Combine(_uploadsPath + "/albumart", coverImageName);
             using (var stream = new FileStream(coverImagePath, FileMode.Create))
             {
@@ -69,15 +80,32 @@ namespace Services
 
             foreach (var file in releaseFiles)
             {
+
+                var id = ObjectId.GenerateNewId();
+
                 // Generate unique filename
-                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-                var filePath = Path.Combine(_uploadsPath, "tracks", fileName);
+                var fileName = id.ToString() + Path.GetExtension(file.FileName);
+                var filePath = Path.Combine(_uploadsPath + "/releases", fileName);
 
                 // Save file to disk
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }
+
+
+                var track = new Track
+                {
+                    Id = id,
+                    Title = file.FileName,
+                    ArtistId = ObjectId.Parse(release.ArtistId),
+                    FileUrl = $"/uploads/tracks/{file.FileName}",
+                    Duration = TimeSpan.Zero, // Placeholder
+                    UploadedAt = DateTime.UtcNow,
+                    MusicTagIds = null
+                };
+
+                await _trackService.CreateAsync(track);
 
                 // Add file URL to release
                 release.TrackUrls.Add($"/uploads/releases/{fileName}");

@@ -78,5 +78,11 @@ namespace Services
             if (ObjectId.TryParse(id, out ObjectId objectId))
                 await _tracks.DeleteOneAsync(track => track.Id == objectId);
         }
+
+        public async Task<Track> CreateAsync(Track track)
+        {
+            await _tracks.InsertOneAsync(track);
+            return track;
+        }
     }
 }

@@ -72,12 +72,12 @@ namespace Controllers
             [FromForm] IFormFile[] releaseFiles
         )
         {
-            Console.WriteLine("=== UPLOAD REQUEST RECEIVED ===");
-            Console.WriteLine($"Title: {title}");
-            Console.WriteLine($"Type: {type}");
-            Console.WriteLine($"ArtistId: {artistId}");
-            Console.WriteLine($"Cover image: {coverImage?.FileName} ({coverImage?.Length} bytes)");
-            Console.WriteLine($"Release files count: {releaseFiles?.Length}");
+            // Console.WriteLine("=== UPLOAD REQUEST RECEIVED ===");
+            // Console.WriteLine($"Title: {title}");
+            // Console.WriteLine($"Type: {type}");
+            // Console.WriteLine($"ArtistId: {artistId}");
+            // Console.WriteLine($"Cover image: {coverImage?.FileName} ({coverImage?.Length} bytes)");
+            // Console.WriteLine($"Release files count: {releaseFiles?.Length}");
             
             var uploadedRelease = new Release();
             try

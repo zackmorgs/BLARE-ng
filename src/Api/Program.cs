@@ -1,10 +1,10 @@
-using MongoDB.Driver;
-using Data;
-using Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Http.Features;
 using System.Text;
+using Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.IdentityModel.Tokens;
+using MongoDB.Driver;
+using Services;
 
 internal class Program
 {
@@ -18,7 +18,7 @@ internal class Program
         builder.Services.AddSingleton<JwtService>();
         builder.Services.AddSingleton<ReleaseService>();
         builder.Services.AddSingleton<TagService>();
-        
+
         builder.Services.AddControllers();
 
         // Configure Kestrel server limits for file uploads
@@ -43,9 +43,12 @@ internal class Program
 
         // JWT Configuration
         var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-        var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey not configured");
+        var secretKey =
+            jwtSettings["SecretKey"]
+            ?? throw new InvalidOperationException("JWT SecretKey not configured");
 
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        builder
+            .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -66,24 +69,30 @@ internal class Program
         // Add CORS - Allow all requests for development
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy("AllowAll", 
+            options.AddPolicy(
+                "AllowAll",
                 policy =>
                 {
-                    policy.AllowAnyOrigin()
-                          .AllowAnyHeader()
-                          .AllowAnyMethod();
-                });
+                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                }
+            );
         });
 
         var app = builder.Build();
 
         // Add request logging middleware
-        app.Use(async (context, next) =>
-        {
-            Console.WriteLine($"=== REQUEST: {context.Request.Method} {context.Request.Path} ===");
-            Console.WriteLine($"Headers: {string.Join(", ", context.Request.Headers.Select(h => $"{h.Key}={h.Value}"))}");
-            await next();
-        });
+        app.Use(
+            async (context, next) =>
+            {
+                Console.WriteLine(
+                    $"=== REQUEST: {context.Request.Method} {context.Request.Path} ==="
+                );
+                Console.WriteLine(
+                    $"Headers: {string.Join(", ", context.Request.Headers.Select(h => $"{h.Key}={h.Value}"))}"
+                );
+                await next();
+            }
+        );
 
         // Use CORS first - before any other middleware
         app.UseCors("AllowAll");
