@@ -21,7 +21,7 @@ namespace Services
         public async Task<IEnumerable<MusicTag>> GetAsync()
         {
             // Logic to retrieve all tags from the database
-            return await _musicTags.Find(_ => true).ToListAsync();
+            return await _musicTags.Find(tag => true).ToListAsync();
         }
 
         // create a new tag

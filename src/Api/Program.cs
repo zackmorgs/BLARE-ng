@@ -17,6 +17,7 @@ internal class Program
         builder.Services.AddSingleton<UserService>();
         builder.Services.AddSingleton<JwtService>();
         builder.Services.AddSingleton<ReleaseService>();
+        builder.Services.AddSingleton<TagService>();
         
         builder.Services.AddControllers();
 
