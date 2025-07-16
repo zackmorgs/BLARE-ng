@@ -26,8 +26,8 @@
           <ul class="releases-list">
             <li *ngFor="let release of recentReleases$ | async" class="release-item">
               <div class="release-info">
-                <img [src]="release.coverImageUrl" [alt]="release.title + ' cover'" class="release-cover">
-                <div class="release-details">
+                <img [src]="'http://localhost:5051' + release.coverImageUrl" [alt]="release.title + ' cover'" class="release-cover">
+                <!-- <div class="release-details">
                   <h4 class="release-title">{{ release.title }}</h4>
                   <p class="release-type">{{ release.type | titlecase }}</p>
                   <p class="release-date">{{ release.releaseDate | date:'shortDate' }}</p>
@@ -35,7 +35,7 @@
                   <div class="release-tags" *ngIf="release.musicTags && release.musicTags.length > 0">
                     <span *ngFor="let tag of release.musicTags" class="tag">{{ tag }}</span>
                   </div>
-                </div>
+                </div> -->
               </div>
             </li>
           </ul>
@@ -76,23 +76,10 @@
           <div *ngIf="artistReleases$ | async as releases; else noReleases">
             <ul class="releases-list" *ngIf="releases.length > 0; else noReleases">
               <li *ngFor="let release of releases" class="release-item">
-                <div class="release-info">
-                  <img [src]="release.coverImageUrl" [alt]="release.title + ' cover'" class="release-cover">
-                  <div class="release-details">
-                    <h4 class="release-title">{{ release.title }}</h4>
-                    <p class="release-type">{{ release.type | titlecase }}</p>
-                    <p class="release-date">{{ release.releaseDate | date:'shortDate' }}</p>
-                    <p class="release-description">{{ release.description }}</p>
-                    <div class="release-tags" *ngIf="release.musicTags && release.musicTags.length > 0">
-                      <span *ngFor="let tag of release.musicTags" class="tag">{{ tag }}</span>
-                    </div>
-                    <p class="track-count">{{ release.trackIds.length || 0 }} tracks</p>
-                  </div>
-                  <div class="release-actions">
-                    <a [routerLink]="['/release', release.id]" class="btn">View</a>
-                    <a [routerLink]="['/release', release.id, 'edit']" class="btn btn-secondary">Edit</a>
-                  </div>
-                </div>
+                <a class="release-info" [routerLink]="['/artist/release', release.id]">
+                  <img [src]="'http://localhost:5051' + release.coverImageUrl" [alt]="release.title + ' cover'" class="release-cover">
+                  <h4 class="release-title">{{ release.title }}</h4>
+                </a>
               </li>
             </ul>
           </div>

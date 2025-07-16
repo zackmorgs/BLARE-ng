@@ -1,9 +1,7 @@
 .app-container {
     height: 100vh;
-    display: flex;
-    flex-direction: column;
     border-top: #ffd700 2px solid;
-
+    background: #222222;
 }
 
 .app-container.authenticated {

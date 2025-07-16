@@ -11,6 +11,7 @@
     align-items: center;
     justify-content: space-between;
     border-bottom: #ffd700 2px solid;
+    background: #222222;
 }
 
 #nav_logo {
@@ -27,7 +28,9 @@
     align-items: center;
     justify-content: center;
     color: #ffde59;
-    text-decoration: none;;
+    text-decoration: none;
+    ;
+
     h1 {
         font-weight: 100;
     }
@@ -49,7 +52,7 @@
 }
 
 #nav_items {
-    height:0px;
+    height: 0px;
     overflow: hidden;
     transition: height 0.3s ease-in-out;
     position: absolute;
@@ -93,18 +96,10 @@
     }
 }
 
-@media (min-width: 414px) {
- 
-}
+@media (min-width: 414px) {}
 
-@media (min-width: 768px) {
+@media (min-width: 768px) {}
 
-}
+@media (min-width: 1024px) {}
 
-@media (min-width: 1024px) {
-
-}
-
-@media (min-width: 1536px) {
-
-}
+@media (min-width: 1536px) {}
