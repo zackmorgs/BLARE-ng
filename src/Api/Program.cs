@@ -23,7 +23,7 @@ internal class Program
         // Configure Kestrel server limits for file uploads
         builder.Services.Configure<FormOptions>(options =>
         {
-            options.MultipartBodyLengthLimit = 100 * 1024 * 1024; // 100MB
+            options.MultipartBodyLengthLimit = 2000 * 1024 * 1024; // 2000MB
             options.ValueLengthLimit = int.MaxValue;
             options.ValueCountLimit = int.MaxValue;
             options.KeyLengthLimit = int.MaxValue;
@@ -31,7 +31,7 @@ internal class Program
 
         builder.WebHost.ConfigureKestrel(options =>
         {
-            options.Limits.MaxRequestBodySize = 1000 * 1024 * 1024; // 1000MB
+            options.Limits.MaxRequestBodySize = 2000 * 1024 * 1024; // 2000MB
         });
 
         builder.Services.AddSingleton<IMongoClient>(sp => new MongoClient(

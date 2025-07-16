@@ -79,3 +79,27 @@
 /src/Data/.history
 /src/Data/.vscode-tes
 ngngCLient/.angular/cache/19.2.15/ngCLient/vite/deps/_metadata.json
+
+# Database files
+src/Api/wwwroot/albumart
+src/Api/wwwroot/releases
+src/Api/wwwroot/tracks
+src/Api/wwwroot/uploads/albumart/000dd215-1d7d-4aa1-9425-4edbb0020fba.png
+src/Api/wwwroot/uploads/albumart/26865351-371b-4647-bcec-5149bab95af7.jpg
+src/Api/wwwroot/uploads/tracks/4ae59cfa-8c6b-4af7-8502-2ad79eedd25b.wav
+src/Api/wwwroot/uploads/tracks/06ce6c54-8d02-4758-86e6-fdd3c4a6e232.wav
+src/Api/wwwroot/uploads/tracks/9a823f99-f18e-47de-81f8-704f26b498cd.wav
+src/Api/wwwroot/uploads/tracks/9ca18bf1-1941-42e6-9446-97437277f6ba.wav
+src/Api/wwwroot/uploads/tracks/11ad0a4c-df2a-45bc-aeaa-f14d776d948a.wav
+src/Api/wwwroot/uploads/tracks/0080a223-9e73-43af-8a6e-525dbc23ddcc.wav
+src/Api/wwwroot/uploads/tracks/491cb3a1-0c32-4d9b-bad7-b17b4232459d.wav
+src/Api/wwwroot/uploads/tracks/614f948d-c539-4f33-a077-15391592cd43.wav
+src/Api/wwwroot/uploads/tracks/3098c01f-4aa1-4e20-8831-7a661f6775e1.wav
+src/Api/wwwroot/uploads/tracks/a0b16072-c1aa-4243-9153-de90164290b2.wav
+src/Api/wwwroot/uploads/tracks/a4ce5614-d0d7-47f5-9c40-96dfe6b0f3e5.wav
+src/Api/wwwroot/uploads/tracks/c4f57166-e218-4066-b4bd-278cb8c58b43.wav
+src/Api/wwwroot/uploads/tracks/cb7945ef-e506-4fe9-8144-47beffb66835.wav
+src/Api/wwwroot/uploads/tracks/de20cd83-ee07-4778-aa35-a71f94050e70.wav
+src/Api/wwwroot/uploads/tracks/f0b4e1e4-4c48-4b89-ab5c-f8cf9579393c.wav
+src/Api/wwwroot/uploads/tracks/f7cd98e5-2ebe-4608-a61d-4f4a343c7de8.wav
+src/Api/wwwroot/uploads/tracks/fe41b517-0aaa-4ea8-bfc1-79d9fff0e7f1.wav
