@@ -13,19 +13,21 @@ namespace Services
         private readonly IWebHostEnvironment _env;
         private readonly string _uploadsPath;
         private readonly TrackService _trackService;
-
+        private readonly UserService _userService;
         private readonly SlugService _slugService;
         // contructor to inject the DataContext
         public ReleaseService(
             DataContext dataContext,
             IWebHostEnvironment env,
             TrackService trackService,
-            SlugService slugService
+            SlugService slugService,
+            UserService userService
         )
         {
             _releases = dataContext.Releases;
             _env = env;
             _uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+            _userService = userService;
 
             _trackService = trackService;
             _slugService = slugService;
@@ -79,8 +81,13 @@ namespace Services
             release.CoverImageUrl = coverImageUrl;
 
             // Initialize slug
-            var slug = await _slugService.GenerateSlug(release.Title);
-            release.SlugId = slug.Id;
+            var releaseSlug = await _slugService.GenerateSlug(release.Title);
+            release.ReleaseSlug = releaseSlug.SlugValue;
+
+            // get artist slug
+            var artistId = release.ArtistId;
+            string artistSlug = await _userService.GetUserSlugAsync(artistId);
+            release.ArtistSlug = artistSlug;
 
             List<string> trackUrls = new List<string>();
 
@@ -109,7 +116,7 @@ namespace Services
                     Duration = TimeSpan.Zero, // Placeholder
                     UploadedAt = DateTime.UtcNow,
                     MusicTagIds = null,
-                    SlugId = trackSlug.Id,
+                    Slug = trackSlug.SlugValue,
                 };
 
                 await _trackService.CreateAsync(track);

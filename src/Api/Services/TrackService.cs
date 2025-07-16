@@ -85,7 +85,7 @@ namespace Services
         public async Task<Track> CreateAsync(Track track)
         {
             var slug = await _slugService.GenerateSlug(track.Title);
-            track.SlugId = slug.Id;
+            track.Slug = slug.SlugValue;
 
             await _tracks.InsertOneAsync(track);
             return track;

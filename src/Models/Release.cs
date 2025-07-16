@@ -46,7 +46,10 @@ namespace Models
         [BsonElement("trackUrls")]
         public List<string> TrackUrls { get; set; } = new List<string>();
 
-        [BsonElement("slug")]
-        public ObjectId SlugId { get; set; } = ObjectId.Empty;
+        [BsonElement("releaseSlug")]
+        public string ReleaseSlug { get; set; } = string.Empty;
+
+        [BsonElement("artistSlug")]
+        public string ArtistSlug { get; set; } = string.Empty;
     }
 }

@@ -37,7 +37,7 @@ namespace Services
             {
                 // Generate a slug for the tag
                 var slug = await _slugService.GenerateSlug(tag.Name);
-                tag.SlugId = slug.Id;
+                tag.Slug = slug.SlugValue;
 
                 await _musicTags.InsertOneAsync(tag);
             }

@@ -39,8 +39,7 @@ namespace Models
         [BsonElement("bio")]
         public string Bio { get; set; } = String.Empty;
 
-        [BsonElement("slugId")]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId SlugId { get; set; } = ObjectId.Empty;
+        [BsonElement("slug")]
+        public string Slug { get; set; } = String.Empty;
     }
 }

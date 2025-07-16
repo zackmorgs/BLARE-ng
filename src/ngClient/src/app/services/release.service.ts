@@ -13,6 +13,8 @@ export interface Release {
     releaseDate: Date;
     musicTags: string[];
     trackIds: string[];
+    releaseSlug: string;
+    artistSlug: string;
 }
 
 export interface CreateReleaseRequest {

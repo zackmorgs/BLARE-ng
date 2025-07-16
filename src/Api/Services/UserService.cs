@@ -52,7 +52,7 @@ namespace Services
                         IsActive = true,
                         Avatar = String.Empty,
                         Role = role,
-                        SlugId = slug.Id,
+                        Slug = slug.SlugValue,
                     };
 
                     await _users.InsertOneAsync(user);
@@ -168,6 +168,14 @@ namespace Services
             var update = Builders<User>.Update.Set(u => u.Role, role);
             var result = await _users.UpdateOneAsync(filter, update);
             return result.ModifiedCount > 0;
+        }
+
+        public async Task<string> GetUserSlugAsync(string userId)
+        {
+            var user = await GetUserByIdAsync(userId);
+            if (user == null) throw new ArgumentException("User not found.");
+
+            return user.Slug;
         }
     }
 }

@@ -14,6 +14,6 @@ namespace Models
         public string Name { get; set; } = string.Empty;
 
         [BsonElement("slug")]
-        public ObjectId SlugId { get; set; } = ObjectId.Empty;
+        public string Slug { get; set; } = string.Empty;
     }
 }

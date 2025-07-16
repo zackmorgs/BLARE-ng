@@ -57,11 +57,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/artist/releases/new/new.component').then(m => m.NewComponent),
     canActivate: [authGuard]
   },
-  // {
-  //   path: 'play/:artistSlug/:releaseSlug',
-  //   loadComponent: () => import('./pages/play/release/play-release.component').then(m => m.PlayReleaseComponent),
-  //   canActivate: [authGuard]
-  // },
+  {
+    path: 'play/artist/:artistSlug/album/:releaseSlug',
+    loadComponent: () => import('./pages/play/play.component').then(m => m.PlayComponent),
+    canActivate: [authGuard]
+  },
   // {
   //   path: 'play/playlist/:slug',
   //   loadComponent: () => import('./pages/play/playlist/play-playlist.component').then(m => m.PlayPlaylistComponent),

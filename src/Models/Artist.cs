@@ -33,6 +33,6 @@ namespace Models
         public List<ObjectId> MusicTagIds { get; set; } = new List<ObjectId>();
 
         [BsonElement("slug")]
-        public ObjectId SlugId { get; set; } = ObjectId.Empty;
+        public string Slug { get; set; } = String.Empty;
     }
 }
