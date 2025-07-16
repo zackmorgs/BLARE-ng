@@ -65,6 +65,10 @@ button.btn,
     transition: transform 0.1s ease-in-out, background-color 0.1s ease-in-out;
     display: block;
     text-align: center;
+    display: inline-flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn.btn-secondary {
@@ -117,7 +121,7 @@ button.btn,
 
 /* mobile first */
 hr.rule {
-    border-bottom: #ffd700 1px solid;   
+    border-bottom: #ffd700 1px solid;
 }
 
 @media (min-width: 414px) {}

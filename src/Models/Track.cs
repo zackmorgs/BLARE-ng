@@ -13,10 +13,10 @@ namespace Models
         [BsonRequired]
         public string Title { get; set; } = string.Empty;
 
-        [BsonElement("artist")]
+        [BsonElement("artistId")]
         [BsonRequired]
-        public string Artist { get; set; } = string.Empty;
-
+        public ObjectId ArtistId { get; set; }
+        
         [BsonElement("fileUrl")]
         [BsonRequired]
         public string FileUrl { get; set; } = string.Empty;

@@ -1,8 +1,8 @@
 // Services/TrackService.cs
-using MongoDB.Driver;
-using MongoDB.Bson;
 using Data;
 using Models;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Services
 {
@@ -10,14 +10,18 @@ namespace Services
     {
         // the collection of tracks fro MongoDB
         private readonly IMongoCollection<Track> _tracks;
+        private readonly IWebHostEnvironment _env;
+
         private readonly string _uploadsPath;
 
         // contructor to inject the DataContext
-        public TrackService(DataContext dataContext)
+        public TrackService(DataContext dataContext, IWebHostEnvironment env)
         {
+            _env = env;
+
             _tracks = dataContext.Tracks;
-            _uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "tracks");
-            
+            _uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+
             // Ensure the uploads directory exists
             if (!Directory.Exists(_uploadsPath))
             {

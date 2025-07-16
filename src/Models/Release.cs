@@ -43,5 +43,8 @@ namespace Models
 
         [BsonElement("musicTags")]
         public List<string> MusicTags { get; set; } = new List<string>();
+
+        [BsonElement("trackUrls")]
+        public List<string> TrackUrls { get; set; } = new List<string>();
     }
 }

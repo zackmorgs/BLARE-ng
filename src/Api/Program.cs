@@ -1,10 +1,10 @@
-using System.Text;
+using MongoDB.Driver;
 using Data;
+using Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Models;
-using MongoDB.Driver;
-using Services;
+using Microsoft.AspNetCore.Http.Features;
+using System.Text;
 
 internal class Program
 {
@@ -12,31 +12,39 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Register DataContext first
+        // Services
+        builder.Services.AddSingleton<TrackService>();
+        builder.Services.AddSingleton<UserService>();
+        builder.Services.AddSingleton<JwtService>();
+        builder.Services.AddSingleton<ReleaseService>();
+        
+        builder.Services.AddControllers();
+
+        // Configure Kestrel server limits for file uploads
+        builder.Services.Configure<FormOptions>(options =>
+        {
+            options.MultipartBodyLengthLimit = 100 * 1024 * 1024; // 100MB
+            options.ValueLengthLimit = int.MaxValue;
+            options.ValueCountLimit = int.MaxValue;
+            options.KeyLengthLimit = int.MaxValue;
+        });
+
+        builder.WebHost.ConfigureKestrel(options =>
+        {
+            options.Limits.MaxRequestBodySize = 1000 * 1024 * 1024; // 1000MB
+        });
+
         builder.Services.AddSingleton<IMongoClient>(sp => new MongoClient(
             builder.Configuration.GetConnectionString("MongoConnection")
         ));
+
         builder.Services.AddSingleton<DataContext>();
-
-        // Services that depend on DataContext
-        builder.Services.AddSingleton<TrackService>();
-        builder.Services.AddSingleton<UserService>();
-        builder.Services.AddSingleton<ReleaseService>();
-        builder.Services.AddSingleton<TagService>();
-
-        // JWT service only needs IConfiguration
-        builder.Services.AddSingleton<JwtService>();
-
-        builder.Services.AddControllers();
 
         // JWT Configuration
         var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-        var secretKey =
-            jwtSettings["SecretKey"]
-            ?? throw new InvalidOperationException("JWT SecretKey not configured");
+        var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey not configured");
 
-        builder
-            .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -54,31 +62,35 @@ internal class Program
 
         builder.Services.AddAuthorization();
 
-        // Add CORS
+        // Add CORS - Allow all requests for development
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy(
-                "AllowAngularApp",
+            options.AddPolicy("AllowAll", 
                 policy =>
                 {
-                    policy
-                        .WithOrigins("http://localhost:4200", "https://localhost:4200")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
-                }
-            );
+                    policy.AllowAnyOrigin()
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
         });
 
         var app = builder.Build();
 
-        // Use CORS
-        app.UseCors("AllowAngularApp");
+        // Add request logging middleware
+        app.Use(async (context, next) =>
+        {
+            Console.WriteLine($"=== REQUEST: {context.Request.Method} {context.Request.Path} ===");
+            Console.WriteLine($"Headers: {string.Join(", ", context.Request.Headers.Select(h => $"{h.Key}={h.Value}"))}");
+            await next();
+        });
 
-        // Enable static file serving
+        // Use CORS first - before any other middleware
+        app.UseCors("AllowAll");
+
+        // Enable static file serving for uploads
         app.UseStaticFiles();
 
-        app.UseHttpsRedirection();
+        app.UseRouting();
 
         app.UseAuthentication();
         app.UseAuthorization();

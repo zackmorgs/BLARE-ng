@@ -108,10 +108,7 @@ export class NewComponent implements OnInit {
     this.releaseService.createRelease(releaseData).subscribe({
       next: (response) => {
         console.log('Release created successfully:', response);
-        
-        // TODO: Handle file uploads here if needed
-        // You might want to upload cover image and audio files to your backend
-        
+        this.isSubmitting = false;
         this.router.navigate(['/home']);
       },
       error: (error) => {

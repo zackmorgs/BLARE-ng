@@ -45,7 +45,7 @@ export interface UpdateReleaseRequest {
 export class ReleaseService {
     private http = inject(HttpClient);
     private releaseApiUrl = 'http://localhost:5051/api/release';
-    private uploadApiUrl = 'http://localhost:5051/api/upload/track';
+    private releaseUploadUrl = 'http://localhost:5051/api/release/upload';
 
     // Cache for releases
     private releasesSubject = new BehaviorSubject<Release[]>([]);
@@ -85,28 +85,31 @@ export class ReleaseService {
     // Create new release
     createRelease(release: CreateReleaseRequest): Observable<Release> {
         const formData = new FormData();
+        
+        // Basic release metadata
         formData.append('title', release.title);
         formData.append('type', release.type);
         formData.append('artistId', release.artistId);
         formData.append('description', release.description || '');
         formData.append('releaseDate', release.releaseDate.toISOString());
+        
+        // Music tags array
         release.musicTags?.forEach(tag => formData.append('musicTags[]', tag));
-        release.trackIds?.forEach(id => formData.append('trackIds[]', id));
 
+        // Track IDs array
+        // release.trackIds?.forEach(id => formData.append('trackIds[]', id));
+
+        // Cover image file
         if (release.coverImage) {
             formData.append('coverImage', release.coverImage);
         }
         
+        // Audio files array
         release.audioFiles?.forEach(file => {
-            formData.append('audioFiles[]', file);
+            formData.append('releaseFiles', file);
         });
 
-        return this.http.post<Release>(this.uploadApiUrl, formData).pipe(
-            tap(newRelease => {
-                const currentReleases = this.releasesSubject.value;
-                this.releasesSubject.next([...currentReleases, newRelease]);
-            })
-        );
+        return this.http.put<Release>(this.releaseUploadUrl, formData);
     }
 
     // Update release
