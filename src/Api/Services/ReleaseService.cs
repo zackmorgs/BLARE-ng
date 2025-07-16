@@ -71,7 +71,7 @@ namespace Services
             {
                 // Generate unique filename
                 var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-                var filePath = Path.Combine(_uploadsPath, "releases", fileName);
+                var filePath = Path.Combine(_uploadsPath, "tracks", fileName);
 
                 // Save file to disk
                 using (var stream = new FileStream(filePath, FileMode.Create))
