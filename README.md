@@ -53,7 +53,9 @@ Blare-Ng is a modern music streaming platform designed to showcase a robust, sca
 - **API:**
   - RESTful endpoints for users, releases, tracks, and tags
   - CORS enabled for Angular dev server
-
+- **Routing**
+  - Slug-based navigation
+  
 ---
 
 ## Getting Started
