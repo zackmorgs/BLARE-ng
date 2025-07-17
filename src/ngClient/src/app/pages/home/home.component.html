@@ -25,7 +25,7 @@
           <hr class="rule" />
           <ul class="releases-list">
             <li *ngFor="let release of recentReleases$ | async" class="release-item">
-              <a class="release-info" [routerLink]="'/play/artist/' + release.artistSlug + '/album/' + release.releaseSlug">
+              <a class="release-info" [routerLink]="'/play/artist/' + release.artistSlug + '/release/' + release.releaseSlug">
                 <img [src]="'http://localhost:5051' + release.coverImageUrl" [alt]="release.title + ' cover'" class="release-cover">
                 <!-- <div class="release-details">
                   <h4 class="release-title">{{ release.title }}</h4>
