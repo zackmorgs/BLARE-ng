@@ -15,6 +15,7 @@ namespace Services
         private readonly TrackService _trackService;
         private readonly UserService _userService;
         private readonly SlugService _slugService;
+
         // contructor to inject the DataContext
         public ReleaseService(
             DataContext dataContext,
@@ -93,7 +94,6 @@ namespace Services
 
             foreach (var file in releaseFiles)
             {
-
                 var id = ObjectId.GenerateNewId();
                 var trackSlug = await _slugService.GenerateSlug(file.FileName);
 
@@ -128,6 +128,23 @@ namespace Services
             // Insert the release into the database
             await _releases.InsertOneAsync(release);
             return release;
+        }
+
+        public async Task<Release> GetReleaseBySlugsAsync(string artistSlug, string releaseSlug)
+        {
+            return await _releases
+                .Find(release =>
+                    release.ArtistSlug == artistSlug && release.ReleaseSlug == releaseSlug
+                )
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<Artist> getArtistById(string id)
+        {
+            var artistCollection = _releases.Database.GetCollection<Artist>("artists");
+            return await artistCollection
+                .Find(artist => artist.Id == ObjectId.Parse(id))
+                .FirstOrDefaultAsync();
         }
     }
 }

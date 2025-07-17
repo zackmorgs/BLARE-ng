@@ -1,16 +1,14 @@
-<div class="container">
+<app-loader *ngIf="isLoading"></app-loader>
+
+<div class="container" *ngIf="!isLoading">
     <div class="play-header">
         <h1>Now Playing</h1>
         <div class="track-info">
-            <h2 class="artist-name">{{ artistSlug || 'Unknown Artist' }}</h2>
-            <h3 class="release-title">{{ releaseSlug || 'Unknown Release' }}</h3>
+            <h2 class="artist-name">{{ artistToPlay.name || 'Unknown Artist' }}</h2>
+            <h3 class="release-title">{{ releaseToPlay.title || 'Unknown Release' }}</h3>
         </div>
     </div>
     
-    <div class="slug-debug">
-        <p><strong>Artist Slug:</strong> {{ artistSlug }}</p>
-        <p><strong>Release Slug:</strong> {{ releaseSlug }}</p>
-    </div>
     
     <!-- Additional content can be added here -->
 </div>

@@ -3,6 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
+export interface Artist {
+    id: string;
+    name: string;
+    slug: string;
+}
+
 export interface Release {
     id: string;
     type: string; // e.g., 'album', 'single', 'ep'
@@ -66,7 +72,7 @@ export class ReleaseService {
     }
 
     getReleasesByArtist(artistId: string): Observable<Release[]> {
-        return this.http.get<Release[]>(`${this.releaseApiUrl}/artist/${artistId}`);
+        return this.http.get<Release[]>(`${this.releaseApiUrl}/artist/${artistId}/all`);
     }
 
     // Get releases by artist
@@ -217,5 +223,13 @@ export class ReleaseService {
         
         return errors;
     }
-}
 
+    getReleaseBySlugs(artistSlug: string, releaseSlug: string): Observable<Release> {
+        return this.http.get<Release>(`${this.releaseApiUrl}/artist/${artistSlug}/title/${releaseSlug}`);
+    }
+
+    getArtistById(artistId: string): Observable<Artist> {
+        return this.http.get<Artist>(`${this.releaseApiUrl}/artist/${artistId}`);
+    }
+
+}

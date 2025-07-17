@@ -25,6 +25,8 @@ export class PlayerComponent implements OnDestroy {
   duration = 0;
   volume = 0.5;
   trackIsStarred = false;
+  shouldDisplay = false;
+
 
   private audio: HTMLAudioElement | null = null;
 

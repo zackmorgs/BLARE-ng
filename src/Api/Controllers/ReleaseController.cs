@@ -24,7 +24,7 @@ namespace Controllers
             return Ok(releases);
         }
 
-        [HttpGet("artist/{id}")]
+        [HttpGet("artist/{id}/all")]
         public async Task<IActionResult> GetArtistReleases(string id)
         {
             var releases = await _releaseService.GetReleasesByArtistIdAsync(id);
@@ -52,6 +52,19 @@ namespace Controllers
             }
             return Ok(release);
         }
+
+        [HttpGet("artist/{artistSlug}/title/{releaseSlug}")]
+        public async Task<IActionResult> GetReleaseBySlugs(string artistSlug, string releaseSlug)
+        {
+            var release = await _releaseService.GetReleaseBySlugsAsync(artistSlug, releaseSlug);
+            if (release == null)
+            {
+                return NotFound();
+            }
+            return Ok(release);
+        }
+
+
 
         [HttpGet("recent")]
         public async Task<IActionResult> GetRecentReleases([FromQuery] int limit = 10)
@@ -106,6 +119,17 @@ namespace Controllers
             {
                 return BadRequest($"Error uploading release: {ex.Message}");
             }
+        }
+
+        [HttpGet("artist/{id}")]
+        public async Task<IActionResult> GetArtistById(string id)
+        {
+            var artist = await _releaseService.getArtistById(id);
+            if (artist == null)
+            {
+                return NotFound();
+            }
+            return Ok(artist);
         }
     }
 }

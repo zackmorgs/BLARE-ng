@@ -1,4 +1,4 @@
-<div id="player" [class.show]="isShowing">
+<div id="player" [class.show]="isShowing" *ngIf="shouldDisplay">
     <nav id="expanded_player_nav"><button id="close_player"><img alt="Close Player"
                 src="/svg/icon-caret-down-circle.svg"></button><button id="share"><img alt="Share"
                 src="/svg/icon-share.svg"></button><button id="more_info"><img alt="More Info"
