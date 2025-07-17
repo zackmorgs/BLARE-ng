@@ -1,26 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Configuration;
 using System.Threading.Tasks;
 using Data;
+using Microsoft.Extensions.Configuration;
 using Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using PuppeteerSharp;
-using Microsoft.Extensions.Configuration;
+using Slugify;
 
 internal class Program
 {
     private static async global::System.Threading.Tasks.Task Main(string[] args)
     {
-        // Set up configuration
-        var builder = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddEnvironmentVariables();
-
-        IConfiguration configuration = builder.Build();
-
         string tagScraperUrl = "https://en.wikipedia.org/wiki/List_of_music_genres_and_styles";
 
         var browserFetcher = new BrowserFetcher();
@@ -43,27 +36,64 @@ internal class Program
             // Extract tags from the page
             var tagsObjects = await page.QuerySelectorAllAsync("#mw-content-text li .mw-redirect");
 
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory()) // Adjust if needed
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
             var dataContext = new DataContext(configuration);
 
             var tags = new List<string>();
+            SlugHelper helper = new SlugHelper();
 
-            foreach (var tagElement in tagsObjects)
+            foreach (var tagDom in tagsObjects)
             {
-                string tagText = await tagElement.EvaluateFunctionAsync<string>("el => el.textContent");
-                string processedTag = tagText.Trim()
-                    .ToLower()
-                    .Replace(" ", "-");
-                
-                Console.WriteLine(processedTag);
-                tags.Add(processedTag);
+                string tag = tagDom
+                    .EvaluateFunctionAsync<string>("el => el.textContent")
+                    .Result.Trim()
+                    .ToLower();
+
+                // slugify the tag;
+                tag = helper.GenerateSlug(tag);
+                // tags.Add(tag.innerHTML.Trim());
+                // Console.WriteLine(tag);
+                tags.Add(tag);
             }
 
-            foreach (var tag in tags)
+            foreach (var tagString in tags)
             {
-                if (!string.IsNullOrWhiteSpace(tag))
+                // Check if the tag already exists in the database
+                var tagInDb = await dataContext
+                    .MusicTags.Find(t => t.Name == tagString)
+                    .FirstOrDefaultAsync();
+
+                // Check if the tag exists in the Slugs collection
+                var slugInDb = await dataContext
+                    .Slugs.Find(t => t.SlugValue == tagString)
+                    .FirstOrDefaultAsync();
+
+                if (tagInDb != null || slugInDb != null)
                 {
-                    var musicTag = new MusicTag { Name = tag };
-                    await dataContext.MusicTags.InsertOneAsync(musicTag);
+                    Console.WriteLine($"Tag '{tagString}' already exists in the database.");
+                    continue; // Skip inserting if the tag already exists
+                }
+                else
+                {
+                    // isnt in either db.
+                    await dataContext.MusicTags.InsertOneAsync(
+                        new MusicTag
+                        {
+                            Id = ObjectId.GenerateNewId(),
+                            Name = tagString,
+                            Slug = tagString,
+                        }
+                    );
+
+                    // create unique id
+                    await dataContext.Slugs.InsertOneAsync(
+                        new Slug { Id = ObjectId.GenerateNewId(), SlugValue = tagString }
+                    );
+
                 }
             }
 
