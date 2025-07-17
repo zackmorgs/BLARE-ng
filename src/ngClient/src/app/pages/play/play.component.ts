@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { TitleService } from '../../services/title.service';
 
 @Component({
   selector: 'app-play',
@@ -12,7 +13,10 @@ export class PlayComponent implements OnInit {
   artistSlug: string | null = null;
   releaseSlug: string | null = null;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(
+    private route: ActivatedRoute,
+    private titleService: TitleService
+  ) {
     // Initialization logic can go here
   }
 
@@ -23,5 +27,12 @@ export class PlayComponent implements OnInit {
     
     console.log('Artist Slug:', this.artistSlug);
     console.log('Release Slug:', this.releaseSlug);
+
+    // Set dynamic title based on the slugs
+    if (this.artistSlug && this.releaseSlug) {
+      const artistName = this.artistSlug.replace(/-/g, ' ');
+      const releaseName = this.releaseSlug.replace(/-/g, ' ');
+      this.titleService.setDynamicTitle('Now Playing', `${artistName} - ${releaseName}`);
+    }
   }
 }

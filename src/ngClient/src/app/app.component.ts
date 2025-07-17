@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { NavSettings } from './components/nav-settings/nav-settings.component';
 import { AuthService } from './services/auth.service';
 import { PlayerComponent } from './components/player/player.component';
+import { TitleService } from './services/title.service';
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, NavSettings, CommonModule, PlayerComponent],
@@ -13,4 +15,5 @@ import { PlayerComponent } from './components/player/player.component';
 export class AppComponent {
   title = 'client';
   authService = inject(AuthService);
+  titleService = inject(TitleService); // This initializes the title service
 }

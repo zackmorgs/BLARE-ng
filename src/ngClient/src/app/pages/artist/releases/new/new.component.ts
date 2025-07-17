@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ReleaseService, CreateReleaseRequest } from './../../../../services/release.service';
 import { AuthService } from '../../../../services/auth.service';
 import { UploaderComponent } from '../../../../components/uploader/uploader.component';
+import { TitleService } from '../../../../services/title.service';
 
 @Component({
   selector: 'app-new',
@@ -12,6 +13,7 @@ import { UploaderComponent } from '../../../../components/uploader/uploader.comp
   templateUrl: './new.component.html',
   styleUrl: './new.component.scss'
 })
+
 export class NewComponent implements OnInit {
   releaseForm: FormGroup;
   errorMessage: string | null = null;
@@ -25,6 +27,7 @@ export class NewComponent implements OnInit {
   private releaseService = inject(ReleaseService);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private titleService = inject(TitleService);
 
   constructor() {
     this.releaseForm = this.fb.group({
@@ -37,7 +40,8 @@ export class NewComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Any additional initialization can go here
+    // Set the page title
+    this.titleService.setTitle('Create New Release - BLARE');
   }
 
   // Form field getters for validation
