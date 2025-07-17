@@ -1,14 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { NavSettings } from './components/nav-settings/nav-settings.component';
+import { TopNav } from './components/top-nav/top-nav.component';
 import { AuthService } from './services/auth.service';
 import { PlayerComponent } from './components/player/player.component';
 import { TitleService } from './services/title.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavSettings, CommonModule, PlayerComponent],
+  imports: [RouterOutlet, TopNav, CommonModule, PlayerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
