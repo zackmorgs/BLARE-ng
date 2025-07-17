@@ -4,10 +4,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { ReleaseService, CreateReleaseRequest } from './../../../../services/release.service';
 import { AuthService } from '../../../../services/auth.service';
+import { LoaderComponent } from '../../../../components/loader/loader.component';
 
 @Component({
   selector: 'app-new',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, LoaderComponent],
   templateUrl: './new.component.html',
   styleUrl: './new.component.scss'
 })
@@ -18,6 +19,8 @@ export class NewComponent implements OnInit {
   selectedCoverImage: File | null = null;
   selectedAudioFiles: File[] = [];
   
+  isUploading: boolean = true;
+
   private fb = inject(FormBuilder);
   private releaseService = inject(ReleaseService);
   private authService = inject(AuthService);
