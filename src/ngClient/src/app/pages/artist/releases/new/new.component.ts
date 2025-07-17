@@ -4,11 +4,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { ReleaseService, CreateReleaseRequest } from './../../../../services/release.service';
 import { AuthService } from '../../../../services/auth.service';
-import { LoaderComponent } from '../../../../components/loader/loader.component';
+import { UploaderComponent } from '../../../../components/uploader/uploader.component';
 
 @Component({
   selector: 'app-new',
-  imports: [CommonModule, ReactiveFormsModule, LoaderComponent],
+  imports: [CommonModule, ReactiveFormsModule, UploaderComponent],
   templateUrl: './new.component.html',
   styleUrl: './new.component.scss'
 })
