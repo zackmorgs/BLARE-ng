@@ -19,7 +19,7 @@ export class NewComponent implements OnInit {
   selectedCoverImage: File | null = null;
   selectedAudioFiles: File[] = [];
   
-  isUploading: boolean = true;
+  isUploading: boolean = false;
 
   private fb = inject(FormBuilder);
   private releaseService = inject(ReleaseService);
@@ -74,6 +74,8 @@ export class NewComponent implements OnInit {
   }
 
   onAlbumCreateSubmit() {
+    this.isUploading = true;
+
     if (this.releaseForm.invalid || !this.selectedCoverImage || this.selectedAudioFiles.length == 0) {
       this.markFormGroupTouched();
       return;
@@ -113,11 +115,13 @@ export class NewComponent implements OnInit {
         console.log('Release created successfully:', response);
         this.isSubmitting = false;
         this.router.navigate(['/home']);
+        this.isUploading = false;
       },
       error: (error) => {
         console.error('Error creating release:', error);
         this.errorMessage = error.error?.message || 'Failed to create release. Please try again.';
         this.isSubmitting = false;
+        this.isUploading = false;
       }
     });
   }
