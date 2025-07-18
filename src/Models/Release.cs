@@ -7,7 +7,7 @@ namespace Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
+        public ObjectId Id { get; set; }
 
         [BsonElement("type")]
         [BsonRequired]
@@ -45,6 +45,9 @@ namespace Models
 
         [BsonElement("trackUrls")]
         public List<string> TrackUrls { get; set; } = new List<string>();
+        
+        [BsonElement("trackNames")]
+        public List<string> TrackNames { get; set; } = new List<string>();
 
         [BsonElement("releaseSlug")]
         public string ReleaseSlug { get; set; } = string.Empty;

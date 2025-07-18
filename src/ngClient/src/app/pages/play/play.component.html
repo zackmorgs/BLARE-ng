@@ -10,11 +10,11 @@
     </div>
     <div class="track-list-container">
         <ul class="track-list">
-            <li *ngFor="let track of releaseToPlay.trackUrls" class="track-item">
+            <li *ngFor="let track of releaseToPlay.trackNames" class="track-item">
                 <button class="track-name" (click)="playTrack(track)">{{ track }}</button>
             </li>
         </ul>
     </div>
-    
+
     <!-- Additional content can be added here -->
 </div>

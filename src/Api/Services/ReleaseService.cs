@@ -52,7 +52,9 @@ namespace Services
         //
         public async Task<Release> GetByIdAsync(string id)
         {
-            return await _releases.Find(release => release.Id == id).FirstOrDefaultAsync();
+            return await _releases
+                .Find(release => release.Id == ObjectId.Parse(id))
+                .FirstOrDefaultAsync();
         }
 
         public async Task<List<Release>> GetRecentAsync(int limit = 10) =>
@@ -70,80 +72,106 @@ namespace Services
             IFormFile[] releaseFiles
         )
         {
-            // if my understanding is correct, this should be a unique ID for the release
-            var releaseId = ObjectId.GenerateNewId();
-
-            var coverImageName = $"{releaseId.ToString()}{Path.GetExtension(coverImage.FileName)}";
-            var coverImagePath = Path.Combine(_uploadsPath + "/albumart", coverImageName);
-            using (var stream = new FileStream(coverImagePath, FileMode.Create))
+            try
             {
-                await coverImage.CopyToAsync(stream);
-            }
-            var coverImageUrl = $"/uploads/albumart/{coverImageName}";
-            release.CoverImageUrl = coverImageUrl;
+                // Generate and assign the release ID
+                var releaseId = ObjectId.GenerateNewId();
+                release.Id = releaseId; // FIX: Assign the ID
 
-            // Initialize slug
-            var releaseSlug = await _slugService.GenerateSlug(release.Title);
-            release.ReleaseSlug = releaseSlug.SlugValue;
+                // Initialize lists if they're null
+                release.TrackUrls ??= new List<string>(); // FIX: Initialize if null
+                release.TrackNames ??= new List<string>(); // FIX: Initialize if null
 
-            // get artist slug
-            var artistId = release.ArtistId;
-            string artistSlug = await _userService.GetUserSlugAsync(artistId);
-            release.ArtistSlug = artistSlug;
-
-            // check the Artist db for this artist, if it doesnt exist, create it
-            var artist = await getArtistById(artistId);
-
-            if (artist == null)
-            {
-                var user = await _userService.GetUserByIdAsync(artistId);
-                artist = new Artist
+                // Fix cover image path
+                var coverImageName =
+                    $"{releaseId.ToString()}{Path.GetExtension(coverImage.FileName)}";
+                // This could fail if _uploadsPath is null
+                var coverImagePath = Path.Combine(_uploadsPath + "/albumart", coverImageName);
+                using (var stream = new FileStream(coverImagePath, FileMode.Create))
                 {
-                    Id = ObjectId.Parse(artistId),
-                    Name = user.Username,
-                    Slug = artistSlug
-                };
-                await _artistService.CreateAsync(artist);
-            }
+                    await coverImage.CopyToAsync(stream);
+                }
+                var coverImageUrl = $"/uploads/albumart/{coverImageName}";
+                release.CoverImageUrl = coverImageUrl;
 
-            List<string> trackUrls = new List<string>();
+                // Initialize slug
+                var releaseSlug = await _slugService.GenerateSlug(release.Title);
+                release.ReleaseSlug = releaseSlug.SlugValue;
 
-            foreach (var file in releaseFiles)
-            {
-                var id = ObjectId.GenerateNewId();
-                var trackSlug = await _slugService.GenerateSlug(file.FileName);
+                // get artist slug
+                var artistId = release.ArtistId;
+                string artistSlug = await _userService.GetUserSlugAsync(artistId);
+                release.ArtistSlug = artistSlug;
 
-                // Generate unique filename
-                var fileName = id.ToString() + Path.GetExtension(file.FileName);
-                var filePath = Path.Combine(_uploadsPath + "/releases", fileName);
+                // Set timestamps
+                release.CreatedAt = DateTime.UtcNow;
+                release.UpdatedAt = DateTime.UtcNow;
 
-                // Save file to disk
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                // check the Artist db for this artist, if it doesnt exist, create it
+                var artist = await getArtistById(artistId);
+                if (artist == null)
                 {
-                    await file.CopyToAsync(stream);
+                    var user = await _userService.GetUserByIdAsync(artistId);
+                    if (user != null) // FIX: Check if user exists
+                    {
+                        artist = new Artist
+                        {
+                            Id = ObjectId.Parse(user.Id),
+                            Name = user.Username,
+                            Slug = artistSlug,
+                            CreatedAt = DateTime.UtcNow,
+                            UpdatedAt = DateTime.UtcNow,
+                        };
+                        await _artistService.CreateAsync(artist);
+                    }
                 }
 
-                var track = new Track
+                foreach (var file in releaseFiles)
                 {
-                    Id = id,
-                    Title = file.FileName,
-                    ArtistId = ObjectId.Parse(release.ArtistId),
-                    FileUrl = $"/uploads/tracks/{file.FileName}",
-                    Duration = TimeSpan.Zero, // Placeholder
-                    UploadedAt = DateTime.UtcNow,
-                    MusicTagIds = null,
-                    Slug = trackSlug.SlugValue,
-                };
+                    var trackId = ObjectId.GenerateNewId();
+                    var trackSlug = await _slugService.GenerateSlug(
+                        Path.GetFileNameWithoutExtension(file.FileName)
+                    ); // FIX: Use clean filename
 
-                await _trackService.CreateAsync(track);
+                    // Generate unique filename
+                    var fileName = trackId.ToString() + Path.GetExtension(file.FileName);
+                    var filePath = Path.Combine(_uploadsPath, "releases", fileName); // FIX: Use proper Path.Combine
 
-                // Add file URL to release
-                release.TrackUrls.Add($"/uploads/releases/{fileName}");
+                    // Save file to disk
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    var track = new Track
+                    {
+                        Id = trackId,
+                        Title = Path.GetFileNameWithoutExtension(file.FileName), // FIX: Clean title
+                        ArtistId = ObjectId.Parse(release.ArtistId),
+                        FileUrl = $"/uploads/releases/{fileName}", // FIX: Use correct path and generated filename
+                        Duration = TimeSpan.Zero,
+                        UploadedAt = DateTime.UtcNow,
+                        MusicTagIds = null,
+                        Slug = trackSlug.SlugValue,
+                    };
+
+                    await _trackService.CreateAsync(track);
+
+                    // Add file URL to release (now safe because lists are initialized)
+                    release.TrackUrls.Add($"/uploads/releases/{fileName}");
+                    release.TrackNames.Add(Path.GetFileNameWithoutExtension(file.FileName)); // FIX: Use clean name
+                }
+
+                // Insert the release into the database
+                await _releases.InsertOneAsync(release);
+                return release;
             }
-
-            // Insert the release into the database
-            await _releases.InsertOneAsync(release);
-            return release;
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error creating release: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}"); // FIX: Add stack trace for better debugging
+                throw;
+            }
         }
 
         public async Task<Release> GetReleaseBySlugsAsync(string artistSlug, string releaseSlug)

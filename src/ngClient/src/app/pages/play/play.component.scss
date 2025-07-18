@@ -13,7 +13,26 @@
     margin-bottom: 20px;
   }
 }
+.track-list-container {
+  
+}
 
+.track-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+.track-item {
+
+}
+.track-name {
+  background:none;
+  color:#f1f1f1;
+  border:none;
+  padding:0.5rem 0.25rem;
+  display:block;
+  
+}
 .track-info {
   .artist-name {
     font-size: 2rem;
@@ -27,23 +46,6 @@
     color: #888;
     margin-bottom: 0;
     text-transform: capitalize;
-  }
-}
-
-.slug-debug {
-  background-color: #000000;
-  padding: 15px;
-  border-radius: 8px;
-  margin-top: 20px;
-  
-  p {
-    margin: 5px 0;
-    font-family: monospace;
-    font-size: 14px;
-    
-    strong {
-      color: #333;
-    }
   }
 }
 
