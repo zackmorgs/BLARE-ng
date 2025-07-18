@@ -20,7 +20,7 @@ export class PlayComponent implements OnInit {
   artistSlug: string | null = null;
   releaseSlug: string | null = null;
   $releaseService: ReleaseService;
-  
+
   releaseToPlay!: Release;
   artistToPlay!: Artist;
 
@@ -36,7 +36,7 @@ export class PlayComponent implements OnInit {
     // Get the slugs from the route parameters
     this.artistSlug = this.route.snapshot.paramMap.get('artistSlug');
     this.releaseSlug = this.route.snapshot.paramMap.get('releaseSlug');
-    
+
     this.loadRelease(this.artistSlug, this.releaseSlug);
   }
   loadArtist(artistID: string): void {
@@ -91,13 +91,10 @@ export class PlayComponent implements OnInit {
       console.error('Artist or release slug is missing');
     }
   }
-  playTrack(trackUrl: string): void {
-    if (trackUrl) {
-      console.log(`Playing track: ${trackUrl}`);
-      // Logic to play the track
-      // This could involve setting a source on an audio player component, etc.
-    } else {
-      console.error('Track URL is missing');
-    }
+
+  playTrack(trackName: string, trackIndex: number) {
+    const trackUrl = this.releaseToPlay.trackUrls[trackIndex];
+    console.log('Playing:', trackName, 'from:', trackUrl);
+    // Play the track using the URL
   }
 }

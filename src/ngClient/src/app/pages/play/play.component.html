@@ -10,8 +10,10 @@
     </div>
     <div class="track-list-container">
         <ul class="track-list">
-            <li *ngFor="let track of releaseToPlay.trackNames" class="track-item">
-                <button class="track-name" (click)="playTrack(track)">{{ track }}</button>
+            <li *ngFor="let track of releaseToPlay.trackNames; let i = index" class="track-item">
+                <button class="track" (click)="playTrack(track, i)">
+                    <span>{{ track }}</span>
+                </button>
             </li>
         </ul>
     </div>
