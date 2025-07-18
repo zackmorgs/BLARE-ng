@@ -91,4 +91,13 @@ export class PlayComponent implements OnInit {
       console.error('Artist or release slug is missing');
     }
   }
+  playTrack(trackUrl: string): void {
+    if (trackUrl) {
+      console.log(`Playing track: ${trackUrl}`);
+      // Logic to play the track
+      // This could involve setting a source on an audio player component, etc.
+    } else {
+      console.error('Track URL is missing');
+    }
+  }
 }

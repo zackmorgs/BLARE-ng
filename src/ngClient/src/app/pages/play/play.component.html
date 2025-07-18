@@ -11,7 +11,7 @@
     <div class="track-list-container">
         <ul class="track-list">
             <li *ngFor="let track of releaseToPlay.trackUrls" class="track-item">
-                <span class="track-name">{{ track }}</span>
+                <button class="track-name" (click)="playTrack(track)">{{ track }}</button>
             </li>
         </ul>
     </div>
