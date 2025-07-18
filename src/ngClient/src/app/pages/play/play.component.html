@@ -2,6 +2,9 @@
 
 <div class="container" *ngIf="!isLoading">
     <div class="play-header">
+        <div class="release-bg">
+            <img id="release-bg-img" src="http://localhost:5051/{{ releaseToPlay.coverImageUrl || '' }}" alt="release background">
+        </div>
         <div class="release-info">
             <img class="album-art" src="http://localhost:5051/{{ releaseToPlay.coverImageUrl || '' }}" alt="">
             <h2 class="artist-name">{{ artistToPlay.name || 'Unknown Artist' }}</h2>
