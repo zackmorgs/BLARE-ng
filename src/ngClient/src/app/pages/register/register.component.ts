@@ -25,7 +25,8 @@ export class RegisterComponent {
       username: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      role: ['', [Validators.required]]
+      role: ['', [Validators.required]],
+      artistName: ['', [Validators.minLength(3)]]
     });
   }
 
@@ -51,6 +52,8 @@ export class RegisterComponent {
   get email() { return this.registerForm.get('email'); }
   get password() { return this.registerForm.get('password'); }
   get role() { return this.registerForm.get('role'); }
+  get artistName() {
+    return this.registerForm.get('artistName');
 
-  
+  }
 }

@@ -23,7 +23,7 @@
 
       <div id="role_input" class="form-group">
         <select class="text-input" id="role" formControlName="role">
-          <option value="" disabled selected>Select Role</option>
+          <option value="" disabled >Select Role</option>
           <option value="listener">Listener</option>
           <option value="artist">Artist</option>
         </select>
@@ -31,7 +31,14 @@
           <span *ngIf="role?.errors?.['required']">Role is required</span>
         </div>
       </div>
-
+      <div *ngIf="role?.value === 'artist'" class="form-group">
+        <div *ngIf="artistName?.invalid && artistName?.touched" class="error-message">
+          <span *ngIf="artistName?.errors?.['required']">Artist Name is required</span>
+          <span *ngIf="artistName?.errors?.['minlength']">Artist Name must be at least 3 characters</span>
+        </div>
+        <input class="text-input" type="text" id="artistName" formControlName="artistName"
+          [class.error]="artistName?.invalid && artistName?.touched" autocomplete="true" placeholder="Artist Name">
+      </div>
       <div class="form-group">
         <input class="text-input" type="password" id="password" formControlName="password"
           [class.error]="password?.invalid && password?.touched" autocomplete="true" placeholder="Password">
@@ -51,6 +58,6 @@
       </button>
     </form>
     <br />
-    <a routerLink="/login" class="btn">Login</a>
+    <a routerLink="/login" class="btn btn-secondary">Login</a>
   </div>
 </div>

@@ -3,6 +3,10 @@ using Models;
 using MongoDB.Driver;
 using Data;
 using MongoDB.Bson;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.Text;
 
 namespace Services
 {
@@ -10,11 +14,15 @@ namespace Services
     {
         private readonly IMongoCollection<User> _users;
         private readonly SlugService _slugService;
+        private readonly ArtistService _artistService;
+        private readonly IConfiguration _configuration;
 
-        public UserService(DataContext dataContext, SlugService slugService)
+        public UserService(DataContext dataContext, SlugService slugService, ArtistService artistService, IConfiguration configuration)
         {
             _users = dataContext.Users;
             _slugService = slugService;
+            _artistService = artistService;
+            _configuration = configuration;
         }
 
         // interates through _users collection to find a the first user with that username
@@ -33,7 +41,8 @@ namespace Services
             string username,
             string email,
             string password,
-            string role
+            string role,
+            string artistName
         )
         {
             // only one admin account right now..
@@ -45,16 +54,29 @@ namespace Services
 
                     var user = new User
                     {
+                        Id = ObjectId.GenerateNewId().ToString(),
                         Username = username,
                         Email = email,
                         PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
                         CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow, // ADD THIS
                         IsActive = true,
                         Avatar = String.Empty,
                         Role = role,
                         Slug = slug.SlugValue,
                     };
-
+                    if (role == "artist")
+                    {
+                        // their role is artist, we must create an artist
+                        await _artistService.CreateAsync(
+                            new Artist
+                            {
+                                Name = artistName,
+                                Slug = slug.SlugValue,
+                                Id = ObjectId.Parse(user.Id)
+                            }
+                        );  
+                    }
                     await _users.InsertOneAsync(user);
                     return user;
                 }
@@ -176,6 +198,38 @@ namespace Services
             if (user == null) throw new ArgumentException("User not found.");
 
             return user.Slug;
+        }
+
+        public string GenerateToken(User user)
+        {
+            var jwtSettings = _configuration.GetSection("JwtSettings");
+            var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey not configured");
+            var issuer = jwtSettings["Issuer"] ?? throw new InvalidOperationException("JWT Issuer not configured");
+            var audience = jwtSettings["Audience"] ?? throw new InvalidOperationException("JWT Audience not configured");
+            var expiryInMinutes = int.Parse(jwtSettings["ExpiryInMinutes"] ?? "60");
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id ?? string.Empty),
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim("userId", user.Id ?? string.Empty),
+                new Claim(ClaimTypes.Role, user.Role ?? "user")
+            };
+
+            var token = new JwtSecurityToken(
+                issuer: issuer,
+                audience: audience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(expiryInMinutes),
+                signingCredentials: credentials
+            );
+
+            // FIX: Add this return statement
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

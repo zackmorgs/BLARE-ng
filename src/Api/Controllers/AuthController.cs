@@ -12,7 +12,11 @@ namespace Controllers
         private readonly UserService _userService;
         private readonly JwtService _jwtService;
 
-        public AuthController(UserService userService, JwtService jwtService, SlugService slugService)
+        public AuthController(
+            UserService userService,
+            JwtService jwtService,
+            SlugService slugService
+        )
         {
             _userService = userService;
             _jwtService = jwtService;
@@ -23,6 +27,7 @@ namespace Controllers
         {
             // Check if user already exists
             var existingUser = await _userService.GetUserByUsernameAsync(request.Username);
+
             if (existingUser != null)
             {
                 return BadRequest(new { message = "Username already exists" });
@@ -33,14 +38,41 @@ namespace Controllers
             {
                 return BadRequest(new { message = "Email already exists" });
             }
+            // Validate role
+            if (string.IsNullOrWhiteSpace(request.Role))
+            {
+                return BadRequest(new { message = "Invalid role specified" });
+            }
+
+            if (request.Role == "artist" && string.IsNullOrWhiteSpace(request.ArtistName))
+            {
+                return BadRequest(new { message = "Artist name is required for artist role" });
+            }
 
             // Create new user
-            var user = await _userService.CreateUserAsync(
-                request.Username,
-                request.Email,
-                request.Password,
-                request.Role
-            );
+            var user = new User();
+
+            if (request.Role == "artist")
+            {
+                user = await _userService.CreateUserAsync(
+                    request.Username,
+                    request.Email,
+                    request.Password,
+                    request.Role,
+                    request.ArtistName
+                );
+            }
+            else
+            {
+                user = await _userService.CreateUserAsync(
+                    request.Username,
+                    request.Email,
+                    request.Password,
+                    request.Role,
+                    ""
+                );
+            }
+
             var token = _jwtService.GenerateToken(user);
 
             return Ok(
@@ -77,7 +109,8 @@ namespace Controllers
                         user.Id,
                         user.Username,
                         user.Email,
-                        user.Role
+                        user.Role,
+                        user.ArtistName,
                     },
                 }
             );
@@ -104,6 +137,7 @@ namespace Controllers
 
     public class RegisterRequest
     {
+        public string ArtistName { get; set; } = string.Empty;
         public string Username { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;

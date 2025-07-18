@@ -1,5 +1,4 @@
 // Services/ReleaseService.cs
-using Controllers;
 using Data;
 using Models;
 using MongoDB.Bson;
@@ -15,6 +14,7 @@ namespace Services
         private readonly TrackService _trackService;
         private readonly UserService _userService;
         private readonly SlugService _slugService;
+        private readonly ArtistService _artistService;
 
         // contructor to inject the DataContext
         public ReleaseService(
@@ -22,7 +22,8 @@ namespace Services
             IWebHostEnvironment env,
             TrackService trackService,
             SlugService slugService,
-            UserService userService
+            UserService userService,
+            ArtistService artistService
         )
         {
             _releases = dataContext.Releases;
@@ -89,6 +90,21 @@ namespace Services
             var artistId = release.ArtistId;
             string artistSlug = await _userService.GetUserSlugAsync(artistId);
             release.ArtistSlug = artistSlug;
+
+            // check the Artist db for this artist, if it doesnt exist, create it
+            var artist = await getArtistById(artistId);
+
+            if (artist == null)
+            {
+                var user = await _userService.GetUserByIdAsync(artistId);
+                artist = new Artist
+                {
+                    Id = ObjectId.Parse(artistId),
+                    Name = user.Username,
+                    Slug = artistSlug
+                };
+                await _artistService.CreateAsync(artist);
+            }
 
             List<string> trackUrls = new List<string>();
 

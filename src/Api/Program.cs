@@ -19,6 +19,7 @@ internal class Program
         builder.Services.AddSingleton<ReleaseService>();
         builder.Services.AddSingleton<TagService>();
         builder.Services.AddSingleton<SlugService>();
+        builder.Services.AddSingleton<ArtistService>();
 
         builder.Services.AddControllers();
 

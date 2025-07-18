@@ -31,7 +31,8 @@ namespace Services
                 new Claim(ClaimTypes.NameIdentifier, user.Id ?? string.Empty),
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim("userId", user.Id ?? string.Empty)
+                new Claim("userId", user.Id ?? string.Empty),
+                new Claim(ClaimTypes.Role, user.Role ?? "user") // ADD THIS
             };
 
             var token = new JwtSecurityToken(
