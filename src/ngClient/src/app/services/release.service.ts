@@ -21,6 +21,7 @@ export interface Release {
     trackIds: string[];
     releaseSlug: string;
     artistSlug: string;
+    trackUrls: string[];
 }
 
 export interface CreateReleaseRequest {
