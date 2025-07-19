@@ -6,7 +6,7 @@
     "start": "npm-run-all --parallel dev:*",
     "dev:client": "cd ./src/ngClient && ng serve --open",
     "dev:api": "cd ./src/Api && dotnet watch run",
-    "scrape": "cd ./src/tagScraper && dotnet run"
+    "start:scrape": "cd ./src/tagScraper && dotnet run"
   },
   "keywords": [],
   "author": "",

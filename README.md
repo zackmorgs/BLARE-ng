@@ -138,6 +138,7 @@ BLARE-ng/
 - [ ] Cypress end-to-end testing
 - [ ] Admin dashboard development, among other required UI needed
 - [ ] Streaming audio player
+- [ ] Move PuppeteerSharp to straight Puppeteer in JavaScript - PuppeteerSharp wont work in deployment environment.
 
 ## URL Structure Goals?
 - /play/{artist-slug}/{release-slug}
