@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 
 export interface Track {
   id: string;
@@ -83,5 +83,17 @@ export class PlayerService {
   // Get playing status
   getIsPlaying(): boolean {
     return this.isPlayingSubject.value;
+  }
+
+  // Check if player should be displayed
+  hasActiveTrack(): boolean {
+    return this.currentTrackSubject.value !== null;
+  }
+
+  // Observable for checking if player should be displayed
+  get hasActiveTrack$() {
+    return this.currentTrack$.pipe(
+      map(track => track !== null)
+    );
   }
 }

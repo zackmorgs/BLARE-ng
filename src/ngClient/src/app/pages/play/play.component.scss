@@ -8,8 +8,11 @@
   text-align: center;
   margin-bottom: 30px;
   position: relative;
-  overflow:hidden;
-  border-radius:0.5rem;
+  overflow: hidden;
+  box-shadow: 2px 2px 1rem #0000005c;
+
+  border-radius: 0.5rem;
+
   h1 {
     color: #333;
     margin-bottom: 20px;
@@ -23,7 +26,8 @@
   margin-left: -1rem;
   z-index: 10;
   position: relative;
-
+  overflow: hidden;
+  box-shadow: inset 2px 2px 1rem #0000001c
 }
 
 .track-list-container {}
@@ -52,19 +56,19 @@
 }
 
 .artist-name {
-  font-size: 2rem;
+  font-size: 1.75rem;
   color: #f1f1f1;
   margin-bottom: 10px;
   text-transform: capitalize;
   z-index: 10;
-  text-shadow: 2px 2px 1rem #0000005c;
-  ;
+  text-shadow: 2px 2px 0.5rem #0000009f;
 }
 
 .release-title {
   font-size: 1rem;
   margin-bottom: 0;
   text-transform: capitalize;
+  text-shadow: 2px 2px 0.5rem #0000009f;
 
 }
 

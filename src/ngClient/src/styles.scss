@@ -47,6 +47,16 @@ h3 {
     text-transform: uppercase;
 }
 
+.content {
+    height:calc(100vh - (58px));
+    overflow-y: scroll;
+}
+
+.has-player.content {
+    height:calc(100vh - (58px + 80px));
+    overflow-y: scroll;
+}
+
 .container {
     padding: 1rem;
 }

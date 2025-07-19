@@ -1,7 +1,7 @@
 <div class="app-container" [class.authenticated]="authService.isAuthenticated$ | async">
   <top-nav *ngIf="authService.isAuthenticated$ | async"></top-nav>
-  <main class="content">
+  <main class="content" [class.has-player]="playerService.hasActiveTrack$ | async">
     <router-outlet></router-outlet>
   </main>
-  <app-player *ngIf="authService.isAuthenticated$ | async"></app-player>
+  <app-player *ngIf="(authService.isAuthenticated$ | async) && (playerService.hasActiveTrack$ | async)"></app-player>
 </div>
