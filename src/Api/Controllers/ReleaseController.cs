@@ -4,6 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
 
+public class UpdateReleaseMetadataRequest
+{
+    public List<string>? TrackNames { get; set; }
+    public bool? IsPublic { get; set; }
+}
+
 namespace Controllers
 {
     [Route("api/[controller]")]
@@ -130,6 +136,40 @@ namespace Controllers
                 return NotFound();
             }
             return Ok(artist);
+        }
+
+        [HttpPut("{id}/metadata")]
+        public async Task<IActionResult> UpdateReleaseMetadata(string id, [FromBody] UpdateReleaseMetadataRequest request)
+        {
+            try
+            {
+                var release = await _releaseService.GetByIdAsync(id);
+                if (release == null)
+                {
+                    return NotFound();
+                }
+
+                // Update track names if provided
+                if (request.TrackNames != null)
+                {
+                    release.TrackNames = request.TrackNames;
+                }
+
+                // Update public status if provided
+                if (request.IsPublic.HasValue)
+                {
+                    release.IsPublic = request.IsPublic.Value;
+                }
+
+                release.UpdatedAt = DateTime.UtcNow;
+                await _releaseService.UpdateAsync(id, release);
+
+                return Ok(release);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error updating release metadata: {ex.Message}");
+            }
         }
     }
 }

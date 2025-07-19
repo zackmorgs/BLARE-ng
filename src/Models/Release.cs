@@ -54,5 +54,8 @@ namespace Models
 
         [BsonElement("artistSlug")]
         public string ArtistSlug { get; set; } = string.Empty;
+
+        [BsonElement("isPublic")]
+        public bool IsPublic { get; set; } = false;
     }
 }

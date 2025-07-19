@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using Services;
+using System.Text.Json.Serialization;
+using MongoDB.Bson;
+using System.Text.Json;
 
 internal class Program
 {
@@ -21,7 +24,12 @@ internal class Program
         builder.Services.AddSingleton<SlugService>();
         builder.Services.AddSingleton<ArtistService>();
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new ObjectIdJsonConverter());
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            });
 
         // Configure Kestrel server limits for file uploads
         builder.Services.Configure<FormOptions>(options =>

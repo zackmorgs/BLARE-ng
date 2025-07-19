@@ -1,0 +1,110 @@
+<div class="container">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading">
+    <h2>Loading release...</h2>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="errorMessage && !isLoading" class="error">
+    <h2>Error</h2>
+    <p>{{ errorMessage }}</p>
+    <button (click)="goHome()">Go Home</button>
+  </div>
+
+  <!-- Main Content -->
+  <div *ngIf="release && !isLoading">
+    <header class="release-header">
+      <img 
+        [src]="'http://localhost:5051' + (release.coverImageUrl || '')" 
+        [alt]="release.title + ' cover'"
+        class="cover-image">
+      <div class="release-info">
+        <h1>Finish Your Release</h1>
+        <h2>{{ release.title }}</h2>
+        <p class="artist-name">{{ release.artistSlug }}</p>
+      </div>
+    </header>
+
+    <!-- Success/Error Messages -->
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Edit Form -->
+    <div class="edit-section">
+      <!-- Public/Private Toggle -->
+      <div class="public-toggle">
+        <label>
+          <input 
+            type="checkbox" 
+            [(ngModel)]="isPublic"
+            [disabled]="isSaving">
+          Make this release public
+        </label>
+        <p class="help-text">
+          {{ isPublic ? 'This release will be visible to everyone' : 'This release will only be visible to you' }}
+        </p>
+      </div>
+
+      <!-- Track Names Editor -->
+      <div class="track-editor">
+        <h3>Edit Track Titles</h3>
+        <div class="track-list">
+          <div 
+            *ngFor="let trackName of editableTrackNames; let i = index; trackBy: trackByIndex" 
+            class="track-item">
+            <span class="track-number">{{ i + 1 }}.</span>
+            <input 
+              type="text" 
+              [(ngModel)]="editableTrackNames[i]"
+              [disabled]="isSaving"
+              class="text-input"
+              placeholder="Track title">
+            <button 
+              *ngIf="editableTrackNames.length > 1"
+              (click)="removeTrack(i)"
+              [disabled]="isSaving"
+              class="remove-btn"
+              title="Remove track">
+              ×
+            </button>
+          </div>
+        </div>
+        
+        <button 
+          (click)="addTrack()"
+          [disabled]="isSaving"
+          class="add-track-btn">
+          + Add Track
+        </button>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button 
+          (click)="saveChanges()"
+          [disabled]="isSaving"
+          class="save-btn primary">
+          {{ isSaving ? 'Saving...' : 'Save Changes' }}
+        </button>
+        
+        <button 
+          (click)="goToRelease()"
+          [disabled]="isSaving"
+          class="view-release-btn">
+          View Release
+        </button>
+        
+        <button 
+          (click)="goHome()"
+          [disabled]="isSaving"
+          class="home-btn secondary">
+          Go Home
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

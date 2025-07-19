@@ -75,10 +75,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: { title: 'Now Playing - BLARE' }
   },
-  // {
-  //   path: 'play/playlist/:slug',
-  //   loadComponent: () => import('./pages/play/playlist/play-playlist.component').then(m => m.PlayPlaylistComponent),
-  //   canActivate: [authGuard]
-  // },
+  {
+    path: "artist/releases/new/finish/:releaseId",
+    loadComponent: () => import('./pages/artist/releases/finish/finish.component').then(m => m.FinishComponent),
+    canActivate: [authGuard],
+    data: { title: 'Finish Release - BLARE' }
+  },
+
   { path: '**', redirectTo: '/' }
 ];

@@ -23,6 +23,7 @@ export interface Release {
     artistSlug: string;
     trackUrls: string[];
     trackNames: string[];
+    isPublic: boolean;
 }
 
 export interface CreateReleaseRequest {
@@ -71,6 +72,11 @@ export class ReleaseService {
     // Get release by ID
     getReleaseById(id: string): Observable<Release> {
         return this.http.get<Release>(`${this.releaseApiUrl}/artist/${id}`);
+    }
+
+    // Get release by ID
+    getRelease(id: string): Observable<Release> {
+        return this.http.get<Release>(`${this.releaseApiUrl}/${id}`);
     }
 
     getReleasesByArtist(artistId: string): Observable<Release[]> {
@@ -134,6 +140,11 @@ export class ReleaseService {
                 }
             })
         );
+    }
+
+    // Update track names and public status
+    updateReleaseMetadata(releaseId: string, metadata: { trackNames?: string[], isPublic?: boolean }): Observable<Release> {
+        return this.http.put<Release>(`${this.releaseApiUrl}/${releaseId}/metadata`, metadata);
     }
 
     // Delete release

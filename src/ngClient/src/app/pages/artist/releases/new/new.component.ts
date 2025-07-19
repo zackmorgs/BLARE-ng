@@ -117,9 +117,28 @@ export class NewComponent implements OnInit {
     this.releaseService.createRelease(releaseData).subscribe({
       next: (response) => {
         console.log('Release created successfully:', response);
+        console.log('Response ID:', response.id);
+        console.log('Response ID type:', typeof response.id);
+        
         this.isSubmitting = false;
-        this.router.navigate(['/home']);
-        this.isUploading = false;
+
+        if (response.id) {
+          console.log('Attempting to navigate to:', '/artist/releases/new/finish/' + response.id);
+          this.router.navigate(['/artist/releases/new/finish', response.id]).then(
+            (success) => {
+              console.log('Navigation success:', success);
+              this.isUploading = false;
+            },
+            (error) => {
+              console.error('Navigation error:', error);
+              this.isUploading = false;
+            }
+          );
+        } else {
+          console.error('No ID in response, cannot navigate');
+          this.errorMessage = 'Release created but cannot navigate to finish page. Missing ID in response.';
+          this.isUploading = false;
+        }
       },
       error: (error) => {
         console.error('Error creating release:', error);

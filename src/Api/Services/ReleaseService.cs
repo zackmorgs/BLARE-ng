@@ -66,6 +66,12 @@ namespace Services
 
         public async Task CreateAsync(Release release) => await _releases.InsertOneAsync(release);
 
+        public async Task UpdateAsync(string id, Release release)
+        {
+            var filter = Builders<Release>.Filter.Eq(r => r.Id, ObjectId.Parse(id));
+            await _releases.ReplaceOneAsync(filter, release);
+        }
+
         public async Task<Release> CreateReleaseAsync(
             Release release,
             IFormFile coverImage,

@@ -1,6 +1,8 @@
 <div class="register-container">
   <div class="register-form container">
-    <h1 id="logo">BLARE</h1>
+    <a routerLink="/" class="logo">
+      <h1 id="logo">BLARE</h1>
+    </a>
     <h2>Register</h2>
     <br />
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
@@ -63,6 +65,6 @@
       </button>
     </form>
     <br />
-    <a routerLink="/login" class="btn btn-secondary">Login</a>
+    <!-- <a routerLink="/login" class="btn btn-secondary">Login</a> -->
   </div>
 </div>
