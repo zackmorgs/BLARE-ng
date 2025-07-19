@@ -1,8 +1,4 @@
-.container {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-}
+
 
 .play-header {
   text-align: center;
@@ -105,4 +101,14 @@
   bottom: 0;
   left: 0;
   transform: scale(1.5);
+}
+.track-title {
+  color: #f1f1f1;
+  display:block;
+}
+.track-artist {
+  color: #ccc;
+  font-size: 0.9rem;
+  display:block;
+  margin-top: 0.25rem;
 }

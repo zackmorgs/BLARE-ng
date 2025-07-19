@@ -15,7 +15,8 @@
         <ul class="track-list">
             <li *ngFor="let track of releaseToPlay.trackNames; let i = index" class="track-item">
                 <button class="track" (click)="playTrack(track, i)">
-                    <span>{{ track }}</span>
+                    <span class="track-title">{{ track }}</span>
+                    <span class="track-artist">{{ artistToPlay.name }}</span>
                 </button>
             </li>
         </ul>
