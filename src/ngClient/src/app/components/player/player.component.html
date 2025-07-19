@@ -13,14 +13,14 @@
     </div>
     <div id="play_bar">
         <img alt="" class="album-art-bg"
-            src="http://localhost:5051/uploads/albumart/amiensus_reclamation_album_art.jpg">
-        <img src="http://localhost:5051/uploads/albumart/amiensus_reclamation_album_art.jpg" alt="" class="album-art"
+            [src]="track?.albumArt || '/img/covers/default-cover.jpg'">
+        <img [src]="track?.albumArt || '/img/covers/default-cover.jpg'" alt="" class="album-art"
             (click)="togglePlayer()">
         <div id="controls">
             <div id="song">
                 <div id="song_info">
-                    <h3>The Distance</h3>
-                    <h5>Amiensus</h5>
+                    <h3>{{ track?.title || 'No Track Selected' }}</h3>
+                    <h5>{{ track?.artist || 'Unknown Artist' }}</h5>
                 </div>
                 <button id="favorite_button" class="" (click)="toggleStar()">
                     <img alt="Favorite"
@@ -28,14 +28,14 @@
                 </button>
             </div>
             <div id="player_controls">
-                <button id="prev_button" >
-                    <img alt="Close Player" src="/svg/icon-close.svg">
+                <button id="prev_button" (click)="playerService.previousTrack()">
+                    <img alt="Previous Track" src="/svg/icon-close.svg">
                 </button>
                 <button id="play_button" (click)="togglePlayPause()">
-                    <img alt="Play" [src]="isPlaying ? '/svg/icon-play.svg' : '/svg/icon-pause-circle.svg'">
+                    <img alt="Play" [src]="isPlaying ? '/svg/icon-pause-circle.svg' : '/svg/icon-play.svg'">
                 </button>
-                <button id="next_button">
-                    <img alt="Close Player" src="/svg/icon-next.svg">
+                <button id="next_button" (click)="playerService.nextTrack()">
+                    <img alt="Next Track" src="/svg/icon-next.svg">
                 </button>
             </div>
 

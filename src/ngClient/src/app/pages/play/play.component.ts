@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { TitleService } from '../../services/title.service';
 import { Artist, Release, ReleaseService } from '../../services/release.service';
 import { LoaderComponent } from '../../components/loader/loader.component';
+import { PlayerService, Track } from '../../services/player.service';
 
 @Component({
   selector: 'app-play',
@@ -27,6 +28,7 @@ export class PlayComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private titleService: TitleService,
+    private playerService: PlayerService,
     releaseService: ReleaseService
   ) {
     this.$releaseService = releaseService;
@@ -95,6 +97,28 @@ export class PlayComponent implements OnInit {
   playTrack(trackName: string, trackIndex: number) {
     const trackUrl = this.releaseToPlay.trackUrls[trackIndex];
     console.log('Playing:', trackName, 'from:', trackUrl);
-    // Play the track using the URL
+    
+    // Create track object for player service
+    const track: Track = {
+      id: `${this.releaseToPlay.id}_${trackIndex}`, // Create unique ID
+      title: trackName,
+      artist: this.artistToPlay?.name || 'Unknown Artist',
+      fileUrl: `http://localhost:5051${trackUrl}`, // Full URL for audio
+      duration: 0, // You can add duration if available
+      albumArt: this.releaseToPlay.coverImageUrl ? `http://localhost:5051${this.releaseToPlay.coverImageUrl}` : undefined
+    };
+
+    // Create playlist from all tracks in the release
+    const playlist: Track[] = this.releaseToPlay.trackNames.map((name, index) => ({
+      id: `${this.releaseToPlay.id}_${index}`,
+      title: name,
+      artist: this.artistToPlay?.name || 'Unknown Artist',
+      fileUrl: `http://localhost:5051${this.releaseToPlay.trackUrls[index]}`,
+      duration: 0,
+      albumArt: this.releaseToPlay.coverImageUrl ? `http://localhost:5051${this.releaseToPlay.coverImageUrl}` : undefined
+    }));
+
+    // Use player service to play the track
+    this.playerService.playTrackFromPlaylist(playlist, trackIndex);
   }
 }

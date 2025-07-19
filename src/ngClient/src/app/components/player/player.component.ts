@@ -1,13 +1,7 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-export interface Track {
-  id: string;
-  title: string;
-  artist: string;
-  fileUrl: string;
-  duration: number;
-}
+import { PlayerService, Track } from '../../services/player.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-player',
@@ -16,33 +10,52 @@ export interface Track {
   styleUrl: './player.component.scss',
   standalone: true
 })
-export class PlayerComponent implements OnDestroy {
-  @Input() track: Track | null = null;
+export class PlayerComponent implements OnInit, OnDestroy {
+  track: Track | null = null;
   
   isShowing = false;
-  isPlaying = true;
+  isPlaying = false;
   currentTime = 0;
   duration = 0;
   volume = 0.5;
   trackIsStarred = false;
   shouldDisplay = false;
 
-
   private audio: HTMLAudioElement | null = null;
+  private subscriptions: Subscription[] = [];
+
+  constructor(public playerService: PlayerService) {}
+
+  ngOnInit() {
+    // Subscribe to player service observables
+    const trackSub = this.playerService.currentTrack$.subscribe(track => {
+      this.track = track;
+      if (track) {
+        this.shouldDisplay = true;
+        this.initializeAudio();
+      }
+    });
+
+    const playingSub = this.playerService.isPlaying$.subscribe(isPlaying => {
+      this.isPlaying = isPlaying;
+      if (this.audio) {
+        if (isPlaying) {
+          this.audio.play().catch(error => console.error('Error playing audio:', error));
+        } else {
+          this.audio.pause();
+        }
+      }
+    });
+
+    this.subscriptions.push(trackSub, playingSub);
+  }
 
   togglePlayer() {
     this.isShowing = !this.isShowing;
   }
 
   togglePlayPause() {
-    // if (!this.audio || !this.track) return;
-    this.isPlaying = !this.isPlaying;
-    
-    // if (this.isPlaying) {
-    //   this.pause();
-    // } else {
-    //   this.play();
-    // }
+    this.playerService.togglePlayPause();
   }
 
   play() {
@@ -144,6 +157,9 @@ export class PlayerComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
+    // Unsubscribe from all subscriptions
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+    
     if (this.audio) {
       this.audio.pause();
       this.audio.removeEventListener('timeupdate', this.onTimeUpdate.bind(this));
