@@ -24,6 +24,7 @@ export class PlayComponent implements OnInit {
 
   releaseToPlay!: Release;
   artistToPlay!: Artist;
+  currentTrackIndex: number = 0; // Track index for the currently playing track
 
   constructor(
     private route: ActivatedRoute,
@@ -97,7 +98,10 @@ export class PlayComponent implements OnInit {
   playTrack(trackName: string, trackIndex: number) {
     const trackUrl = this.releaseToPlay.trackUrls[trackIndex];
     console.log('Playing:', trackName, 'from:', trackUrl);
-    
+
+    // Update current track index
+    this.currentTrackIndex = trackIndex;
+
     // Create track object for player service
     const track: Track = {
       id: `${this.releaseToPlay.id}_${trackIndex}`, // Create unique ID

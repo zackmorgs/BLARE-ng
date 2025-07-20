@@ -43,12 +43,17 @@
   padding: 0.5rem 0.25rem;
   display: block;
   width: 100%;
-  border-radius: 0.5rem;
-  margin: 0.5rem 0;
-  padding: 0.5rem;
-  box-shadow: inset 2px 2px 1rem #0000005c;
-  ;
+  margin: 0.25rem 0rem;
+  padding:0.5rem 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 2px 2px 1rem #0000005c;
   text-align: left;
+  background:#0000001c;
+
+  &.active {
+    background: #3a3a3a38;
+    color: #fff;
+  }
 }
 
 .artist-name {
