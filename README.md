@@ -26,6 +26,8 @@ Blare-Ng is a modern music streaming platform designed to showcase a robust, sca
   - BCrypt.Net-Next for password hashing
   - File upload support (album art, WAV files)
     - In-progress right now
+  - Will use [ATL](https://github.com/Zeugma440/atldotnet) for audio metadata
+  
 - **Frontend:**
   - Angular 17 (TypeScript)
   - SCSS styling (custom, no UI library)
