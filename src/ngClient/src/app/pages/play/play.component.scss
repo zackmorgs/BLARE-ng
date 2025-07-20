@@ -41,15 +41,18 @@
   color: #f1f1f1;
   border: none;
   padding: 0.5rem 0.25rem;
-  display: block;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
   width: 100%;
   margin: 0.25rem 0rem;
-  padding:0.5rem 1.5rem;
-  border-radius: 1rem;
+  padding:0.5rem 0.5rem;
+  border-radius: 0.75rem;
   box-shadow: 2px 2px 1rem #0000005c;
   text-align: left;
   background:#0000001c;
-
+  
   &.active {
     background: #3a3a3a38;
     color: #fff;
@@ -112,8 +115,13 @@
   display:block;
 }
 .track-artist {
-  color: #ccc;
+  color: #6c6c6c;
   font-size: 0.9rem;
   display:block;
   margin-top: 0.25rem;
+}
+
+.track-album-art {
+  height:2.25rem;
+  margin-right:0.75rem;
 }
