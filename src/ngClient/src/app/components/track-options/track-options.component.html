@@ -1,0 +1,39 @@
+<div class="track-options">
+    <div class="track-options-modal" (click)="onClose()">
+        <div class="track-options-header">
+            <h3 class="track-options-title">{{ trackName || 'Track Options' }}</h3>
+            <button class="track-options-close" (click)="onClose()">&times;</button>
+        </div>
+        <div class="track-options-body">
+            <nav class="track-options-nav">
+                <ul class="track-options-list">
+                    <li>
+                        <button class="btn-track-option" (click)="onOptionClick('playlist')">
+                            Add to Playlist
+                        </button>
+                    </li>
+                    <li>
+                        <button class="btn-track-option" (click)="onOptionClick('favorites')">
+                            Add to Favorites
+                        </button>
+                    </li>
+                    <li>
+                        <button class="btn-track-option" (click)="onOptionClick('share')">
+                            Share Track
+                        </button>
+                    </li>
+                    <li>
+                        <button class="btn-track-option" (click)="onOptionClick('download')">
+                            Download
+                        </button>
+                    </li>
+                    <li>
+                        <button class="btn-track-option" (click)="onOptionClick('info')">
+                            Track Info
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

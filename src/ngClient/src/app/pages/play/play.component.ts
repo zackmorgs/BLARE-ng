@@ -5,10 +5,11 @@ import { TitleService } from '../../services/title.service';
 import { Artist, Release, ReleaseService } from '../../services/release.service';
 import { LoaderComponent } from '../../components/loader/loader.component';
 import { PlayerService, Track } from '../../services/player.service';
+import { TrackOptionsComponent } from '../../components/track-options/track-options.component';
 
 @Component({
   selector: 'app-play',
-  imports: [CommonModule, LoaderComponent],
+  imports: [CommonModule, LoaderComponent, TrackOptionsComponent],
   templateUrl: './play.component.html',
   styleUrl: './play.component.scss'
 })
@@ -25,6 +26,9 @@ export class PlayComponent implements OnInit {
   releaseToPlay!: Release;
   artistToPlay!: Artist;
   currentTrackIndex: number = 0; // Track index for the currently playing track
+  currentTrack: { name: string } | null = null; // Current track object
+
+  showTrackOptions: boolean = false; // Flag to control track options visibility
 
   constructor(
     private route: ActivatedRoute,
@@ -99,8 +103,9 @@ export class PlayComponent implements OnInit {
     const trackUrl = this.releaseToPlay.trackUrls[trackIndex];
     console.log('Playing:', trackName, 'from:', trackUrl);
 
-    // Update current track index
+    // Update current track index and track
     this.currentTrackIndex = trackIndex;
+    this.currentTrack = { name: trackName };
 
     // Create track object for player service
     const track: Track = {
@@ -124,5 +129,50 @@ export class PlayComponent implements OnInit {
 
     // Use player service to play the track
     this.playerService.playTrackFromPlaylist(playlist, trackIndex);
+  }
+
+  handleTrackOptionClick(event: MouseEvent, trackName: string, trackIndex: number): void {
+    event.stopPropagation(); // Prevent click from propagating to the track item
+    this.currentTrack = { name: trackName };
+    this.currentTrackIndex = trackIndex;
+    this.showTrackOptions = true;
+  }
+
+  handleTrackOption(option: string): void {
+    console.log(`Track option selected: ${option} for track: ${this.currentTrack?.name} at index: ${this.currentTrackIndex}`);
+    
+    switch (option) {
+      case 'playlist':
+        // Handle add to playlist logic
+        console.log('Adding to playlist...');
+        break;
+      case 'favorites':
+        // Handle add to favorites logic
+        console.log('Adding to favorites...');
+        break;
+      case 'share':
+        // Handle share logic
+        console.log('Sharing track...');
+        break;
+      case 'download':
+        // Handle download logic
+        console.log('Downloading track...');
+        break;
+      case 'info':
+        // Handle track info logic
+        console.log('Showing track info...');
+        break;
+      case 'close':
+        // Close the options modal
+        this.showTrackOptions = false;
+        break;
+      default:
+        console.log('Unknown option:', option);
+    }
+    
+    // Close the options modal for all options except 'close' (already handled above)
+    if (option !== 'close') {
+      this.showTrackOptions = false;
+    }
   }
 }

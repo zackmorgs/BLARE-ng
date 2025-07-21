@@ -1,5 +1,11 @@
 <app-loader *ngIf="isLoading"></app-loader>
 
+<track-options *ngIf="showTrackOptions"
+    [trackName]="currentTrack?.name || ''"
+    [trackIndex]="currentTrackIndex"
+    (optionSelected)="handleTrackOption($event)">
+</track-options>
+
 <div class="container" *ngIf="!isLoading">
     <div class="play-header">
         <div class="release-bg">
@@ -27,7 +33,7 @@
                             </div>
                         </div>
                         <div class="track-more">
-                            <button class="track-cmd">
+                            <button class="track-cmd" (click)="handleTrackOptionClick($event, track, i)">
                                 <img src="/svg/icon-dots-vertical.svg" alt="More options">
                             </button>
                         </div>
