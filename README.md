@@ -84,7 +84,7 @@ Blare-Ng is a modern music streaming platform designed to showcase a robust, sca
 ### Frontend Setup
 1. Navigate to the Angular client:
    ```
-   cd client
+   cd src/ngClient
    npm install
    npm start
    ```
