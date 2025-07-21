@@ -16,14 +16,22 @@
         <ul class="track-list">
             <li *ngFor="let track of releaseToPlay.trackNames; let i = index" class="track-item">
                 <button class="track" (click)="playTrack(track, i)" [class.active]="currentTrackIndex === i">
-                    <img class="track-album-art" src="http://localhost:5051/{{ releaseToPlay.coverImageUrl || '' }}"
-                        alt="">
+                    <div class="track-container">
+                        <div class="track-text">
+                            <img class="track-album-art"
+                                src="http://localhost:5051/{{ releaseToPlay.coverImageUrl || '' }}" alt="">
 
-                    <div class="track-info">
-                        <span class="track-title">{{ track }}</span>
-                        <span class="track-artist">{{ artistToPlay.name }}</span>
+                            <div class="track-info">
+                                <span class="track-title">{{ track }}</span>
+                                <span class="track-artist">{{ artistToPlay.name }}</span>
+                            </div>
+                        </div>
+                        <div class="track-more">
+                            <button class="track-cmd">
+                                <img src="/svg/icon-dots-vertical.svg" alt="More options">
+                            </button>
+                        </div>
                     </div>
-
                 </button>
             </li>
         </ul>

@@ -125,3 +125,25 @@
   height:2.25rem;
   margin-right:0.75rem;
 }
+
+.track-text {
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+}
+
+.track-container {
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content:space-between;
+  width: 100%;
+}
+.track-more {
+}
+
+.track-cmd {
+  background:none;
+  border:none;
+}
