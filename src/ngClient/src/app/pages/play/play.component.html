@@ -23,12 +23,12 @@
                     </li>
                     <li>
                         <button class="play-option">
-                            <img src="/svg/icon-share.svg" alt="Play">
-                        </button> 
+                            <img src="/svg/icon-share.svg" alt="Play" (click)="share()">
+                        </button>
                     </li>
                     <li>
                         <button class="play-option">
-                            <img src="/svg/icon-star-outline.svg" alt="Play">
+                            <img [src]="releaseIsStarred ? '/svg/icon-star-shine.svg' : '/svg/icon-star-outline.svg'" alt="Play" (click)="addToStarred()">
                         </button>
                     </li>
                 </ul>

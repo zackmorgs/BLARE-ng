@@ -19,10 +19,11 @@ export class PlayComponent implements OnInit {
 
   isLoading: boolean = true;
   isPlaying: boolean = false;
+  releaseIsStarred: boolean = false;
 
   artistSlug: string | null = null;
   releaseSlug: string | null = null;
-  $releaseService: ReleaseService; 
+  $releaseService: ReleaseService;
 
   releaseToPlay!: Release;
   artistToPlay!: Artist;
@@ -108,9 +109,6 @@ export class PlayComponent implements OnInit {
         this.playTrack(this.releaseToPlay.trackNames[0], 0); // Play the first track by default
         this.isPlaying = true;
       }
-
-
-
     } else {
       console.warn('No tracks available to play in this release.');
       this.isPlaying = false;
@@ -160,7 +158,7 @@ export class PlayComponent implements OnInit {
 
   handleTrackOption(option: string): void {
     console.log(`Track option selected: ${option} for track: ${this.currentTrack?.name} at index: ${this.currentTrackIndex}`);
-    
+
     switch (option) {
       case 'playlist':
         // Handle add to playlist logic
@@ -189,10 +187,24 @@ export class PlayComponent implements OnInit {
       default:
         console.log('Unknown option:', option);
     }
-    
+
     // Close the options modal for all options except 'close' (already handled above)
     if (option !== 'close') {
       this.showTrackOptions = false;
     }
+  }
+  share() {
+    if (!navigator.share) {
+      return;
+    }
+
+    navigator.share({ title: this.currentTrack?.name, text: 'Check out this track!', url: window.location.href }).then(() => {
+      console.log('The content was shared successfully');
+    }).catch(error => {
+      console.error('Error sharing the content', error);
+    });
+  }
+  addToStarred() {
+    this.releaseIsStarred = !this.releaseIsStarred;
   }
 }
