@@ -143,6 +143,21 @@ BLARE-ng/
 - [ ] Streaming audio player
 - [ ] Move PuppeteerSharp to straight Puppeteer in JavaScript - PuppeteerSharp wont work in deployment environment.
 
-## URL Structure Goals?
-- /play/{artist-slug}/{release-slug}
-- /play/playlist/{slug}
+## URL Structure Goals
+- api/play/{artist-slug}/{release-slug}
+- api/play/playlist/{slug}
+- GET
+  - /api/{user}/playlists
+    - gets all playlist for user (AUTHENTICATED)
+- POST
+  - /api/{user}/playlists
+    - User creates a playlist
+- GET
+  - /api/{user}/playlist/{slug}
+    - Get a user's playlist via slug name
+- PUT
+  - /api/{user}/playlist/{slug}
+    - Update a user's playlist via slug
+- DELETE
+  - /api/{user}/playlist/{slug}
+    - Delete a user's playlist
