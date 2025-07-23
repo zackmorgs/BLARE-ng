@@ -1,8 +1,6 @@
 <app-loader *ngIf="isLoading"></app-loader>
 
-<track-options *ngIf="showTrackOptions"
-    [trackName]="currentTrack?.name || ''"
-    [trackIndex]="currentTrackIndex"
+<track-options *ngIf="showTrackOptions" [trackName]="currentTrack?.name || ''" [trackIndex]="currentTrackIndex"
     (optionSelected)="handleTrackOption($event)">
 </track-options>
 
@@ -16,6 +14,25 @@
             <img class="album-art" src="http://localhost:5051/{{ releaseToPlay.coverImageUrl || '' }}" alt="">
             <h2 class="artist-name">{{ artistToPlay.name || 'Unknown Artist' }}</h2>
             <h3 class="release-title">{{ releaseToPlay.title || 'Unknown Release' }}</h3>
+            <div class="play-options">
+                <ul class="play-options-list">
+                    <li>
+                        <button class="play-option">
+                            <img src="/svg/icon-play-circle.svg" alt="Play">
+                        </button>
+                    </li>
+                    <li>
+                        <button class="play-option">
+                            <img src="/svg/icon-share.svg" alt="Play">
+                        </button>
+                    </li>
+                    <li>
+                        <button class="play-option">
+                            <img src="/svg/icon-star-outline.svg" alt="Play">
+                        </button>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
     <div class="track-list-container">
