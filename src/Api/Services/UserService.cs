@@ -54,7 +54,7 @@ namespace Services
 
                     var user = new User
                     {
-                        Id = ObjectId.GenerateNewId().ToString(),
+                        Id = ObjectId.GenerateNewId(),
                         Username = username,
                         Email = email,
                         PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
@@ -73,9 +73,9 @@ namespace Services
                             {
                                 Name = artistName,
                                 Slug = slug.SlugValue,
-                                Id = ObjectId.Parse(user.Id)
+                                Id = user.Id,
                             }
-                        );  
+                        );
                     }
                     await _users.InsertOneAsync(user);
                     return user;
@@ -131,8 +131,7 @@ namespace Services
             {
                 var filter = Builders<User>.Filter.Eq(u => u.Id, user.Id);
                 var update = Builders<User>
-                    .Update
-                    .Set(u => u.FirstName, user.FirstName)
+                    .Update.Set(u => u.FirstName, user.FirstName)
                     .Set(u => u.LastName, user.LastName)
                     .Set(u => u.Bio, user.Bio);
 
@@ -146,9 +145,12 @@ namespace Services
             return await _users.Find(u => u.Id == userId).FirstOrDefaultAsync();
         }
 
-        public async Task<bool> UpdateUserProfileAsync(string userId, Controllers.UpdateProfileRequest request)
+        public async Task<bool> UpdateUserProfileAsync(
+            string userId,
+            Controllers.UpdateProfileRequest request
+        st)
         {
-            var filter = Builders<User>.Filter.Eq(u => u.Id, userId);
+            var filter = Builders<User>.Filter.Eq(u => u.Id, ObjectId.Parse(userId));
             var updateBuilder = Builders<User>.Update;
             var updates = new List<UpdateDefinition<User>>();
 
@@ -211,25 +213,32 @@ namespace Services
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
+            if (user.Email == null || user.Username == null || user.Id == null)
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id ?? string.Empty),
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim("userId", user.Id ?? string.Empty),
-                new Claim(ClaimTypes.Role, user.Role ?? "user")
-            };
+                throw new ArgumentException("User must have a valid Email, Username, and Id.");
+            } 
+            else 
+            {
+                var claims = new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id ?? string.Empty),
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim("userId", user.Id ?? string.Empty),
+                    new Claim(ClaimTypes.Role, user.Role ?? "user")
+                };
 
-            var token = new JwtSecurityToken(
-                issuer: issuer,
-                audience: audience,
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(expiryInMinutes),
-                signingCredentials: credentials
-            );
+                var token = new JwtSecurityToken(
+                    issuer: issuer,
+                    audience: audience,
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddMinutes(expiryInMinutes),
+                    signingCredentials: credentials
+                );
 
-            // FIX: Add this return statement
-            return new JwtSecurityTokenHandler().WriteToken(token);
+                // FIX: Add this return statement
+                return new JwtSecurityTokenHandler().WriteToken(token);
+            }
         }
     }
 }

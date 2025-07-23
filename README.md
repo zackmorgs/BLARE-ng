@@ -154,8 +154,11 @@ BLARE-ng/
   - /api/{user}/playlists
     - User creates a playlist
 - GET
-  - /api/{user}/playlist/{slug}
-    - Get a user's playlist via slug name
+  - /api/user/{id}/playlist
+- GET
+  ~~- /api/{user}/playlist/{slug}~~
+  ~~  - Get a user's playlist via slug name~~
+  - This is problematic - would have to update slugs in db. Id doesn't change. I want this up and running.
 - PUT
   - /api/{user}/playlist/{slug}
     - Update a user's playlist via slug

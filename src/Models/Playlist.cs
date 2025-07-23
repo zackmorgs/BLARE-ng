@@ -16,7 +16,10 @@ namespace Models
 
         [BsonElement("userId")]
         [BsonRequired]
-        public string UserId { get; set; } = string.Empty;
+        public ObjectId UserId { get; set; } = string.Empty;
+
+        [BsonElement("collaborators")]
+        public List<ObjectId> Collaborators { get; set; } = new List<ObjectId>();
 
         [BsonElement("createdAt")]
         [BsonRequired]

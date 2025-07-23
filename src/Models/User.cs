@@ -7,7 +7,7 @@ namespace Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
+        public ObjectId Id { get; set; }
 
         [BsonElement("artistName")]
         public string ArtistName { get; set; } = string.Empty;

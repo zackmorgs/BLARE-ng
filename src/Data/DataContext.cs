@@ -20,5 +20,6 @@ namespace Data
         public IMongoCollection<Release> Releases => _database.GetCollection<Release>("releases");
         public IMongoCollection<MusicTag> MusicTags => _database.GetCollection<MusicTag>("tags");
         public IMongoCollection<Slug> Slugs => _database.GetCollection<Slug>("slugs");
+        public IMongoCollection<Playlist> Playlists => _database.GetCollection<Playlist>("playlists");
     }
 }
