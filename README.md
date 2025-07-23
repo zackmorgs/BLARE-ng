@@ -145,7 +145,7 @@ BLARE-ng/
 
 ## URL Structure Goals
 - api/play/{artist-slug}/{release-slug}
-- api/play/playlist/{slug}
+- api/play/{user}/playlist/{slug}
 - GET
   - /api/{user}/playlists
     - gets all playlist for user (AUTHENTICATED)
