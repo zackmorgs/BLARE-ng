@@ -15,6 +15,10 @@ textarea {
     box-sizing: border-box;
 }
 
+:root {
+    color: #f1f1f1;
+}
+
 body {
     background: #222222;
     color: #f1f1f1;
@@ -48,12 +52,12 @@ h3 {
 }
 
 .content {
-    height:calc(100vh - (58px));
+    height: calc(100vh - (58px));
     overflow-y: scroll;
 }
 
 .has-player.content {
-    height:calc(100vh - (58px + 80px));
+    height: calc(100vh - (58px + 80px));
     overflow-y: scroll;
 }
 

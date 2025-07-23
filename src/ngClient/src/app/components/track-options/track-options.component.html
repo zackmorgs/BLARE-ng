@@ -1,39 +1,48 @@
 <div class="track-options">
+    
     <div class="track-options-modal" (click)="onClose()">
+
         <div class="track-options-header">
             <h3 class="track-options-title">{{ trackName || 'Track Options' }}</h3>
-            <button class="track-options-close" (click)="onClose()">&times;</button>
+            <h4 class="track-options-artist">{{ trackArtist || 'Unknown Artist' }}</h4>
         </div>
         <div class="track-options-body">
             <nav class="track-options-nav">
                 <ul class="track-options-list">
                     <li>
-                        <button class="btn-track-option" (click)="onOptionClick('playlist')">
+                        <button class="btn btn-track-option" (click)="onOptionClick('playlist')">
                             Add to Playlist
                         </button>
                     </li>
                     <li>
-                        <button class="btn-track-option" (click)="onOptionClick('favorites')">
-                            Add to Favorites
+                        <button class="btn btn-track-option" (click)="onOptionClick('favorites')">
+                            Add to Starred
                         </button>
                     </li>
                     <li>
-                        <button class="btn-track-option" (click)="onOptionClick('share')">
+                        <button class="btn btn-track-option" (click)="onOptionClick('share')">
                             Share Track
                         </button>
                     </li>
                     <li>
-                        <button class="btn-track-option" (click)="onOptionClick('download')">
+                        <button class="btn btn-track-option" (click)="onOptionClick('download')">
                             Download
                         </button>
                     </li>
                     <li>
-                        <button class="btn-track-option" (click)="onOptionClick('info')">
+                        <button class="btn btn-track-option" (click)="onOptionClick('info')">
                             Track Info
                         </button>
                     </li>
                 </ul>
             </nav>
         </div>
+    </div>
+    <br/>
+    <br>
+    <div class="track-options-nav">
+        <button class="track-options-close" (click)="onClose()">
+            <img src="/svg/icon-close.svg" alt="Close">
+        </button>
     </div>
 </div>

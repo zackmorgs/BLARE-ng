@@ -1,6 +1,6 @@
 <app-loader *ngIf="isLoading"></app-loader>
 
-<track-options *ngIf="showTrackOptions" [trackName]="currentTrack?.name || ''" [trackIndex]="currentTrackIndex"
+<track-options *ngIf="showTrackOptions" [trackName]="currentTrack?.name || ''" [trackArtist]="artistToPlay.name || ''" [trackIndex]="currentTrackIndex"
     (optionSelected)="handleTrackOption($event)">
 </track-options>
 
