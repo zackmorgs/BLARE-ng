@@ -4,7 +4,7 @@ A full-stack music streaming app built with Angular, .NET, and MongoDB.
 [Screenshot](https://raw.githubusercontent.com/zackmorgs/BLARE-ng/refs/heads/master/screenshot.png)
 
 ### Showcase Videos
-- [Authenication Demo](https://youtu.be/pwUMDN9jguI)
+- [Authentication Demo](https://youtu.be/pwUMDN9jguI)
 - [Tag Search Demo](https:/youtu.be/3xKZGKWNLLA)
 - [Player Demo with State](https://youtu.be/HCnFgaB2jvw) 
 - [Starred and Play/Pause](https://youtu.be/GwmdDOCC_nE)
