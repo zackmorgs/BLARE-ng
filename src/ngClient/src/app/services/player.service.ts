@@ -41,6 +41,12 @@ export class PlayerService {
     }
   }
 
+  // Set current track
+  setCurrentTrack(track: Track) {
+    this.currentTrackSubject.next(track);
+    this.isPlayingSubject.next(true);
+  }
+
   // Play/Pause toggle
   togglePlayPause() {
     this.isPlayingSubject.next(!this.isPlayingSubject.value);

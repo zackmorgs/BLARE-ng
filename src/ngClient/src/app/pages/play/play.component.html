@@ -7,24 +7,24 @@
 <div class="container" *ngIf="!isLoading">
     <div class="play-header">
         <div class="release-bg">
-            <img id="release-bg-img" src="http://localhost:5051/{{ releaseToPlay.coverImageUrl || '' }}"
+            <img id="release-bg-img" src="http://localhost:5051{{ releaseToPlay.coverImageUrl || '' }}"
                 alt="release background">
         </div>
         <div class="release-info">
-            <img class="album-art" src="http://localhost:5051/{{ releaseToPlay.coverImageUrl || '' }}" alt="">
+            <img class="album-art" src="http://localhost:5051{{ releaseToPlay.coverImageUrl || '' }}" alt="">
             <h2 class="artist-name">{{ artistToPlay.name || 'Unknown Artist' }}</h2>
             <h3 class="release-title">{{ releaseToPlay.title || 'Unknown Release' }}</h3>
             <div class="play-options">
                 <ul class="play-options-list">
                     <li>
-                        <button class="play-option">
-                            <img src="/svg/icon-play-circle.svg" alt="Play">
+                        <button class="play-option" (click)="togglePlayRelease()">
+                            <img [src]="isPlaying ? '/svg/icon-pause-circle.svg' : '/svg/icon-play.svg'" alt="Play">
                         </button>
                     </li>
                     <li>
                         <button class="play-option">
                             <img src="/svg/icon-share.svg" alt="Play">
-                        </button>
+                        </button> 
                     </li>
                     <li>
                         <button class="play-option">

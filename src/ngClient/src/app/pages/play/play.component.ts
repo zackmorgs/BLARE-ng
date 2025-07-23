@@ -18,10 +18,11 @@ export class PlayComponent implements OnInit {
   artistIsLoading: boolean = true;
 
   isLoading: boolean = true;
+  isPlaying: boolean = false;
 
   artistSlug: string | null = null;
   releaseSlug: string | null = null;
-  $releaseService: ReleaseService;
+  $releaseService: ReleaseService; 
 
   releaseToPlay!: Release;
   artistToPlay!: Artist;
@@ -96,6 +97,25 @@ export class PlayComponent implements OnInit {
       // Additional logic to fetch and display the release details can be added here
     } else {
       console.error('Artist or release slug is missing');
+    }
+  }
+  togglePlayRelease(): void {
+    if (this.releaseToPlay && this.releaseToPlay.trackUrls.length > 0) {
+      if (this.isPlaying) {
+        this.playerService.stop();
+        this.isPlaying = false;
+      } else {
+        this.playTrack(this.releaseToPlay.trackNames[0], 0); // Play the first track by default
+        this.isPlaying = true;
+      }
+
+
+
+    } else {
+      console.warn('No tracks available to play in this release.');
+      this.isPlaying = false;
+      this.currentTrack = null;
+      this.currentTrackIndex = 0;
     }
   }
 
