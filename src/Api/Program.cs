@@ -23,7 +23,7 @@ internal class Program
         builder.Services.AddSingleton<TagService>();
         builder.Services.AddSingleton<SlugService>();
         builder.Services.AddSingleton<ArtistService>();
-        builder.Services.AddSingleton<PlaylistService>();
+        // builder.Services.AddSingleton<PlaylistService>();
         
         builder.Services.AddControllers()
             .AddJsonOptions(options =>

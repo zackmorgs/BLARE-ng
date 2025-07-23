@@ -1,12 +1,12 @@
-using BCrypt.Net;
-using Models;
-using MongoDB.Driver;
-using Data;
-using MongoDB.Bson;
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
+using BCrypt.Net;
+using Data;
+using Microsoft.IdentityModel.Tokens;
+using Models;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Services
 {
@@ -17,7 +17,12 @@ namespace Services
         private readonly ArtistService _artistService;
         private readonly IConfiguration _configuration;
 
-        public UserService(DataContext dataContext, SlugService slugService, ArtistService artistService, IConfiguration configuration)
+        public UserService(
+            DataContext dataContext,
+            SlugService slugService,
+            ArtistService artistService,
+            IConfiguration configuration
+        )
         {
             _users = dataContext.Users;
             _slugService = slugService;
@@ -115,15 +120,23 @@ namespace Services
         // test this
         public async Task<bool> UpdateUserAvatarAsync(string userId, string avatarUrl)
         {
-            var filter = Builders<User>.Filter.Eq(u => u.Id, userId);
-            var update = Builders<User>.Update.Set(u => u.Avatar, avatarUrl);
-            var result = await _users.UpdateOneAsync(filter, update);
-            return result.ModifiedCount > 0;
+            var myUserId = ObjectId.TryParse(userId, out var parsedId) ? parsedId : ObjectId.Empty;
+            if (myUserId == ObjectId.Empty)
+            {
+                throw new ArgumentException("Invalid user ID format.");
+            }
+            else
+            {
+                var filter = Builders<User>.Filter.Eq(u => u.Id, myUserId);
+                var update = Builders<User>.Update.Set(u => u.Avatar, avatarUrl);
+                var result = await _users.UpdateOneAsync(filter, update);
+                return result.ModifiedCount > 0;
+            }
         }
 
         public async Task<bool> UpdateUserInfoAsync(User user)
         {
-            if (user == null || string.IsNullOrEmpty(user.Id))
+            if (user == null || user.Id == ObjectId.Empty)
             {
                 throw new ArgumentException("User cannot be null and must have a valid Id.");
             }
@@ -142,13 +155,19 @@ namespace Services
 
         public async Task<User?> GetUserByIdAsync(string userId)
         {
-            return await _users.Find(u => u.Id == userId).FirstOrDefaultAsync();
+            var myUserId = ObjectId.TryParse(userId, out var parsedId) ? parsedId : ObjectId.Empty;
+            if (myUserId == ObjectId.Empty)
+            {
+                throw new ArgumentException("Invalid user ID format.");
+            }
+
+            return await _users.Find(u => u.Id == myUserId).FirstOrDefaultAsync();
         }
 
         public async Task<bool> UpdateUserProfileAsync(
             string userId,
             Controllers.UpdateProfileRequest request
-        st)
+        )
         {
             var filter = Builders<User>.Filter.Eq(u => u.Id, ObjectId.Parse(userId));
             var updateBuilder = Builders<User>.Update;
@@ -178,7 +197,8 @@ namespace Services
         public async Task<bool> SetUserAsAdmin(string username)
         {
             var user = await GetUserByUsernameAsync(username);
-            if (user == null) return false;
+            if (user == null)
+                return false;
 
             var filter = Builders<User>.Filter.Eq(u => u.Id, user.Id);
             var update = Builders<User>.Update.Set(u => u.Role, "admin");
@@ -188,7 +208,29 @@ namespace Services
 
         public async Task<bool> UpdateUserRoleAsync(string userId, string role)
         {
-            var filter = Builders<User>.Filter.Eq(u => u.Id, userId);
+            var myUserId = ObjectId.TryParse(userId, out var parsedId) ? parsedId : ObjectId.Empty;
+            if (myUserId == ObjectId.Empty)
+            {
+                throw new ArgumentException("Invalid user ID format.");
+            }
+            if (string.IsNullOrEmpty(role))
+            {
+                throw new ArgumentException("Role cannot be null or empty.");
+            }
+            if (role != "admin" && role != "artist" && role != "listener")
+            {
+                throw new ArgumentException(
+                    "Invalid role specified. Allowed roles are 'admin', 'artist', or 'listener'."
+                );
+            }
+            // Ensure the user exists
+            var user = await GetUserByIdAsync(userId);
+            if (user == null)
+            {
+                throw new ArgumentException("User not found.");
+            }
+            // Update the user's role
+            var filter = Builders<User>.Filter.Eq(u => u.Id, myUserId);
             var update = Builders<User>.Update.Set(u => u.Role, role);
             var result = await _users.UpdateOneAsync(filter, update);
             return result.ModifiedCount > 0;
@@ -197,7 +239,8 @@ namespace Services
         public async Task<string> GetUserSlugAsync(string userId)
         {
             var user = await GetUserByIdAsync(userId);
-            if (user == null) throw new ArgumentException("User not found.");
+            if (user == null)
+                throw new ArgumentException("User not found.");
 
             return user.Slug;
         }
@@ -205,9 +248,15 @@ namespace Services
         public string GenerateToken(User user)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
-            var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey not configured");
-            var issuer = jwtSettings["Issuer"] ?? throw new InvalidOperationException("JWT Issuer not configured");
-            var audience = jwtSettings["Audience"] ?? throw new InvalidOperationException("JWT Audience not configured");
+            var secretKey =
+                jwtSettings["SecretKey"]
+                ?? throw new InvalidOperationException("JWT SecretKey not configured");
+            var issuer =
+                jwtSettings["Issuer"]
+                ?? throw new InvalidOperationException("JWT Issuer not configured");
+            var audience =
+                jwtSettings["Audience"]
+                ?? throw new InvalidOperationException("JWT Audience not configured");
             var expiryInMinutes = int.Parse(jwtSettings["ExpiryInMinutes"] ?? "60");
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
@@ -216,16 +265,19 @@ namespace Services
             if (user.Email == null || user.Username == null || user.Id == null)
             {
                 throw new ArgumentException("User must have a valid Email, Username, and Id.");
-            } 
-            else 
+            }
+            else
             {
                 var claims = new[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id ?? string.Empty),
+                    new Claim(
+                        ClaimTypes.NameIdentifier,
+                        user.Id.ToString() ?? ObjectId.Empty.ToString()
+                    ),
                     new Claim(ClaimTypes.Name, user.Username),
                     new Claim(ClaimTypes.Email, user.Email),
-                    new Claim("userId", user.Id ?? string.Empty),
-                    new Claim(ClaimTypes.Role, user.Role ?? "user")
+                    new Claim("userId", user.Id.ToString() ?? ObjectId.Empty.ToString()),
+                    new Claim(ClaimTypes.Role, user.Role ?? "user"),
                 };
 
                 var token = new JwtSecurityToken(

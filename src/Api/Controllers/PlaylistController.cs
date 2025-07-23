@@ -10,7 +10,7 @@ namespace Controllers
     {
         private readonly PlaylistService _playlistService;
 
-        public PlaylistController(IPlaylistService playlistService)
+        public PlaylistController(PlaylistService playlistService)
         {
             _playlistService = playlistService;
         }

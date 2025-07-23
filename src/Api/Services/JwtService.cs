@@ -3,6 +3,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Models;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Services
 {
@@ -28,11 +30,11 @@ namespace Services
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id ?? string.Empty),
+                new Claim(ClaimTypes.NameIdentifier, user.Id == ObjectId.Empty ? ObjectId.Empty.ToString() : user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim("userId", user.Id ?? string.Empty),
-                new Claim(ClaimTypes.Role, user.Role ?? "user") // ADD THIS
+                new Claim("userId", user.Id == ObjectId.Empty ? ObjectId.Empty.ToString() : user.Id.ToString()),
+                new Claim(ClaimTypes.Role, user.Role == null ? "user" : user.Role)
             };
 
             var token = new JwtSecurityToken(

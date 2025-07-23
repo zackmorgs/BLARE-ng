@@ -106,6 +106,7 @@ namespace Services
 
                 // get artist slug
                 var artistId = release.ArtistId;
+
                 string artistSlug = await _userService.GetUserSlugAsync(artistId);
                 release.ArtistSlug = artistSlug;
 
@@ -117,18 +118,20 @@ namespace Services
                 var artist = await getArtistById(artistId);
                 if (artist == null)
                 {
+                    // If artist does not exist, create a new Artist object
+                    // Ensure the user exists before creating an artist
                     var user = await _userService.GetUserByIdAsync(artistId);
                     if (user != null) // FIX: Check if user exists
                     {
-                        artist = new Artist
+                        var myArtist = new Artist
                         {
-                            Id = ObjectId.Parse(user.Id),
-                            Name = user.Username,
+                            Id = user.Id,
+                            Name = user.ArtistName,
                             Slug = artistSlug,
                             CreatedAt = DateTime.UtcNow,
                             UpdatedAt = DateTime.UtcNow,
                         };
-                        await _artistService.CreateAsync(artist);
+                        await _artistService.CreateAsync(myArtist);
                     }
                 }
 
