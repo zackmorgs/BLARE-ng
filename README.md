@@ -10,6 +10,7 @@ A full-stack music streaming app built with Angular, .NET, and MongoDB.
 - [Starred and Play/Pause](https://youtu.be/GwmdDOCC_nE)
 - [Uploading Releases](https://youtu.be/wWa3FLSop_Y)
 - [Streaming Demo](https://youtu.be/hBh27IDKRNc)
+- [Track Options (play, share, star) Demo](https://youtu.be/3oY5uEt-DWs)
 
 ---
 
