@@ -15,7 +15,7 @@ A full-stack music streaming app built with Angular, .NET, and MongoDB.
 ---
 
 ## Overview
-Blare-Ng is a modern music streaming platform designed to showcase a robust, scalable stack for real-world production use. It features user authentication, artist/track/release management, file uploads, and a responsive Angular frontend. The backend is built with ASP.NET Core and MongoDB, and includes a custom tag scraper for music genres.
+Blare-Ng is a modern music streaming platform designed to showcase a robust, scalable stack for real-world production use. It features user authentication, artist/track/release management, file uploads, and a (for now) mobile-only Angular frontend. The backend is built with ASP.NET Core and MongoDB, and includes a custom tag scraper for music genres.
 
 ---
 
