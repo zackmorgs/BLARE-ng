@@ -32,7 +32,7 @@ namespace Models
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         [BsonElement("tracks")]
-        public List<string> TrackIds { get; set; } = new List<string>();
+        public List<ObjectId> TrackIds { get; set; } = new List<ObjectId>();
 
         [BsonElement("coverImageUrl")]
         public string CoverImageUrl { get; set; } = string.Empty;

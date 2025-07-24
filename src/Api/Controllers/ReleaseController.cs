@@ -3,15 +3,17 @@ using Data;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
-
-public class UpdateReleaseMetadataRequest
-{
-    public List<string>? TrackNames { get; set; }
-    public bool? IsPublic { get; set; }
-}
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Controllers
 {
+    public class UpdateReleaseMetadataRequest
+    {
+        public List<string>? TrackNames { get; set; }
+        public bool? IsPublic { get; set; }
+    }
+
     [Route("api/[controller]")]
     [ApiController]
     public class ReleaseController : ControllerBase
@@ -70,8 +72,6 @@ namespace Controllers
             return Ok(release);
         }
 
-
-
         [HttpGet("recent")]
         public async Task<IActionResult> GetRecentReleases([FromQuery] int limit = 10)
         {
@@ -106,10 +106,9 @@ namespace Controllers
                 uploadedRelease.Type = type;
                 uploadedRelease.ArtistId = artistId;
                 uploadedRelease.Description = description;
-                uploadedRelease.MusicTags = musicTags?
-                    .Split(',')
-                    .Select(static tag => tag.Trim())
-                    .ToList() ?? new List<string>();
+                uploadedRelease.MusicTags =
+                    musicTags?.Split(',').Select(static tag => tag.Trim()).ToList()
+                    ?? new List<string>();
                 uploadedRelease.ReleaseDate = releaseDate;
                 uploadedRelease.CreatedAt = DateTime.UtcNow;
                 uploadedRelease.UpdatedAt = DateTime.UtcNow;
@@ -139,7 +138,10 @@ namespace Controllers
         }
 
         [HttpPut("{id}/metadata")]
-        public async Task<IActionResult> UpdateReleaseMetadata(string id, [FromBody] UpdateReleaseMetadataRequest request)
+        public async Task<IActionResult> UpdateReleaseMetadata(
+            string id,
+            [FromBody] UpdateReleaseMetadataRequest request
+        )
         {
             try
             {
@@ -169,6 +171,45 @@ namespace Controllers
             catch (Exception ex)
             {
                 return BadRequest($"Error updating release metadata: {ex.Message}");
+            }
+        }
+
+        // get artist name by release ID
+        [HttpGet("artist-name/album/{id}")]
+        public async Task<IActionResult> GetArtistNameByReleaseId(string id)
+        {
+            var artistName = await _releaseService.GetArtistNameByReleaseIdAsync(id);
+            if (artistName == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(artistName);
+        }
+
+        // delete track via ID from release
+        [HttpDelete("{releaseId}/track/{trackId}")]
+        public async Task<IActionResult> DeleteTrackFromRelease(string releaseId, ObjectId trackId)
+        {
+            try
+            {
+                var release = await _releaseService.GetByIdAsync(releaseId);
+                if (release == null)
+                {
+                    return NotFound($"Release with ID {releaseId} not found.");
+                }
+                ObjectId track = release.TrackIds.FirstOrDefault(t => t == trackId);
+                if (track == ObjectId.Empty)
+                {
+                    return NotFound($"Track with ID {trackId} not found in release {releaseId}.");
+                }
+                release.TrackIds.Remove(track);
+                await _releaseService.UpdateAsync(releaseId, release);
+                return Ok($"Track {trackId} removed from release {releaseId}.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error deleting track from release: {ex.Message}");
             }
         }
     }

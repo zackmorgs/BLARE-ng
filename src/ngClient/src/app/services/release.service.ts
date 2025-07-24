@@ -174,7 +174,7 @@ export class ReleaseService {
 
     // Remove track from release
     removeTrackFromRelease(releaseId: string, trackId: string): Observable<Release> {
-        return this.http.delete<Release>(`${this.releaseApiUrl}/${releaseId}/tracks/${trackId}`).pipe(
+        return this.http.delete<Release>(`${this.releaseApiUrl}/${releaseId}/track/${trackId}`).pipe(
             tap(updatedRelease => {
                 const currentReleases = this.releasesSubject.value;
                 const index = currentReleases.findIndex(r => r.id === releaseId);
@@ -243,6 +243,10 @@ export class ReleaseService {
 
     getArtistById(artistId: string): Observable<Artist> {
         return this.http.get<Artist>(`${this.releaseApiUrl}/artist/${artistId}`);
+    }
+
+    getArtistNameByAlbumId(artistId: string): Observable<string> {
+        return this.http.get<string>(`${this.releaseApiUrl}/artist-name/album/${artistId}`);
     }
 
 }

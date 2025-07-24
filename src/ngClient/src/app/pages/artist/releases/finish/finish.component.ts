@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReleaseService, Release } from '../../../../services/release.service';
 import { TitleService } from '../../../../services/title.service';
-
+import { LoaderComponent } from '../../../../components/loader/loader.component';
 @Component({
   selector: 'app-finish',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, LoaderComponent],
   templateUrl: './finish.component.html',
   styleUrl: './finish.component.scss'
 })
@@ -17,6 +17,7 @@ export class FinishComponent implements OnInit {
   isSaving = false;
   errorMessage: string | null = null;
   successMessage: string | null = null;
+  artistName: string | null = null;
 
   // Editable fields
   editableTrackNames: string[] = [];
@@ -29,7 +30,7 @@ export class FinishComponent implements OnInit {
 
   ngOnInit() {
     const releaseId = this.route.snapshot.paramMap.get('releaseId');
-    
+
     if (releaseId) {
       this.loadRelease(releaseId);
     } else {
@@ -41,6 +42,7 @@ export class FinishComponent implements OnInit {
   }
 
   private loadRelease(releaseId: string) {
+    this.isLoading = true;
     this.releaseService.getRelease(releaseId).subscribe({
       next: (release: Release) => {
         this.release = release;
@@ -48,15 +50,20 @@ export class FinishComponent implements OnInit {
         this.editableTrackNames = [...(release.trackNames || [])];
         this.isPublic = release.isPublic || false;
         this.isLoading = false;
-        
+
         // Update title with release info
         this.titleService.setTitle(`Finish Release: ${release.title} - BLARE`);
       },
       error: (error: any) => {
         console.error('Error loading release:', error);
         this.errorMessage = 'Failed to load release. Please try again.';
-        this.isLoading = false;
+        // this.isLoading = false;
       }
+    });
+    // Fetch artist name for display
+    this.releaseService.getArtistNameByAlbumId(releaseId).subscribe(name => {
+      this.artistName = name;
+      this.isLoading = false;
     });
   }
 
@@ -86,7 +93,7 @@ export class FinishComponent implements OnInit {
           this.release = updatedRelease;
           this.successMessage = 'Changes saved successfully!';
           this.isSaving = false;
-          
+
           // Clear success message after 3 seconds
           setTimeout(() => {
             this.successMessage = null;
@@ -108,6 +115,21 @@ export class FinishComponent implements OnInit {
     if (this.editableTrackNames.length > 1) {
       this.editableTrackNames.splice(index, 1);
     }
+    // do an api call to rmeove the track from the release
+    this.releaseService.removeTrackFromRelease(this.release?.id || '', this.release?.trackIds[index] || '').subscribe({
+      next: (updatedRelease: Release) => {
+        this.release = updatedRelease;
+        this.successMessage = 'Track removed successfully!';
+        // Clear success message after 3 seconds
+        setTimeout(() => {
+          this.successMessage = null;
+        }, 3000);
+      },
+      error: (error: any) => {
+        console.error('Error removing track:', error);
+        this.errorMessage = error.error?.message || 'Failed to remove track. Please try again.';
+      }
+    });
   }
 
   trackByIndex(index: number): number {

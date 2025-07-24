@@ -24,8 +24,9 @@ internal class Program
         builder.Services.AddSingleton<SlugService>();
         builder.Services.AddSingleton<ArtistService>();
         // builder.Services.AddSingleton<PlaylistService>();
-        
-        builder.Services.AddControllers()
+  
+        builder
+            .Services.AddControllers()
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new ObjectIdJsonConverter());

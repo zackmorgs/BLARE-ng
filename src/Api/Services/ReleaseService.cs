@@ -199,5 +199,18 @@ namespace Services
                 .Find(artist => artist.Id == ObjectId.Parse(id))
                 .FirstOrDefaultAsync();
         }
+
+        // get Artist name by release ID
+        public async Task<string> GetArtistNameByReleaseIdAsync(string releaseId)
+        {
+            var release = await GetByIdAsync(releaseId);
+            if (release == null)
+            {
+                return null;
+            }
+
+            var artist = await getArtistById(release.ArtistId);
+            return artist?.Name;
+        }
     }
 }
