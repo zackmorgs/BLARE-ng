@@ -93,18 +93,18 @@ internal class Program
         var app = builder.Build();
 
         // Add request logging middleware
-        app.Use(
-            async (context, next) =>
-            {
-                Console.WriteLine(
-                    $"=== REQUEST: {context.Request.Method} {context.Request.Path} ==="
-                );
-                Console.WriteLine(
-                    $"Headers: {string.Join(", ", context.Request.Headers.Select(h => $"{h.Key}={h.Value}"))}"
-                );
-                await next();
-            }
-        );
+        // app.Use(
+        //     async (context, next) =>
+        //     {
+        //         Console.WriteLine(
+        //             $"=== REQUEST: {context.Request.Method} {context.Request.Path} ==="
+        //         );
+        //         Console.WriteLine(
+        //             $"Headers: {string.Join(", ", context.Request.Headers.Select(h => $"{h.Key}={h.Value}"))}"
+        //         );
+        //         await next();
+        //     }
+        // );
 
         // Use CORS first - before any other middleware
         app.UseCors("AllowAll");
