@@ -4,3 +4,47 @@
    border-radius: 8px;
    margin-bottom: 20px;
  }
+
+ .public-toggle {
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    padding:1rem;
+    border-radius:0.5rem;
+    background:#ffde59;
+    color:#222222;
+ }
+
+.help-text {
+  font-style:italic;
+}
+
+ .track-editor {
+  .text-input {
+    margin-bottom:0;
+  }
+ }
+
+.track-number {
+  color:#b1b1b1;
+}
+
+ .track-item {
+  display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+  align-items:center;
+  padding:0.5rem;
+  border-bottom:1px solid #cccccc64;
+  gap: 1rem;
+ }
+
+ .remove-btn {
+  background:#c33131;
+  border:none;
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:0.25rem;
+}

@@ -33,6 +33,7 @@ export class FinishComponent implements OnInit {
 
     if (releaseId) {
       this.loadRelease(releaseId);
+      this.getArtistName(releaseId);
     } else {
       this.errorMessage = 'Invalid release ID';
       this.isLoading = false;
@@ -60,8 +61,20 @@ export class FinishComponent implements OnInit {
         // this.isLoading = false;
       }
     });
-    // Fetch artist name for display
+  }
+
+  getArtistName(releaseId : string): void {
+    if (!releaseId) {
+      this.errorMessage = 'Invalid release ID';
+      this.isLoading = false;
+      return;
+    }
+
+    this.isLoading = true;
+    
     this.releaseService.getArtistNameByAlbumId(releaseId).subscribe(name => {
+      console.log("getting artist name...");
+      console.log('Artist Name:', name);
       this.artistName = name;
       this.isLoading = false;
     });

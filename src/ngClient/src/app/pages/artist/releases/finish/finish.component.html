@@ -17,7 +17,7 @@
         [alt]="release.title + ' cover'"
         class="cover-image">
       <div class="release-info">
-        <h1>Finish Your Release</h1>
+        <h3>Finish Your Release</h3>
         <h2>{{ release.title }}</h2>
         <p class="artist-name">{{ artistName }}</p>
       </div>
@@ -67,39 +67,45 @@
               [disabled]="isSaving"
               class="remove-btn"
               title="Remove track">
-              ×
+              <img src="/svg/icon-delete-black.svg" alt="Remove track">
             </button>
           </div>
         </div>
-        
-        <button 
+        <br>
+        <!-- <button 
           (click)="addTrack()"
           [disabled]="isSaving"
-          class="add-track-btn">
+          class="add-track-btn btn">
           + Add Track
-        </button>
+        </button> -->
       </div>
 
       <!-- Action Buttons -->
       <div class="action-buttons">
+                <br>
+
         <button 
           (click)="saveChanges()"
           [disabled]="isSaving"
-          class="save-btn primary">
+          class="btn save-btn primary">
           {{ isSaving ? 'Saving...' : 'Save Changes' }}
         </button>
-        
+        <br>
+        <br>
+
         <button 
           (click)="goToRelease()"
           [disabled]="isSaving"
-          class="view-release-btn">
+          class="btn view-release-btn">
           View Release
         </button>
-        
+        <br>
+        <br>
+
         <button 
           (click)="goHome()"
           [disabled]="isSaving"
-          class="home-btn secondary">
+          class="btn home-btn btn-secondary">
           Go Home
         </button>
       </div>
