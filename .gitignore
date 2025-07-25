@@ -1,16 +1,16 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 /node_modules
 
-/src/ngClient/node_modules
+/src/ngClient/node_modules/
 
 # Compiled output
-/src/ngClient/dist
-/src/ngClient/tmp
-/src/ngClient/out-tsc
-/src/ngClient/bazel-out
-/src/ngClient/cache
-/src/ngClient/.angular
-/src/ngClient/.angular/cache
+/src/ngClient/dist/
+/src/ngClient/tmp/
+/src/ngClient/out-tsc/
+/src/ngClient/bazel-out/
+/src/ngClient/cache/
+/src/ngClient/.angular/
+/src/ngClient/.angular/cache/
 
 # Node
 /src/ngCLient/node_modules
@@ -35,13 +35,13 @@
 /src/.ngCLient/.history/*
 
 # Miscellaneous
-/src/ngCLient/.angular/cache
+/src/ngCLient/.angular/cache/
 /src/ngCLient/.sass-cache/
 /src/ngCLient/connect.lock
-/src/ngCLient/coverage
+/src/ngCLient/coverage/
 /src/ngCLient/libpeerconnection.log
 /src/ngCLient/testem.log
-/src/ngCLient/typings
+/src/ngCLient/typings/
 
 # System files
 .ngCLient/.DS_Store
@@ -55,29 +55,29 @@
 /src/Api/.history
 /src/Api/.vscode-test
 
-/src/tagScraper/bin
-/src/tagScraper/obj
-/src/tagScraper/.vs
-/src/tagScraper/.vscode
-/src/tagScraper/.idea
-/src/tagScraper/.history
-/src/tagScraper/.vscode-tes
+/src/tagScraper/bin/
+/src/tagScraper/obj/
+/src/tagScraper/.vs/
+/src/tagScraper/.vscode/
+/src/tagScraper/.idea/
+/src/tagScraper/.history/
+/src/tagScraper/.vscode-test/
 
-/src/Models/bin
-/src/Models/obj
+/src/Models/bin/
+/src/Models/obj/
 /src/Models/.vs
 /src/Models/.vscode
 /src/Models/.idea
 /src/Models/.history
-/src/Models/.vscode-tes
+/src/Models/.vscode-test/
 
-/src/Data/bin
-/src/Data/obj
-/src/Data/.vs
-/src/Data/.vscode
-/src/Data/.idea
-/src/Data/.history
-/src/Data/.vscode-tes
+/src/Data/bin/
+/src/Data/obj/
+/src/Data/.vs/
+/src/Data/.vscode/
+/src/Data/.idea/
+/src/Data/.history/
+/src/Data/.vscode-tes/
 ngngCLient/.angular/cache/19.2.15/ngCLient/vite/deps/_metadata.json
 
 # Database files
