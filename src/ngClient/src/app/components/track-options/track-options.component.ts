@@ -11,7 +11,8 @@ export class TrackOptionsComponent {
   @Input() trackName: string = '';
   @Input() trackIndex: number = 0;
   @Input() trackArtist: string = '';
-
+  @Input() trackCover: string = '';
+  
   @Output() optionSelected = new EventEmitter<string>();
 
   onOptionClick(option: string): void {

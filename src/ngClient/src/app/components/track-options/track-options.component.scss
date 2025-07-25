@@ -18,7 +18,12 @@
 .track-options-nav {}
 
 .track-options-header {}
-
+.track-options-cover {
+    width:75%;
+    height:auto;
+    margin-top:1rem;
+    box-shadow:2px 2px 1rem rgba(0,0,0,0.25);
+}
 .track-options-title {
     color: #ffde59;
     font-size: 1.75rem;
@@ -43,7 +48,8 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 2rem;
 }
 
 

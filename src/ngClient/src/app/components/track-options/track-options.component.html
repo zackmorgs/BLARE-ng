@@ -3,6 +3,7 @@
     <div class="track-options-modal" (click)="onClose()">
 
         <div class="track-options-header">
+            <img class="track-options-cover" [src]="'http://localhost:5051' + (trackCover || '')" alt="Track Cover">
             <h3 class="track-options-title">{{ trackName || 'Track Options' }}</h3>
             <h4 class="track-options-artist">{{ trackArtist || 'Unknown Artist' }}</h4>
         </div>

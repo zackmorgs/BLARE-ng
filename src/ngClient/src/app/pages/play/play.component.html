@@ -1,7 +1,7 @@
 <app-loader *ngIf="isLoading"></app-loader>
 
 <track-options *ngIf="showTrackOptions" [trackName]="currentTrack?.name || ''" [trackArtist]="artistToPlay.name || ''" [trackIndex]="currentTrackIndex"
-    (optionSelected)="handleTrackOption($event)">
+    (optionSelected)="handleTrackOption($event)" [trackCover]="releaseToPlay.coverImageUrl || ''" (close)="showTrackOptions = false">
 </track-options>
 
 <div class="container" *ngIf="!isLoading">
