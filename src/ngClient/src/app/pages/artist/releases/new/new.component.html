@@ -1,5 +1,30 @@
 <div class="is-loading" *ngIf="isUploading">
     <app-uploader></app-uploader>
+    
+    <!-- Track Upload Progress Section -->
+    <div class="upload-progress-container" *ngIf="selectedAudioFiles.length > 0">
+        <h3>Uploading Tracks</h3>
+        <div class="track-progress-list">
+            <div *ngFor="let file of selectedAudioFiles" class="track-progress-item">
+                <div class="track-info">
+                    <span class="track-name">{{ file.name }}</span>
+                    <span class="track-size">{{ formatFileSize(file.size) }}</span>
+                    <span class="progress-percentage">{{ uploadProgress[file.name] || 0 }}%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" 
+                         [style.width.%]="uploadProgress[file.name] || 0"
+                         [class.completed]="uploadedFiles.includes(file.name)">
+                    </div>
+                </div>
+                <div class="upload-status">
+                    <span *ngIf="uploadedFiles.includes(file.name)" class="status-complete">✓ Complete</span>
+                    <span *ngIf="!uploadedFiles.includes(file.name) && uploadProgress[file.name] > 0" class="status-uploading">Uploading...</span>
+                    <span *ngIf="uploadProgress[file.name] === 0" class="status-waiting">Waiting...</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div id="new_release_container" class="container" *ngIf="!isUploading">
     <h2>New Release</h2>

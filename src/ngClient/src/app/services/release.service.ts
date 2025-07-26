@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 export interface Artist {
@@ -49,6 +49,13 @@ export interface UpdateReleaseRequest {
     trackIds?: string[];
 }
 
+export interface UploadProgressEvent {
+  fileName: string;
+  progress: number;
+  loaded: number;
+  total: number;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -57,6 +64,10 @@ export class ReleaseService {
     private http = inject(HttpClient);
     private releaseApiUrl = 'http://localhost:5051/api/release';
     private releaseUploadUrl = 'http://localhost:5051/api/release/upload';
+
+    // Progress tracking
+    private uploadProgressSubject = new Subject<UploadProgressEvent>();
+    public uploadProgress$ = this.uploadProgressSubject.asObservable();
 
     // Cache for releases
     private releasesSubject = new BehaviorSubject<Release[]>([]);
@@ -127,6 +138,91 @@ export class ReleaseService {
 
         return this.http.put<Release>(this.releaseUploadUrl, formData);
     }
+
+    // Create new release with real progress tracking
+    createReleaseWithProgress(release: CreateReleaseRequest): Observable<Release> {
+        return new Observable(observer => {
+            const formData = new FormData();
+            
+            // Basic release metadata
+            formData.append('title', release.title);
+            formData.append('type', release.type);
+            formData.append('artistId', release.artistId);
+            formData.append('description', release.description || '');
+            formData.append('releaseDate', release.releaseDate.toISOString());
+            
+            // Music tags array
+            release.musicTags?.forEach(tag => formData.append('musicTags[]', tag));
+
+            // Cover image file
+            if (release.coverImage) {
+                formData.append('coverImage', release.coverImage);
+            }
+            
+            // Audio files array
+            release.audioFiles?.forEach(file => {
+                formData.append('releaseFiles', file);
+            });
+
+            const xhr = new XMLHttpRequest();
+
+            // Track upload progress
+            xhr.upload.addEventListener('progress', (event) => {
+                if (event.lengthComputable) {
+                    const progress = Math.round((event.loaded / event.total) * 100);
+                    
+                    // Emit progress for all files (you could make this more granular)
+                    release.audioFiles?.forEach(file => {
+                        this.uploadProgressSubject.next({
+                            fileName: file.name,
+                            progress: progress,
+                            loaded: event.loaded,
+                            total: event.total
+                        });
+                    });
+                }
+            });
+
+            // Handle completion
+            xhr.addEventListener('load', () => {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        observer.next(response);
+                        observer.complete();
+                    } catch (e) {
+                        observer.error(new Error('Invalid response format'));
+                    }
+                } else {
+                    observer.error(new Error(`Upload failed with status ${xhr.status}`));
+                }
+            });
+
+            // Handle errors
+            xhr.addEventListener('error', () => {
+                observer.error(new Error('Upload failed'));
+            });
+
+            // Handle abort
+            xhr.addEventListener('abort', () => {
+                observer.error(new Error('Upload aborted'));
+            });
+
+            // Start the upload
+            xhr.open('PUT', this.releaseUploadUrl);
+            xhr.send(formData);
+
+            // Return cleanup function
+            return () => {
+                xhr.abort();
+            };
+        });
+    }
+
+    // Keep the original method for backward compatibility
+    // createRelease(release: CreateReleaseRequest): Observable<Release> {
+    //     return this.createReleaseWithProgress(release);
+    // }
 
     // Update release
     updateRelease(id: string, updates: UpdateReleaseRequest): Observable<Release> {
